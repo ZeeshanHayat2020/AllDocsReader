@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0066B6</color>
+    <color name="colorPrimaryDark">#004D8A</color>
+    <color name="colorAccent">#03A9F4</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBLack">#000000</color>
+
+
+    <color name="color_enable">#0066B6</color>
+    <color name="color_disable">#93C6EF</color>
+    <color name="colorControlNormal">#686868</color>
+
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="color_Text">#FFFFFF</color>
+    <color name="color_Buttons">#000000</color>
+</resources>

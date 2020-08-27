@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray"
+    android:paddingBottom="@dimen/_3sdp"
+    android:paddingTop="@dimen/_3sdp"
+    android:paddingLeft="@dimen/_2sdp"
+    android:paddingRight="@dimen/_2sdp"
+    >
+    <com.example.alldocumentreader.customviews.TouchImageView
+        android:id="@+id/item_view_viewpager_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@android:color/white"
+        />
+</RelativeLayout>

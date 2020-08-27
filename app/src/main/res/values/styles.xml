@@ -1,0 +1,38 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.TitleBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="Theme.CustomToolbar" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/colorWhite</item>
+        <item name="colorAccent">@color/colorWhite</item>
+    </style>
+
+    <style name="Theme.Buttons" parent="AppTheme">
+        <item name="background">@color/bg_buttons</item>
+        <item name="android:backgroundTint">@color/bg_buttons</item>
+    </style>
+
+    <style name="title_background_drawable_vertical">
+        <item name="android:background">@drawable/sys_title_bg_vertical</item>
+    </style>
+    <style name="title_background_drawable_horizontal">
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+    <style name="title_background_vertical" parent="android:Theme">
+        <item name="android:windowTitleBackgroundStyle">@style/title_background_drawable_vertical</item>
+    </style>
+    <style name="title_background_horizontal" parent="android:Theme">
+        <item name="android:windowTitleBackgroundStyle">@style/title_background_drawable_horizontal</item>
+    </style>
+</resources>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_60sdp"
+    android:layout_marginBottom="@dimen/_3sdp">
+
+    <RelativeLayout
+        android:id="@+id/itemView_acFilesHolder_IvRoot"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/_10sdp">
+
+        <ImageView
+            android:id="@+id/itemView_acFilesHolder_Iv"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_svg_file_type_pdf" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@+id/itemView_acFilesHolder_btnMenu"
+        android:layout_toRightOf="@+id/itemView_acFilesHolder_IvRoot"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/itemView_acFilesHolder_FileNameTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_2sdp"
+            android:maxLines="1"
+            android:text="File Name"
+            android:textColor="@color/colorBLack"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/itemView_acFilesHolder_FileSizeTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_2sdp"
+            android:text="File Size"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/itemView_acFilesHolder_btnMenu"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/_3sdp"
+        android:layout_marginRight="@dimen/_3sdp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_item_menu"
+        android:visibility="visible" />
+
+    <CheckBox
+        android:id="@+id/itemView_acFilesHolder_checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/_3sdp"
+        android:layout_marginRight="@dimen/_3sdp"
+        android:buttonTint="@color/colorAccent"
+        android:visibility="invisible" />
+
+
+</RelativeLayout>
