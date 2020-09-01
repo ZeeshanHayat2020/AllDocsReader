@@ -17,6 +17,10 @@
 
 package com.example.alldocumentreader.fc.util;
 
+import android.util.Log;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
@@ -29,6 +33,8 @@ import java.util.zip.Checksum;
 
 public final class IOUtils {
 
+
+	private static final int BUFFER_SIZE = 1024 * 4;
     private static final POILogger logger = POILogFactory
             .getLogger( IOUtils.class );
 
@@ -137,7 +143,35 @@ public final class IOUtils {
 		}
 	}
 
-    public static long calculateChecksum(byte[] data) {
+	public static int copy2(InputStream input, OutputStream output) throws Exception, IOException {
+		byte[] buffer = new byte[BUFFER_SIZE];
+
+		BufferedInputStream in = new BufferedInputStream(input, BUFFER_SIZE);
+		BufferedOutputStream out = new BufferedOutputStream(output, BUFFER_SIZE);
+		int count = 0, n = 0;
+		try {
+			while ((n = in.read(buffer, 0, BUFFER_SIZE)) != -1) {
+				out.write(buffer, 0, n);
+				count += n;
+			}
+			out.flush();
+		} finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+				Log.e(e.getMessage(), e.toString());
+			}
+			try {
+				in.close();
+			} catch (IOException e) {
+				Log.e(e.getMessage(), e.toString());
+			}
+		}
+		return count;
+	}
+
+
+	public static long calculateChecksum(byte[] data) {
         Checksum sum = new CRC32();
         sum.update(data, 0, data.length);
         return sum.getValue();

@@ -123,8 +123,6 @@
     <string name="AddToFvrt">Add to Favourites</string>
     <string name="delete">Delete</string>
     <string name="share">Share</string>
-    <string name="converted_success_msg">Image is converted to pdf and saved successfully.</string>
-    <string name="fileLock_enable">File lock is enable now, You can set or remove lock from specific file. </string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 

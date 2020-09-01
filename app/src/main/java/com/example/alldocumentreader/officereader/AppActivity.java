@@ -9,6 +9,8 @@ package com.example.alldocumentreader.officereader;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
@@ -26,23 +28,28 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.MimeTypeMap;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.alldocumentreader.activities.ActivityPdfViewer;
+import com.example.alldocumentreader.activities.MainActivity;
 import com.example.alldocumentreader.constant.Constant;
 import com.example.alldocumentreader.R;
 import com.example.alldocumentreader.common.IOfficeToPicture;
 import com.example.alldocumentreader.constant.EventConstant;
 import com.example.alldocumentreader.constant.MainConstant;
 import com.example.alldocumentreader.constant.wp.WPViewConstant;
+import com.example.alldocumentreader.fc.util.IOUtils;
 import com.example.alldocumentreader.macro.DialogListener;
 import com.example.alldocumentreader.officereader.beans.AImageButton;
 import com.example.alldocumentreader.officereader.beans.AImageCheckButton;
@@ -66,6 +73,8 @@ import com.example.alldocumentreader.system.dialog.ColorPickerDialog;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,14 +147,11 @@ public class AppActivity extends AppCompatActivity implements IMainFrame {
     //
     private boolean fullscreen;
     //
-    private static final String LOCN_FROM_URI = "FROM URI";
-    private static final String LOCN_FROM_FILE = "FROM FILE";
+
     private String tempFilePath;
     private String filePath;
     private String fileName;
     Intent filesDataRecievingIntent;
-    private Uri externalStoragePdfFileUri;
-
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -231,12 +237,12 @@ public class AppActivity extends AppCompatActivity implements IMainFrame {
             if (type.equals("application/msword") || type.equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document") || type.equals("application/vnd.ms-powerpoint")
                     || type.equals("application/vnd.openxmlformats-officedocument.presentationml.presentation") || type.equals("application/vnd.ms-excel")
                     || type.equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") || type.equals("text/plain")) {
-                externalStoragePdfFileUri = filesDataRecievingIntent.getData();
-                fileName = getExternalStorageFileName(externalStoragePdfFileUri);
-                File file = new File(getPath(externalStoragePdfFileUri));
-                filePath = file.getAbsolutePath();
-                Log.d(TAG, "onCreate: URI FILE:" + filePath);
 
+                Uri tempUri = filesDataRecievingIntent.getData();
+                String tempFileExtension = "." + getMimeType(AppActivity.this, tempUri);
+                filePath = String.valueOf(Uri.parse(getFilePathFromExternalAppsURI(AppActivity.this, tempUri, tempFileExtension)));
+                Log.d(TAG, "onCreate: File Uri:" + filePath);
+                Log.d(TAG, "onCreate: File Mime Type:" + tempFileExtension);
             }
         } else {
             if (filesDataRecievingIntent != null) {
@@ -249,36 +255,61 @@ public class AppActivity extends AppCompatActivity implements IMainFrame {
 
     }
 
-    public String getPath(Uri uri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        if (cursor == null) return null;
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String s = cursor.getString(column_index);
-        cursor.close();
-        return s;
+    public String getFilePathFromExternalAppsURI(Context context, Uri contentUri, String extension) {
+        fileName = getFileName(contentUri);
+
+        if (!TextUtils.isEmpty(fileName)) {
+            File copyFile = new File(getFilesDir(), fileName + extension);
+            copy(context, contentUri, copyFile);
+            return copyFile.getAbsolutePath();
+        }
+        return null;
     }
 
-    private String getExternalStorageFileName(Uri uri) {
+    public static String getFileName(Uri uri) {
+        if (uri == null) return null;
         String fileName = null;
-        String scheme = uri.getScheme();
-        if (scheme.equals("file")) {
-            fileName = uri.getLastPathSegment();
-        } else if (scheme.equals("content")) {
-            String[] proj = {MediaStore.Images.Media.TITLE};
-            Cursor cursor = getContentResolver().query(uri, proj, null, null, null);
-            if (cursor != null && cursor.getCount() != 0) {
-                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.TITLE);
-                cursor.moveToFirst();
-                fileName = cursor.getString(columnIndex);
-            }
-            if (cursor != null) {
-                cursor.close();
-            }
+        String path = uri.getPath();
+        int cut = path.lastIndexOf('/');
+        if (cut != -1) {
+            fileName = path.substring(cut + 1);
         }
         return fileName;
     }
+
+    public static String getMimeType(Context context, Uri uri) {
+        String extension;
+
+        //Check uri format to avoid null
+        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+            //If scheme is a content
+            final MimeTypeMap mime = MimeTypeMap.getSingleton();
+            extension = mime.getExtensionFromMimeType(context.getContentResolver().getType(uri));
+        } else {
+            //If scheme is a File
+            //This will replace white spaces with %20 and also other special characters. This will avoid returning null values on file name with spaces and special characters.
+            extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
+
+        }
+
+        return extension;
+    }
+
+    public static void copy(Context context, Uri srcUri, File dstFile) {
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(srcUri);
+            if (inputStream == null) return;
+            OutputStream outputStream = new FileOutputStream(dstFile);
+            IOUtils.copy2(inputStream, outputStream);
+            inputStream.close();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void openFile() {
         if (filePath == null) {
@@ -531,6 +562,14 @@ public class AppActivity extends AppCompatActivity implements IMainFrame {
         }
         toolsbar.setBackground(setGradientBackground(getResources().getColor(R.color.colorPrimaryDark),
                 getResources().getColor(R.color.colorPrimary)));
+      /*  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolsbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });*/
         // 添加tool bar
         appFrame.addView(toolsbar);
     }
