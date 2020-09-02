@@ -148,5 +148,8 @@
     <string name="exit">Exit</string>
     <string name="sys_name">Files List</string>
     <string name="reading_approved">Reading Approved</string>
+    <string name="internal_storage">Internal Storage</string>
+    <string name="total_space">Total:</string>
+    <string name="free_space">Free:</string>
 
 </resources>

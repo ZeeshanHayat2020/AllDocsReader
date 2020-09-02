@@ -46,15 +46,16 @@ public class AdapterAcMain extends RecyclerView.Adapter<AdapterAcMain.AdapterVie
     }
 
     public static class AdapterViewHolder extends RecyclerView.ViewHolder {
-        CardView itemCardView;
+        RelativeLayout itemIVRoot;
         ImageView itemImageView;
         TextView itemName_tv;
 
         public AdapterViewHolder(@NonNull View itemView, final OnRecyclerItemClickLister onRecyclerItemClickLister) {
             super(itemView);
-            itemCardView = itemView.findViewById(R.id.itemView_acMain_cardView);
+            itemIVRoot = itemView.findViewById(R.id.itemView_acMain_ivRoot);
             itemImageView = itemView.findViewById(R.id.itemView_acMain_imageView);
             itemName_tv = itemView.findViewById(R.id.itemView_acMain_ItemName_tv);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -81,58 +82,60 @@ public class AdapterAcMain extends RecyclerView.Adapter<AdapterAcMain.AdapterVie
     public void onBindViewHolder(@NonNull AdapterViewHolder holder, int position) {
         final ModelAcMain currentItem = modelAcMainList.get(position);
         holder.itemName_tv.setText(currentItem.getItemName());
+        holder.itemImageView.setImageResource(currentItem.getItemImageId());
+
         switch (currentItem.getItemName()) {
             case "All Documents": {
-                holder.itemCardView
+                holder.itemIVRoot
                         .setBackground(setCardGradient(
                                 context.getResources().getColor(R.color.color_cardBg_allDoc_upper),
                                 context.getResources().getColor(R.color.color_cardBg_allDoc_lower)));
             }
             break;
             case "PDF Files": {
-                holder.itemCardView
+                holder.itemIVRoot
                         .setBackground(setCardGradient(
                                 context.getResources().getColor(R.color.color_cardBg_pdfDoc_upper),
                                 context.getResources().getColor(R.color.color_cardBg_pdfDoc_lower)));
             }
             break;
             case "Word Files": {
-                holder.itemCardView
+                holder.itemIVRoot
                         .setBackground(setCardGradient(
                                 context.getResources().getColor(R.color.color_cardBg_wordDoc_upper),
                                 context.getResources().getColor(R.color.color_cardBg_wordDoc_lower)));
             }
             break;
             case "Text Files": {
-                holder.itemCardView
+                holder.itemIVRoot
                         .setBackground(setCardGradient(
                                 context.getResources().getColor(R.color.color_cardBg_txtDoc_upper),
                                 context.getResources().getColor(R.color.color_cardBg_txtDoc_lower)));
             }
             break;
             case "PPT Files": {
-                holder.itemCardView
+                holder.itemIVRoot
                         .setBackground(setCardGradient(
                                 context.getResources().getColor(R.color.color_cardBg_pptDoc_upper),
                                 context.getResources().getColor(R.color.color_cardBg_pptDoc_lower)));
             }
             break;
             case "HTML Files": {
-                holder.itemCardView
+                holder.itemIVRoot
                         .setBackground(setCardGradient(
                                 context.getResources().getColor(R.color.color_cardBg_htmlDoc_upper),
                                 context.getResources().getColor(R.color.color_cardBg_htmlDoc_lower)));
             }
             break;
             case "XML Files": {
-                holder.itemCardView
+                holder.itemIVRoot
                         .setBackground(setCardGradient(
                                 context.getResources().getColor(R.color.color_cardBg_xmlDoc_upper),
                                 context.getResources().getColor(R.color.color_cardBg_xmlDoc_lower)));
             }
             break;
             case "Sheet Files": {
-                holder.itemCardView
+                holder.itemIVRoot
                         .setBackground(setCardGradient(
                                 context.getResources().getColor(R.color.color_cardBg_sheetDoc_upper),
                                 context.getResources().getColor(R.color.color_cardBg_sheetDoc_lower)));

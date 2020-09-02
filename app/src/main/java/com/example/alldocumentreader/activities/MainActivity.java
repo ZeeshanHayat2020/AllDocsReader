@@ -13,10 +13,18 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.os.StatFs;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +49,7 @@ import com.google.android.play.core.tasks.OnFailureListener;
 import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class MainActivity extends ActivityBase implements OnRecyclerItemClickLister {
@@ -59,6 +68,10 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
     ReviewInfo reviewInfo = null;
     Handler handler;
 
+    private TextView tvStorageTotal;
+    private TextView tvStorageFree;
+    private ProgressBar progressBarStorage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +83,7 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         initViews();
         setUpToolBar();
         loadRecyclerViewItems();
+        displayingStorageOfDevice();
         setUpRecyclerView();
         setUpInAppUpdate();
         setUpInAppReview();
@@ -87,6 +101,31 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         if (haveNetworkConnected(MainActivity.this)) {
             checkForUpdate();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_activity_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_acMain_rateUs: {
+                rateUs();
+            }
+            break;
+            case R.id.menu_acMain_shareUs: {
+                shareUs();
+            }
+            break;
+            default: {
+                super.onOptionsItemSelected(item);
+            }
+        }
+        return false;
     }
 
     private void setUpInAppReview() {
@@ -161,6 +200,9 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.acMain_toolbar);
         acMainParentContainer = (RelativeLayout) findViewById(R.id.acMain_parentContainer);
         recyclerView = findViewById(R.id.acMain_RecyclerView);
+        tvStorageTotal = (TextView) findViewById(R.id.acMain_storage_totalSpaceTv);
+        tvStorageFree = (TextView) findViewById(R.id.acMain_storage_freeSpaceTv);
+        progressBarStorage = (ProgressBar) findViewById(R.id.acMain_storage_progressBar);
         handler = new Handler(getMainLooper());
     }
 
@@ -168,11 +210,24 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         toolBarTitleTv = (TextView) findViewById(R.id.toolBar_title_tv);
-        toolBarTitleTv.setText("HOME");
+        toolBarTitleTv.setText("ALL DOCUMENT READER");
+        toolBarTitleTv.setGravity(Gravity.CENTER_HORIZONTAL);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.color_Red));
     }
 
-
     private void loadRecyclerViewItems() {
+        int[] imgIds = {
+                R.drawable.ic_all_docs,
+                R.drawable.ic_pdf_docs,
+                R.drawable.ic_word_docs,
+                R.drawable.ic_txt_docs,
+                R.drawable.ic_ppt_docs,
+                R.drawable.ic_html_docs,
+                R.drawable.ic_xml_docs,
+                R.drawable.ic_sheet_docs,
+                R.drawable.ic_sheet_docs
+
+        };
         String[] itemNames = {
                 "All Documents",
                 "PDF Files",
@@ -181,20 +236,22 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
                 "PPT Files",
                 "HTML Files",
                 "XML Files",
-                "Sheet Files"
+                "Sheet Files",
+                "RTF Files"
 
         };
+
         itemsList = new ArrayList<>();
         for (int i = 0; i < itemNames.length; i++) {
-            itemsList.add(new ModelAcMain(itemNames[i], null));
+            itemsList.add(new ModelAcMain(itemNames[i], imgIds[i]));
         }
     }
 
     private void setUpRecyclerView() {
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen._12sdp);
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen._1sdp);
         recyclerView.addItemDecoration(new RecyclerViewItemDecoration(spacingInPixels));
         recyclerView.setHasFixedSize(true);
-        layoutManager = new GridLayoutManager(this, 2);
+        layoutManager = new GridLayoutManager(this, 3);
         adapterAcMain = new AdapterAcMain(this, itemsList);
         adapterAcMain.notifyDataSetChanged();
         recyclerView.setLayoutManager(layoutManager);
@@ -227,6 +284,44 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         }
         return false;
     }
+
+
+    private void displayingStorageOfDevice() {
+
+        float totalSpace = DeviceMemory.getInternalStorageSpace();
+        float occupiedSpace = DeviceMemory.getInternalUsedSpace();
+        float freeSpace1 = DeviceMemory.getInternalFreeSpace();
+        DecimalFormat outputFormat = new DecimalFormat("#.##");
+
+        tvStorageFree.setText("Free:" + outputFormat.format(freeSpace1) + " GB");
+        tvStorageTotal.setText("Total:" + outputFormat.format(totalSpace) + " GB");
+        progressBarStorage.setMax((int) totalSpace);
+        progressBarStorage.setProgress((int) occupiedSpace);
+
+    }
+
+    public static class DeviceMemory {
+        public static float getInternalStorageSpace() {
+            StatFs statFs = new StatFs(Environment.getDataDirectory().getAbsolutePath());
+            float total = ((float) statFs.getBlockCount() * statFs.getBlockSize()) / 1073741824;
+            return total;
+        }
+
+        public static float getInternalFreeSpace() {
+            StatFs statFs = new StatFs(Environment.getDataDirectory().getAbsolutePath());
+            float free = ((float) statFs.getAvailableBlocks() * statFs.getBlockSize()) / 1073741824;
+            return free;
+        }
+
+        public static float getInternalUsedSpace() {
+            StatFs statFs = new StatFs(Environment.getDataDirectory().getAbsolutePath());
+            float total = ((float) statFs.getBlockCount() * statFs.getBlockSize()) / 1073741824;
+            float free = ((float) statFs.getAvailableBlocks() * statFs.getBlockSize()) / 1073741824;
+            float busy = total - free;
+            return busy;
+        }
+    }
+
 
     @Override
     public void onItemClicked(int position) {
@@ -336,7 +431,6 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
             }
         } else if (requestCode == Constant.REQUEST_CODE_IN_APP_REVIEW) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(MainActivity.this, "Return From FilesHolder", Toast.LENGTH_SHORT).show();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {

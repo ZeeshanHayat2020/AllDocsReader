@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/colorBLack</item>
     </style>
 
     <style name="AppTheme.TitleBar" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -13,9 +14,17 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
     <style name="Theme.CustomToolbar" parent="AppTheme">
         <item name="android:textColorSecondary">@color/colorWhite</item>
         <item name="colorAccent">@color/colorWhite</item>
+    </style>
+
+    <style name="CustomProgressBar" parent="android:Widget.ProgressBar.Horizontal">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/bg_storage_progress_bar</item>
+        <item name="android:minHeight">10dip</item>
+        <item name="android:maxHeight">20dip</item>
     </style>
 
     <style name="Theme.Buttons" parent="AppTheme">
@@ -26,13 +35,19 @@
     <style name="title_background_drawable_vertical">
         <item name="android:background">@drawable/sys_title_bg_vertical</item>
     </style>
+
     <style name="title_background_drawable_horizontal">
         <item name="android:background">@color/colorPrimary</item>
     </style>
+
     <style name="title_background_vertical" parent="android:Theme">
-        <item name="android:windowTitleBackgroundStyle">@style/title_background_drawable_vertical</item>
+        <item name="android:windowTitleBackgroundStyle">@style/title_background_drawable_vertical
+        </item>
     </style>
+
     <style name="title_background_horizontal" parent="android:Theme">
-        <item name="android:windowTitleBackgroundStyle">@style/title_background_drawable_horizontal</item>
+        <item name="android:windowTitleBackgroundStyle">
+            @style/title_background_drawable_horizontal
+        </item>
     </style>
 </resources>

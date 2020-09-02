@@ -5,6 +5,7 @@
     android:id="@+id/acMain_parentContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/ic_main_bg"
     tools:context=".activities.MainActivity">
 
     <include
@@ -14,47 +15,112 @@
     <RelativeLayout
         android:id="@+id/acMain_Header_Root"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_100sdp"
+        android:layout_height="@dimen/_120sdp"
         android:layout_below="@+id/acMain_toolbar">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/_15sdp"
-            android:text="@string/reading_approved"
-            android:textSize="18sp"
-
-            />
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_header_image" />
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/acMain_Header_Root"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="@dimen/_4sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_4sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/acMain_Header_Root">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/acMain_RecyclerView"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:layoutAnimation="@anim/layout_anim_up_to_down"
-            android:overScrollMode="never"
-            android:scrollbars="none"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-    </LinearLayout>
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/acMain_RecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:layoutAnimation="@anim/layout_anim_up_to_down"
+                        android:overScrollMode="never"
+                        android:scrollbars="none"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/acMain_storageRoot"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_70sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    app:cardCornerRadius="@dimen/_15sdp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:text="@string/internal_storage"
+                            android:textColor="@color/colorBLack"
+                            android:textSize="14sp" />
+
+                        <ProgressBar
+                            android:id="@+id/acMain_storage_progressBar"
+                            style="@style/CustomProgressBar"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_10sdp"
+                            android:layout_centerInParent="true"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:max="100"
+                            android:progress="20" />
+
+                        <TextView
+                            android:id="@+id/acMain_storage_totalSpaceTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:text="@string/total_space"
+                            android:textColor="@color/colorBLack"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/acMain_storage_freeSpaceTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginRight="@dimen/_15sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:text="@string/free_space"
+                            android:textColor="@color/colorBLack"
+                            android:textSize="12sp" />
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
 
 </RelativeLayout>

@@ -3,9 +3,9 @@ package com.example.alldocumentreader.models;
 public class ModelAcMain {
 
     private String itemName;
-    private String itemImageId;
+    private int itemImageId;
 
-    public ModelAcMain(String itemName, String itemImageId) {
+    public ModelAcMain(String itemName, int itemImageId) {
         this.itemName = itemName;
         this.itemImageId = itemImageId;
     }
@@ -13,7 +13,7 @@ public class ModelAcMain {
         return itemName;
     }
 
-    public String getItemImageId() {
+    public int getItemImageId() {
         return itemImageId;
     }
 

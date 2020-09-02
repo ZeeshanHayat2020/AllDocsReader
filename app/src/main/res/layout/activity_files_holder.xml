@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ActivityFilesHolder">
+    tools:context=".activities.ActivityFilesHolder"
+    android:background="@drawable/ic_main_bg"
+    >
 
     <include
         android:id="@+id/acFilesHolder_toolbar"
@@ -27,9 +29,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+            android:layoutAnimation="@anim/layout_anim_down_to_up"
             android:overScrollMode="never"
             android:scrollbars="none"
-            android:layoutAnimation="@anim/layout_anim_down_to_up"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </LinearLayout>
 

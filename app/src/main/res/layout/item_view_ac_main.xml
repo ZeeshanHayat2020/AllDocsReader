@@ -2,31 +2,36 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/_100sdp"
-    android:layout_height="@dimen/_120sdp"
+    android:layout_height="@dimen/_105sdp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="@dimen/_10sdp">
+    app:cardCornerRadius="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_2sdp"
+    >
 
     <androidx.cardview.widget.CardView
         android:id="@+id/itemView_acMain_cardView"
-        android:layout_width="@dimen/_70sdp"
-        android:layout_height="@dimen/_70sdp"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
         android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:elevation="@dimen/_4sdp"
         app:cardBackgroundColor="@color/colorPrimaryDark"
-        app:cardCornerRadius="@dimen/_20sdp">
+        app:cardCornerRadius="@dimen/_25sdp">
 
         <RelativeLayout
             android:id="@+id/itemView_acMain_ivRoot"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:elevation="@dimen/_5sdp">
 
             <ImageView
                 android:id="@+id/itemView_acMain_imageView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/_55sdp"
+                android:layout_height="@dimen/_55sdp"
                 android:layout_centerInParent="true"
-                android:layout_margin="@dimen/_20sdp"
+                android:elevation="@dimen/_20sdp"
                 android:src="@drawable/ic_all_docs" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
@@ -37,7 +42,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/itemView_acMain_cardView"
         android:layout_centerInParent="true"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_2sdp"
         android:text="All Document"
-        android:textSize="16sp" />
+        android:textColor="@color/colorBLack"
+        android:textSize="15sp" />
 </RelativeLayout>

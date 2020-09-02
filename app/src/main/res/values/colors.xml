@@ -7,6 +7,9 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBLack">#000000</color>
 
+    <color name="colorProgressBg">#2CBFEB</color>
+    <color name="colorProgressStatus">#085f63</color>
+
 
     <color name="color_enable">#0066B6</color>
     <color name="color_disable">#93C6EF</color>
@@ -14,6 +17,8 @@
     <color name="colorBackground">#FFFFFF</color>
     <color name="color_Text">#FFFFFF</color>
     <color name="color_Buttons">#000000</color>
+
+    <color name="color_Red">#FF3600</color>
 
 
     <color name="color_cardBg_allDoc_upper">#3DAAED</color>
@@ -25,11 +30,11 @@
     <color name="color_cardBg_wordDoc_upper">#7A8EF9</color>
     <color name="color_cardBg_wordDoc_lower">#9977F6</color>
 
-    <color name="color_cardBg_txtDoc_upper">#FF3989</color>
-    <color name="color_cardBg_txtDoc_lower">#FD48D5</color>
+    <color name="color_cardBg_txtDoc_upper">#FF3787</color>
+    <color name="color_cardBg_txtDoc_lower">#FD47D0</color>
 
     <color name="color_cardBg_pptDoc_upper">#F93434</color>
-    <color name="color_cardBg_pptDoc_lower">#FC4A4A</color>
+    <color name="color_cardBg_pptDoc_lower">#F87575</color>
 
     <color name="color_cardBg_htmlDoc_upper">#F860C7</color>
     <color name="color_cardBg_htmlDoc_lower">#F9BDBD</color>
