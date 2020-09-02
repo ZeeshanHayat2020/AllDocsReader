@@ -1,6 +1,7 @@
 package com.example.alldocumentreader.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +29,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.alldocumentreader.R;
 import com.example.alldocumentreader.adapters.AdapterFilesHolder;
@@ -133,6 +135,8 @@ public class ActivityFilesHolder extends ActivityBase {
         if (isContextualMenuOpen) {
             closeContextualMenu();
         } else {
+            setResult(RESULT_OK);
+            finish();
             super.onBackPressed();
         }
     }
@@ -182,7 +186,6 @@ public class ActivityFilesHolder extends ActivityBase {
 
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
-
 
         adapter.setOnItemClickListener(new OnRecyclerItemClickLister() {
             @Override

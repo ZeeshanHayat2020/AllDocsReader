@@ -2,24 +2,47 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/acMain_parentContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MainActivity"
-    android:id="@+id/acMain_parentContainer"
-    >
+    tools:context=".activities.MainActivity">
+
     <include
         android:id="@+id/acMain_toolbar"
         layout="@layout/toolbar_custom" />
 
+    <RelativeLayout
+        android:id="@+id/acMain_Header_Root"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_below="@+id/acMain_toolbar">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/_15sdp"
+            android:text="@string/reading_approved"
+            android:textSize="18sp"
+
+            />
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/acMain_toolbar"
+        android:layout_below="@+id/acMain_Header_Root"
         android:layout_centerInParent="true"
         android:layout_marginLeft="@dimen/_4sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_4sdp"
         android:layout_marginBottom="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -28,9 +51,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+            android:layoutAnimation="@anim/layout_anim_up_to_down"
             android:overScrollMode="never"
             android:scrollbars="none"
-            android:layoutAnimation="@anim/layout_anim_up_to_down"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </LinearLayout>
 

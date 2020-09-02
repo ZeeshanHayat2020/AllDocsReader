@@ -11,8 +11,33 @@
     <color name="color_enable">#0066B6</color>
     <color name="color_disable">#93C6EF</color>
     <color name="colorControlNormal">#686868</color>
-
     <color name="colorBackground">#FFFFFF</color>
     <color name="color_Text">#FFFFFF</color>
     <color name="color_Buttons">#000000</color>
+
+
+    <color name="color_cardBg_allDoc_upper">#3DAAED</color>
+    <color name="color_cardBg_allDoc_lower">#10E1E8</color>
+
+    <color name="color_cardBg_pdfDoc_upper">#FC4A4A</color>
+    <color name="color_cardBg_pdfDoc_lower">#F98B8B</color>
+
+    <color name="color_cardBg_wordDoc_upper">#7A8EF9</color>
+    <color name="color_cardBg_wordDoc_lower">#9977F6</color>
+
+    <color name="color_cardBg_txtDoc_upper">#FF3989</color>
+    <color name="color_cardBg_txtDoc_lower">#FD48D5</color>
+
+    <color name="color_cardBg_pptDoc_upper">#F93434</color>
+    <color name="color_cardBg_pptDoc_lower">#FC4A4A</color>
+
+    <color name="color_cardBg_htmlDoc_upper">#F860C7</color>
+    <color name="color_cardBg_htmlDoc_lower">#F9BDBD</color>
+
+    <color name="color_cardBg_xmlDoc_upper">#7A8DF9</color>
+    <color name="color_cardBg_xmlDoc_lower">#9978F6</color>
+
+    <color name="color_cardBg_sheetDoc_upper">#FF3989</color>
+    <color name="color_cardBg_sheetDoc_lower">#FD48D4</color>
+
 </resources>
