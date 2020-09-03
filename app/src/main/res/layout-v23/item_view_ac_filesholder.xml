@@ -9,9 +9,8 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="@dimen/_4sdp"
     app:cardBackgroundColor="@color/colorOffWhite"
-    >
+    app:cardCornerRadius="@dimen/_4sdp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -70,7 +69,6 @@
             android:layout_centerInParent="true"
             android:clickable="true"
             android:focusable="true"
-
             android:foreground="?android:attr/selectableItemBackground"
             android:scaleType="centerInside"
             android:src="@drawable/ic_item_menu"

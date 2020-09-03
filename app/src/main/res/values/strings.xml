@@ -2,6 +2,10 @@
     <string name="app_name">AllDocumentReader</string>
     <string name="delete_msg">The files will be delete permanently from device. \nAre you sure you want to delete?</string>
 
+    <!--Test Adds-->
+    <string name="app_Id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_Id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_Id">ca-app-pub-3940256099942544/1033173712</string>
 
     <string name="sys_button_ok">OK</string>
     <string name="sys_button_cancel">Cancel</string>
@@ -151,5 +155,6 @@
     <string name="internal_storage">Internal Storage</string>
     <string name="total_space">Total:</string>
     <string name="free_space">Free:</string>
+    <string name="todo">TODO</string>
 
 </resources>

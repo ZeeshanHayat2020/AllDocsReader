@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.pdf.PdfRenderer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -81,7 +82,7 @@ public class ActivityPdfViewer extends AppCompatActivity implements NumberPicker
     private Intent intent;
     private String fileUri;
     private String fileName;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,6 +201,20 @@ public class ActivityPdfViewer extends AppCompatActivity implements NumberPicker
                 onBackPressed();
             }
         });
+
+        toolbar.setBackground(getGradient(
+                this.getResources().getColor(R.color.color_cardBg_pdfDoc_upper),
+                this.getResources().getColor(R.color.color_cardBg_pdfDoc_lower)));
+    }
+
+    private GradientDrawable getGradient(int color1, int color2) {
+        int[] colors = {Integer.parseInt(String.valueOf(color1)),
+                Integer.parseInt(String.valueOf(color2))
+        };
+        GradientDrawable gd = new GradientDrawable(
+                GradientDrawable.Orientation.RIGHT_LEFT,
+                colors);
+        return gd;
     }
 
     private void initRenderer() {

@@ -11,31 +11,39 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.ActivityPdfViewer" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
+        <activity android:name=".activities.ActivityPrivacyPolicy">
 
-                <data android:scheme="http" />
-                <data android:scheme="content" />
-                <data android:scheme="file" />
-                <data android:mimeType="application/pdf"/>
-            </intent-filter>
         </activity>
-        <activity android:name=".activities.ActivityFilesHolder" />
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activities.ActivityLanguage" />
+        <activity android:name=".activities.ActivitySplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.ActivityIntroSLides">
 
+        </activity>
+        <activity android:name=".activities.ActivityPdfViewer">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="http" />
+                <data android:scheme="content" />
+                <data android:scheme="file" />
+                <data android:mimeType="application/pdf" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.ActivityFilesHolder" />
+        <activity android:name=".activities.MainActivity" />
         <activity
             android:name=".officereader.SysActivity"
             android:label="@string/app_name"
@@ -64,6 +72,7 @@
             </intent-filter>
             <intent-filter>
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="http" />
                 <data android:scheme="https" />
                 <data android:scheme="inline" />
@@ -84,18 +93,20 @@
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/sys_name"
             android:theme="@style/AppTheme.TitleBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:scheme="content" />
                 <data android:scheme="file" />
 
-                <!--<data android:scheme="http" />
+                <!--
+                <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:scheme="inline" />-->
+                <data android:scheme="inline" />
+                -->
 
                 <data android:mimeType="application/msword" />
                 <data android:mimeType="application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
@@ -103,7 +114,7 @@
                 <data android:mimeType="application/vnd.openxmlformats-officedocument.presentationml.presentation" />
                 <data android:mimeType="application/vnd.ms-excel" />
                 <data android:mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
-                <data android:mimeType="text/plain"/>
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
         <activity
@@ -124,7 +135,6 @@
             </intent-filter>
         </activity>
 
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -134,6 +144,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/app_Id" />
     </application>
 
 </manifest>

@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -71,6 +72,7 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
     private TextView tvStorageTotal;
     private TextView tvStorageFree;
     private ProgressBar progressBarStorage;
+    private int reviewCounter = 0;
 
 
     @Override
@@ -214,6 +216,7 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         toolBarTitleTv.setGravity(Gravity.CENTER_HORIZONTAL);
         toolbar.setBackgroundColor(getResources().getColor(R.color.color_Red));
     }
+
 
     private void loadRecyclerViewItems() {
         int[] imgIds = {
@@ -431,47 +434,51 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
             }
         } else if (requestCode == Constant.REQUEST_CODE_IN_APP_REVIEW) {
             if (resultCode == RESULT_OK) {
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
+                reviewCounter++;
+                if (reviewCounter > 4) {
+                    reviewCounter = 0;
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
 
-                        Task<Void> flow = reviewManager.launchReviewFlow(MainActivity.this, reviewInfo);
-                        flow.addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(
-                                        MainActivity.this,
-                                        "Complete: Thanks for the feedback!",
-                                        Toast.LENGTH_LONG
-                                ).show();
-                                Log.d(TAG, "onComplete: Thanks for the feedback!");
-                            }
-                        });
-                        flow.addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void result) {
-                                Toast.makeText(
-                                        MainActivity.this,
-                                        "Success: Reviewed successfully",
-                                        Toast.LENGTH_LONG
-                                ).show();
-                                Log.d(TAG, "onSuccess:  Reviewed successfully");
-                            }
-                        });
-                        flow.addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(Exception e) {
-                                Toast.makeText(
-                                        MainActivity.this,
-                                        "Failed: Reviewed Failed!",
-                                        Toast.LENGTH_LONG
-                                ).show();
+                            Task<Void> flow = reviewManager.launchReviewFlow(MainActivity.this, reviewInfo);
+                            flow.addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(
+                                            MainActivity.this,
+                                            "Complete: Thanks for the feedback!",
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    Log.d(TAG, "onComplete: Thanks for the feedback!");
+                                }
+                            });
+                            flow.addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void result) {
+                                    Toast.makeText(
+                                            MainActivity.this,
+                                            "Success: Reviewed successfully",
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    Log.d(TAG, "onSuccess:  Reviewed successfully");
+                                }
+                            });
+                            flow.addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(Exception e) {
+                                    Toast.makeText(
+                                            MainActivity.this,
+                                            "Failed: Reviewed Failed!",
+                                            Toast.LENGTH_LONG
+                                    ).show();
 
-                                Log.d(TAG, "onFailed:  Reviewed Failed!");
-                            }
-                        });
-                    }
-                }, 3000);
+                                    Log.d(TAG, "onFailed:  Reviewed Failed!");
+                                }
+                            });
+                        }
+                    }, 3000);
+                }
             }
         }
     }

@@ -151,6 +151,7 @@ public class AppActivity extends AppCompatActivity implements IMainFrame {
     private String tempFilePath;
     private String filePath;
     private String fileName;
+    private String tempFileExtension;
     Intent filesDataRecievingIntent;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -239,7 +240,7 @@ public class AppActivity extends AppCompatActivity implements IMainFrame {
                     || type.equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") || type.equals("text/plain")) {
 
                 Uri tempUri = filesDataRecievingIntent.getData();
-                String tempFileExtension = "." + getMimeType(AppActivity.this, tempUri);
+                tempFileExtension = "." + getMimeType(AppActivity.this, tempUri);
                 filePath = String.valueOf(Uri.parse(getFilePathFromExternalAppsURI(AppActivity.this, tempUri, tempFileExtension)));
                 Log.d(TAG, "onCreate: File Uri:" + filePath);
                 Log.d(TAG, "onCreate: File Mime Type:" + tempFileExtension);
@@ -248,6 +249,8 @@ public class AppActivity extends AppCompatActivity implements IMainFrame {
             if (filesDataRecievingIntent != null) {
                 filePath = filesDataRecievingIntent.getStringExtra(Constant.KEY_SELECTED_FILE_URI);
                 fileName = filesDataRecievingIntent.getStringExtra(Constant.KEY_SELECTED_FILE_NAME);
+                tempFileExtension = filePath.substring(filePath.lastIndexOf("."));
+                Log.d(TAG, "init: Extension:" + tempFileExtension);
             }
         }
         openFile();
@@ -560,8 +563,11 @@ public class AppActivity extends AppCompatActivity implements IMainFrame {
             applicationType = MainConstant.APPLICATION_TYPE_WP;
             toolsbar = new WPToolsbar(getApplicationContext(), control);
         }
-        toolsbar.setBackground(setGradientBackground(getResources().getColor(R.color.colorPrimaryDark),
-                getResources().getColor(R.color.colorPrimary)));
+
+        toolsbar.setBackground(getGradient(
+                this.getResources().getColor(R.color.color_Red),
+                this.getResources().getColor(R.color.color_Red)));
+//        setGradientToToolBar();
       /*  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolsbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -574,15 +580,71 @@ public class AppActivity extends AppCompatActivity implements IMainFrame {
         appFrame.addView(toolsbar);
     }
 
-    public GradientDrawable setGradientBackground(int color1, int color2) {
+    public void setGradientToToolBar() {
+        switch (tempFileExtension) {
+            case ".doc":
+                toolsbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_wordDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_wordDoc_lower)));
+                break;
+            case ".docx":
+                toolsbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_wordDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_wordDoc_lower)));
+                break;
+            case ".txt":
+                toolsbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_txtDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_txtDoc_lower)));
+                break;
+            case ".ppt":
+                toolsbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_pptDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_pptDoc_lower)));
+                break;
+            case ".pptx":
+                toolsbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_pptDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_pdfDoc_lower)));
+                break;
+            case ".html":
+                toolsbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_htmlDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_htmlDoc_lower)));
+                break;
+            case ".xml":
+                toolsbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_xmlDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_xmlDoc_lower)));
+                break;
+            case ".xls":
+                toolsbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_sheetDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_sheetDoc_lower)));
+                break;
+            case ".xlsx":
+                toolsbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_sheetDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_sheetDoc_lower)));
+                break;
+            default: {
+                toolsbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_Red),
+                        this.getResources().getColor(R.color.color_Red)));
+            }
+        }
+    }
+
+    private GradientDrawable getGradient(int color1, int color2) {
         int[] colors = {Integer.parseInt(String.valueOf(color1)),
                 Integer.parseInt(String.valueOf(color2))
         };
         GradientDrawable gd = new GradientDrawable(
-                GradientDrawable.Orientation.TL_BR,
+                GradientDrawable.Orientation.RIGHT_LEFT,
                 colors);
         return gd;
     }
+
 
     /**
      * @return

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -154,11 +155,69 @@ public class ActivityFilesHolder extends ActivityBase {
                 onBackPressed();
             }
         });
+        setGradientToToolBar();
+        updateToolBarTitle(checkFileFormat);
     }
 
     private void updateToolBarTitle(String title) {
         toolBarTitleTv.setText(title);
     }
+
+    public void setGradientToToolBar() {
+        switch (checkFileFormat) {
+            case "All Files":
+                toolbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_allDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_allDoc_lower)));
+                break;
+            case "PDF Files":
+                toolbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_pdfDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_pdfDoc_lower)));
+                break;
+            case "Word Files":
+                toolbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_wordDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_wordDoc_lower)));
+                break;
+            case "Sheet Files":
+                toolbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_sheetDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_sheetDoc_lower)));
+                break;
+            case "PPT Files":
+                toolbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_pptDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_pdfDoc_lower)));
+                break;
+            case "Text Files":
+                toolbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_txtDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_txtDoc_lower)));
+                break;
+            case "XML Files":
+                toolbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_xmlDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_xmlDoc_lower)));
+                break;
+            case "HTML Files":
+                toolbar.setBackground(getGradient(
+                        this.getResources().getColor(R.color.color_cardBg_htmlDoc_upper),
+                        this.getResources().getColor(R.color.color_cardBg_htmlDoc_lower)));
+                break;
+        }
+    }
+
+    private GradientDrawable getGradient(int color1, int color2) {
+        int[] colors = {Integer.parseInt(String.valueOf(color1)),
+                Integer.parseInt(String.valueOf(color2))
+        };
+        GradientDrawable gd = new GradientDrawable(
+                GradientDrawable.Orientation.RIGHT_LEFT,
+                colors);
+        return gd;
+    }
+
 
     private void initViews() {
 
@@ -449,7 +508,7 @@ public class ActivityFilesHolder extends ActivityBase {
                         recyclerView.setVisibility(View.VISIBLE);
                         buildRecyclerView();
                         loadingBar.setVisibility(View.INVISIBLE);
-                        updateToolBarTitle(checkFileFormat);
+
 
                     }
                 }, 100);
