@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
@@ -32,12 +33,8 @@ public class ActivityIntroSLides extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        myPreferences = new MyPreferences(this);
-        if (!myPreferences.isFirstTimeLaunch()) {
-            launchMainScreen();
-            finish();
-        }
         setContentView(R.layout.activity_intro_s_lides);
+        myPreferences = new MyPreferences(this);
         initViews();
         setUpViewPager();
         addBottomDots(0);
@@ -65,10 +62,23 @@ public class ActivityIntroSLides extends AppCompatActivity {
         viewPager.setAdapter(pagerAdapter);
     }
 
-    private void launchMainScreen() {
-        myPreferences.setFirstTimeLaunch(false);
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+    private void launchPrivacyPolicyScreen(boolean isFirstLaunch) {
+        myPreferences.setFirstTimeLaunch(isFirstLaunch);
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                Intent intent;
+                if (myPreferences.isPrivacyPolicyAccepted()) {
+                    intent = new Intent(ActivityIntroSLides.this, MainActivity.class);
+                } else {
+                    intent = new Intent(ActivityIntroSLides.this, ActivityPrivacyPolicy.class);
+                }
+                startActivity(intent);
+                finish();
+                return null;
+            }
+        }.execute();
+
     }
 
     private void addBottomDots(int currentPage) {
@@ -103,13 +113,14 @@ public class ActivityIntroSLides extends AppCompatActivity {
                     if (current < screensList.length) {
                         viewPager.setCurrentItem(current);
                     } else {
-                        launchMainScreen();
+                        launchPrivacyPolicyScreen(false);
                     }
 
                 }
                 break;
                 case R.id.acIntroSlides_btnSkip: {
 
+                    launchPrivacyPolicyScreen(true);
                 }
                 break;
             }

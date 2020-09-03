@@ -1,9 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.ActivityLanguage">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+        android:id="@+id/acLanguage_toolbar"
+        layout="@layout/toolbar_custom" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/acLanguage_toolbar"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/acLanguage_btnEnglish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/bg_language_btns"
+                android:elevation="@dimen/_10sdp"
+                android:text="English"
+                android:textColor="@color/colorLanguageTxt"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/acLanguage_btnUrdu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/bg_language_btns"
+                android:elevation="@dimen/_10sdp"
+                android:text="Urdu"
+                android:textColor="@color/colorLanguageTxt"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/acLanguage_btnArabic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/bg_language_btns"
+                android:elevation="@dimen/_10sdp"
+                android:text="Arabic"
+                android:textColor="@color/colorLanguageTxt"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/acLanguage_btnHindi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/bg_language_btns"
+                android:elevation="@dimen/_10sdp"
+                android:text="Hindi"
+                android:textColor="@color/colorLanguageTxt"
+                android:textSize="18sp" />
+
+
+            <Button
+                android:id="@+id/acLanguage_btnFrance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/bg_language_btns"
+                android:elevation="@dimen/_10sdp"
+                android:text="France"
+                android:textColor="@color/colorLanguageTxt"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/acLanguage_btnChina"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/bg_language_btns"
+                android:elevation="@dimen/_10sdp"
+                android:text="Chinies"
+                android:textColor="@color/colorLanguageTxt"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/acLanguage_btnMalaysia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/bg_language_btns"
+                android:elevation="@dimen/_10sdp"
+                android:text="Malaysia"
+                android:textColor="@color/colorLanguageTxt"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/acLanguage_btnRussian"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/bg_language_btns"
+                android:elevation="@dimen/_10sdp"
+                android:text="Russian"
+                android:textColor="@color/colorLanguageTxt"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

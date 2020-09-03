@@ -7,6 +7,20 @@
     <string name="banner_Id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="interstitial_Id">ca-app-pub-3940256099942544/1033173712</string>
 
+    <string name="privacy_policy_text">
+<![CDATA[
+<p>This application needs following permissions to work properly.</p><br>
+<ul>
+  <li><b>Read External Storage</b></li>
+  <li><b>Write External Storage<b/></li>
+</ul>
+<br>
+<p>Application needs these permissions to show document from phone storage.</p><br>
+<a href="https://www.w3schools.com">Click here to visit privacy policy...</a>
+]]>
+</string>
+
+
     <string name="sys_button_ok">OK</string>
     <string name="sys_button_cancel">Cancel</string>
     <string name="sys_button_memory_card">MemoryCard</string>
@@ -156,5 +170,5 @@
     <string name="total_space">Total:</string>
     <string name="free_space">Free:</string>
     <string name="todo">TODO</string>
-
+    <string name="headingPolicy">Privacy Policy</string>
 </resources>

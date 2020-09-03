@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.alldocumentreader.R;
+import com.example.alldocumentreader.database.MyPreferences;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -21,11 +23,13 @@ public class ActivitySplash extends ActivityBase {
     private Runnable runnable;
     private InterstitialAd interstitialAd;
     private int loadAttempts;
+    private MyPreferences myPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        myPreferences = new MyPreferences(this);
         requestInterstitial();
     }
 
@@ -52,8 +56,35 @@ public class ActivitySplash extends ActivityBase {
     }
 
     private void launchLanguageActivity() {
-        startActivity(new Intent(ActivitySplash.this, ActivityLanguage.class));
-        this.finish();
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                final Intent intent;
+                if (!myPreferences.isLanguageSelected()) {
+                    intent = new Intent(ActivitySplash.this, ActivityLanguage.class);
+                } else {
+                    if (myPreferences.isFirstTimeLaunch()) {
+                        intent = new Intent(ActivitySplash.this, ActivityIntroSLides.class);
+                    } else {
+                        if (myPreferences.isPrivacyPolicyAccepted()) {
+                            intent = new Intent(ActivitySplash.this, MainActivity.class);
+                        } else {
+                            intent = new Intent(ActivitySplash.this, ActivityPrivacyPolicy.class);
+                        }
+                    }
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+                return null;
+            }
+        }.execute();
+
     }
 
     void requestInterstitial() {
@@ -79,7 +110,7 @@ public class ActivitySplash extends ActivityBase {
             @Override
             public void onAdFailedToLoad(int i) {
                 loadAttempts++;
-                if (loadAttempts > 2) {
+                if (loadAttempts >=2) {
                     loadAttempts = 0;
                     launchLanguageActivity();
                 } else {

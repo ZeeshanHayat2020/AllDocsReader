@@ -210,7 +210,6 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
 
     private void setUpToolBar() {
         setSupportActionBar(toolbar);
-        toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         toolBarTitleTv = (TextView) findViewById(R.id.toolBar_title_tv);
         toolBarTitleTv.setText("ALL DOCUMENT READER");
         toolBarTitleTv.setGravity(Gravity.CENTER_HORIZONTAL);

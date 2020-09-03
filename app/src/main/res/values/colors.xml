@@ -8,6 +8,13 @@
     <color name="colorBLack">#000000</color>
     <color name="colorOffWhite">#FFFFF9</color>
 
+    <color name="colorLanguageToolBar">#AB68F6</color>
+    <color name="colorLanguageBg">#F8F4F4</color>
+    <color name="colorLanguageTxt">#666666</color>
+
+    <color name="colorSkyBlue">#0084FF</color>
+
+
     <color name="colorProgressBg">#2CBFEB</color>
     <color name="colorProgressStatus">#085f63</color>
 
