@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -86,13 +87,6 @@ public class ActivityPdfViewer extends AppCompatActivity implements NumberPicker
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initSharedPrefs();
-        if (getThemeNightMode()) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
         setContentView(R.layout.activity_pdf_viewer);
         intent = getIntent();
         String action = intent.getAction();
@@ -321,30 +315,6 @@ public class ActivityPdfViewer extends AppCompatActivity implements NumberPicker
 
     }
 
-    private void initSharedPrefs() {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = sharedPreferences.edit();
-    }
-
-    private boolean getThemeNightMode() {
-        return sharedPreferences.getBoolean(Constant.KEY_PREFS_THEME_MODE, false);
-    }
-
-    private void saveThemeNightMode(boolean nightMode) {
-        editor.putBoolean(Constant.KEY_PREFS_THEME_MODE, nightMode);
-        editor.commit();
-        editor.apply();
-    }
-
-    private void setThemeMode(boolean isNightMode) {
-        if (isNightMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -352,36 +322,10 @@ public class ActivityPdfViewer extends AppCompatActivity implements NumberPicker
         return true;
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-
-        MenuItem menuIsNightMode = menu.findItem(R.id.menu_pdfView_item_Theme);
-        if (getThemeNightMode()) {
-            menuIsNightMode.setChecked(true);
-            setThemeMode(true);
-        } else {
-            menuIsNightMode.setChecked(false);
-            setThemeMode(false);
-        }
-        return super.onPrepareOptionsMenu(menu);
-
-    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_pdfView_item_Theme: {
-                if (item.isChecked()) {
-                    item.setChecked(false);
-                    saveThemeNightMode(false);
-                    setThemeMode(false);
-                } else {
-                    item.setChecked(true);
-                    saveThemeNightMode(true);
-                    setThemeMode(true);
-                }
-            }
-            break;
             case R.id.menu_pdfView_item_Vertical: {
                 setViewPagerOrientation(ViewPager2.ORIENTATION_VERTICAL);
                 if (rootViewChangeButton.getVisibility() == View.VISIBLE)

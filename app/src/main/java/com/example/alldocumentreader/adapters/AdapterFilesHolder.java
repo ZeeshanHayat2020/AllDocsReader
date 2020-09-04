@@ -2,8 +2,12 @@ package com.example.alldocumentreader.adapters;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
+import android.webkit.MimeTypeMap;
 import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -20,6 +25,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.widget.CompoundButtonCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.alldocumentreader.R;
@@ -87,9 +93,66 @@ public class AdapterFilesHolder extends RecyclerView.Adapter<AdapterFilesHolder.
     @Override
     public void onBindViewHolder(@NonNull final AdapterFilesHolder.AdapterViewHolder holder, final int position) {
         final ModelFilesHolder currentItem = itemsList.get(position);
-
         holder.fileNameTv.setText(currentItem.getFileName());
         holder.fileSizeTv.setText(getFileSize(new File(currentItem.getFileUri())));
+        String fileExtension = getMimeType(context, currentItem.getFileUri());
+        switch (fileExtension) {
+            case "pdf": {
+                holder.imageView.setImageResource(R.drawable.pdf);
+                setCheckBoxTintColor(holder.checkBox, context.getResources().getColor(R.color.color_cardBg_pdfDoc_upper));
+            }
+            break;
+            case "txt": {
+                holder.imageView.setImageResource(R.drawable.text);
+                setCheckBoxTintColor(holder.checkBox, context.getResources().getColor(R.color.color_cardBg_txtDoc_upper));
+            }
+            break;
+            case "xls": {
+                holder.imageView.setImageResource(R.drawable.sheet);
+                setCheckBoxTintColor(holder.checkBox, context.getResources().getColor(R.color.color_cardBg_sheetDoc_upper));
+            }
+            break;
+            case "xlsx": {
+                holder.imageView.setImageResource(R.drawable.sheet);
+                setCheckBoxTintColor(holder.checkBox, context.getResources().getColor(R.color.color_cardBg_sheetDoc_upper));
+            }
+            break;
+            case "doc": {
+                holder.imageView.setImageResource(R.drawable.word);
+                setCheckBoxTintColor(holder.checkBox, context.getResources().getColor(R.color.color_cardBg_wordDoc_upper));
+            }
+            break;
+            case "docx": {
+                holder.imageView.setImageResource(R.drawable.word);
+                setCheckBoxTintColor(holder.checkBox, context.getResources().getColor(R.color.color_cardBg_wordDoc_upper));
+            }
+            break;
+            case "html": {
+                holder.imageView.setImageResource(R.drawable.html);
+                setCheckBoxTintColor(holder.checkBox, context.getResources().getColor(R.color.color_cardBg_htmlDoc_upper));
+            }
+            break;
+            case "xml": {
+                holder.imageView.setImageResource(R.drawable.xml);
+                setCheckBoxTintColor(holder.checkBox, context.getResources().getColor(R.color.color_cardBg_xmlDoc_upper));
+            }
+            break;
+            case "ppt": {
+                holder.imageView.setImageResource(R.drawable.ppt);
+                setCheckBoxTintColor(holder.checkBox, context.getResources().getColor(R.color.color_cardBg_pptDoc_upper));
+            }
+            break;
+            case "pptx": {
+                holder.imageView.setImageResource(R.drawable.ppt);
+                setCheckBoxTintColor(holder.checkBox, context.getResources().getColor(R.color.color_cardBg_pptDoc_upper));
+            }
+            break;
+            default: {
+                holder.imageView.setImageResource(R.drawable.all);
+                setCheckBoxTintColor(holder.checkBox, context.getResources().getColor(R.color.colorAccent));
+            }
+
+        }
 
         if (activityFilesHolder.isContextualMenuOpen) {
             if (activityFilesHolder.isSelectAll) {
@@ -153,18 +216,20 @@ public class AdapterFilesHolder extends RecyclerView.Adapter<AdapterFilesHolder.
 
     }
 
+    private void setCheckBoxTintColor(CheckBox btn, int tintColor) {
+        if (Build.VERSION.SDK_INT < 21) {
+            CompoundButtonCompat.setButtonTintList(btn, ColorStateList.valueOf(tintColor));//Use android.support.v4.widget.CompoundButtonCompat when necessary else
+        } else {
+            btn.setButtonTintList(ColorStateList.valueOf(tintColor));//setButtonTintList is accessible directly on API>19
+        }
+    }
 
-    private void fadeInItemAnimation(View view) {
-        ObjectAnimator fadeAnimator = ObjectAnimator.ofFloat(view, View.ALPHA, 0, 1);
-        fadeAnimator.setInterpolator(new DecelerateInterpolator());
-        fadeAnimator.setDuration(300);
-
-        ObjectAnimator translateAnimator = ObjectAnimator.ofFloat(view, "translationY", -100, 0);
-        translateAnimator.setInterpolator(new DecelerateInterpolator());
-        translateAnimator.setDuration(300);
-        AnimatorSet set = new AnimatorSet();
-        set.playTogether(fadeAnimator, translateAnimator);
-        set.start();
+    public static String getMimeType(Context context, String uri) {
+        String extension;
+        //If scheme is a File
+        //This will replace white spaces with %20 and also other special characters. This will avoid returning null values on file name with spaces and special characters.
+        extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri)).toString());
+        return extension;
     }
 
     private void setItemViewMenu(Context context, View view, final int position) {

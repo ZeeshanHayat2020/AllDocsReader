@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/ic_main_bg"
     tools:context=".activities.ActivityLanguage">
 
     <include
@@ -32,18 +33,7 @@
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/bg_language_btns"
                 android:elevation="@dimen/_10sdp"
-                android:text="English"
-                android:textColor="@color/colorLanguageTxt"
-                android:textSize="18sp" />
-
-            <Button
-                android:id="@+id/acLanguage_btnUrdu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@drawable/bg_language_btns"
-                android:elevation="@dimen/_10sdp"
-                android:text="Urdu"
+                android:text="@string/english"
                 android:textColor="@color/colorLanguageTxt"
                 android:textSize="18sp" />
 
@@ -54,30 +44,7 @@
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/bg_language_btns"
                 android:elevation="@dimen/_10sdp"
-                android:text="Arabic"
-                android:textColor="@color/colorLanguageTxt"
-                android:textSize="18sp" />
-
-            <Button
-                android:id="@+id/acLanguage_btnHindi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@drawable/bg_language_btns"
-                android:elevation="@dimen/_10sdp"
-                android:text="Hindi"
-                android:textColor="@color/colorLanguageTxt"
-                android:textSize="18sp" />
-
-
-            <Button
-                android:id="@+id/acLanguage_btnFrance"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@drawable/bg_language_btns"
-                android:elevation="@dimen/_10sdp"
-                android:text="France"
+                android:text="@string/arabic"
                 android:textColor="@color/colorLanguageTxt"
                 android:textSize="18sp" />
 
@@ -88,20 +55,78 @@
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/bg_language_btns"
                 android:elevation="@dimen/_10sdp"
-                android:text="Chinies"
+                android:text="@string/chinies"
                 android:textColor="@color/colorLanguageTxt"
                 android:textSize="18sp" />
 
             <Button
-                android:id="@+id/acLanguage_btnMalaysia"
+                android:id="@+id/acLanguage_btnFrance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/bg_language_btns"
                 android:elevation="@dimen/_10sdp"
-                android:text="Malaysia"
+                android:text="@string/france"
                 android:textColor="@color/colorLanguageTxt"
                 android:textSize="18sp" />
+
+
+            <Button
+                android:id="@+id/acLanguage_btnGerman"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/bg_language_btns"
+                android:elevation="@dimen/_10sdp"
+                android:text="@string/german"
+                android:textColor="@color/colorLanguageTxt"
+                android:textSize="18sp" />
+
+
+            <Button
+                android:id="@+id/acLanguage_btnIndonesian"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/bg_language_btns"
+                android:elevation="@dimen/_10sdp"
+                android:text="@string/indonesian"
+                android:textColor="@color/colorLanguageTxt"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/acLanguage_btnItalian"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/bg_language_btns"
+                android:elevation="@dimen/_10sdp"
+                android:text="@string/italian"
+                android:textColor="@color/colorLanguageTxt"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/acLanguage_btnPolish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/bg_language_btns"
+                android:elevation="@dimen/_10sdp"
+                android:text="@string/polish"
+                android:textColor="@color/colorLanguageTxt"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/acLanguage_btnPortuguese"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/bg_language_btns"
+                android:elevation="@dimen/_10sdp"
+                android:text="@string/portuguese"
+                android:textColor="@color/colorLanguageTxt"
+                android:textSize="18sp" />
+
 
             <Button
                 android:id="@+id/acLanguage_btnRussian"
@@ -110,7 +135,18 @@
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/bg_language_btns"
                 android:elevation="@dimen/_10sdp"
-                android:text="Russian"
+                android:text="@string/russian"
+                android:textColor="@color/colorLanguageTxt"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/acLanguage_btnSpanish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/bg_language_btns"
+                android:elevation="@dimen/_10sdp"
+                android:text="@string/spanish"
                 android:textColor="@color/colorLanguageTxt"
                 android:textSize="18sp" />
 

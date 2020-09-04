@@ -4,16 +4,16 @@
 
     <item
         android:id="@+id/menu_filesHolder_parentView_shareUs"
-        android:title="Share Us"
+        android:title="@string/share_us"
 
         />
     <item
-        android:title="Rate Us"
+        android:title="@string/rate_us"
         android:id="@+id/menu_filesHolder_parentView_rateUs"/>
 
     <item android:id="@+id/menu_filesHolder_parentView_search"
         android:icon="@drawable/ic_search"
-        android:title="search"
+        android:title="@string/search"
         app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView" />
 

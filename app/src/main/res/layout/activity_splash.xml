@@ -4,12 +4,183 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ActivitySplash">
+    android:background="@drawable/ic_main_bg">
 
+    <include
+        android:id="@+id/acSplash_toolbar"
+        layout="@layout/toolbar_custom" />
+
+    <RelativeLayout
+        android:id="@+id/acSplash_topRoot"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_300sdp"
+        android:layout_below="@+id/acSplash_toolbar"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/_20sdp"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/spl_mid_iv"
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="@dimen/_130sdp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_sp_mid"
+
+            />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_sp_pdf" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/pdf_files"
+                android:textColor="@color/colorBLack" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/_40sdp"
+            android:orientation="vertical"
+
+
+            >
+
+            <ImageView
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_sp_html" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/html_files"
+                android:textColor="@color/colorBLack" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_40sdp"
+            android:layout_toLeftOf="@+id/spl_mid_iv"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_sp_word"
+
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/word_files"
+                android:textColor="@color/colorBLack" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_60sdp"
+            android:layout_toRightOf="@+id/spl_mid_iv"
+            android:orientation="vertical"
+
+
+            >
+
+            <ImageView
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_sp_txt" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/text_files"
+                android:textColor="@color/colorBLack" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/acSplash_tv_head1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/acSplash_topRoot"
+        android:layout_centerInParent="true"
+        android:text="@string/splashAppName"
+        android:textColor="@color/colorSplashText"
+        android:textSize="25sp"
+        android:textStyle="bold" />
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/acSplash_tv_head1"
         android:layout_centerInParent="true"
-        android:indeterminate="true" />
+        android:layout_margin="@dimen/_5sdp"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/colorSplashText"
+        />
 
+    <RelativeLayout
+        android:id="@+id/acSplash_btmRoot"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_150sdp"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_sp_bottom"
+            android:alpha="200"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/splashBottomTExt"
+            android:textColor="@color/colorOffWhite"
+            android:textSize="20sp"
+            android:textStyle="bold"
+
+            />
+    </RelativeLayout>
 </RelativeLayout>

@@ -211,7 +211,7 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
     private void setUpToolBar() {
         setSupportActionBar(toolbar);
         toolBarTitleTv = (TextView) findViewById(R.id.toolBar_title_tv);
-        toolBarTitleTv.setText("ALL DOCUMENT READER");
+        toolBarTitleTv.setText(getResources().getString(R.string.toolBartxtMain));
         toolBarTitleTv.setGravity(Gravity.CENTER_HORIZONTAL);
         toolbar.setBackgroundColor(getResources().getColor(R.color.color_Red));
     }
@@ -231,16 +231,15 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
 
         };
         String[] itemNames = {
-                "All Documents",
-                "PDF Files",
-                "Word Files",
-                "Text Files",
-                "PPT Files",
-                "HTML Files",
-                "XML Files",
-                "Sheet Files",
-                "RTF Files"
-
+                getString(R.string.allDocs),
+                getString(R.string.pdf_files),
+                getString(R.string.word_files),
+                getString(R.string.txtFiles),
+                getString(R.string.ppt_files),
+                getString(R.string.html_files),
+                getString(R.string.xmlFiles),
+                getString(R.string.sheet_files),
+                getString(R.string.rtf_files)
         };
 
         itemsList = new ArrayList<>();
@@ -329,35 +328,35 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
     public void onItemClicked(int position) {
         switch (position) {
             case 0: {
-                intentToFilesHolder("All Files");
+                intentToFilesHolder(getString(R.string.allDocs));
             }
             break;
             case 1: {
-                intentToFilesHolder("PDF Files");
+                intentToFilesHolder(getString(R.string.pdf_files));
             }
             break;
             case 2: {
-                intentToFilesHolder("Word Files");
+                intentToFilesHolder(getString(R.string.word_files));
             }
             break;
             case 3: {
-                intentToFilesHolder("Text Files");
+                intentToFilesHolder(getString(R.string.txtFiles));
             }
             break;
             case 4: {
-                intentToFilesHolder("PPT Files");
+                intentToFilesHolder(getString(R.string.ppt_files));
             }
             break;
             case 5: {
-                intentToFilesHolder("HTML Files");
+                intentToFilesHolder(getString(R.string.html_files));
             }
             break;
             case 6: {
-                intentToFilesHolder("XML Files");
+                intentToFilesHolder(getString(R.string.xmlFiles));
             }
             break;
             case 7: {
-                intentToFilesHolder("Sheet Files");
+                intentToFilesHolder(getString(R.string.sheet_files));
             }
             break;
 

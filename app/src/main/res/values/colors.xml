@@ -2,11 +2,14 @@
 <resources>
     <color name="colorPrimary">#0066B6</color>
     <color name="colorPrimaryDark">#004D8A</color>
-    <color name="colorAccent">#03A9F4</color>
+    <color name="colorAccent">#FF9696</color>
 
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBLack">#000000</color>
     <color name="colorOffWhite">#FFFFF9</color>
+
+    <color name="colorSplashText">#181F37</color>
+    <color name="colorSplashNav">#1E2438</color>
 
     <color name="colorLanguageToolBar">#AB68F6</color>
     <color name="colorLanguageBg">#F8F4F4</color>
@@ -19,8 +22,8 @@
     <color name="colorProgressStatus">#085f63</color>
 
 
-    <color name="color_enable">#0066B6</color>
-    <color name="color_disable">#93C6EF</color>
+    <color name="color_enable">#FC4A4A</color>
+    <color name="color_disable">#FF9696</color>
     <color name="colorControlNormal">#686868</color>
     <color name="colorBackground">#FFFFFF</color>
     <color name="color_Text">#FFFFFF</color>
@@ -54,14 +57,14 @@
     <color name="color_cardBg_sheetDoc_lower">#FD48D4</color>
 
     <!-- dots inactive colors -->
-    <color name="dot_dark_screen1">#39d1ba</color>
-    <color name="dot_dark_screen2">#14a895</color>
-    <color name="dot_dark_screen3">#14a895</color>
+    <color name="dot_dark_screen1">#F9BDBD</color>
+    <color name="dot_dark_screen2">#F9BDBD</color>
+    <color name="dot_dark_screen3">#F9BDBD</color>
 
     <!-- dots active colors -->
-    <color name="dot_light_screen1">#8de7f9</color>
-    <color name="dot_light_screen2">#8cf9eb</color>
-    <color name="dot_light_screen3">#8cf9eb</color>
+    <color name="dot_light_screen1">#F93434</color>
+    <color name="dot_light_screen2">#F93434</color>
+    <color name="dot_light_screen3">#F93434</color>
 
     <array name="array_dot_active">
         <item>@color/dot_light_screen1</item>

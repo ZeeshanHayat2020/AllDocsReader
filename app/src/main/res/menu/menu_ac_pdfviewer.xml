@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/menu_pdfView_item_Theme"
-        android:title="Night Mode"
-        android:checkable="true"
-        />
+
     <item
         android:id="@+id/menu_pdfView_item_Vertical"
-        android:title="Scroll Vertical" />
+        android:title="@string/scroll_vertical" />
     <item
         android:id="@+id/menu_pdfView_item_Horizontal"
-        android:title="Scroll Horizontal" />
+        android:title="@string/scroll_horizontal" />
 </menu>

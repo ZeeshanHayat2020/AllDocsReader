@@ -1,25 +1,51 @@
 <resources>
-    <string name="app_name">AllDocumentReader</string>
-    <string name="delete_msg">The files will be delete permanently from device. \nAre you sure you want to delete?</string>
+
 
     <!--Test Adds-->
-    <string name="app_Id">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="banner_Id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="interstitial_Id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="app_Id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_Id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="interstitial_Id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
 
-    <string name="privacy_policy_text">
-<![CDATA[
+    <string name="privacy_policy_text" translatable="false"><![CDATA[
+
 <p>This application needs following permissions to work properly.</p><br>
 <ul>
   <li><b>Read External Storage</b></li>
-  <li><b>Write External Storage<b/></li>
+  <li><b>Write External Storage</b></li>
 </ul>
 <br>
 <p>Application needs these permissions to show document from phone storage.</p><br>
-<a href="https://www.w3schools.com">Click here to visit privacy policy...</a>
-]]>
-</string>
+<a href="https://www.w3schools.com">Click here to visit privacy policy…</a>
 
+]]></string>
+
+    <string name="sys_url_wxiwei" translatable="false">https://my.oschina.net/wxiwei</string>
+    <string name="sys_url_internet_search" translatable="false">http://www.baidu.com</string>
+    <string name="pp_url" translatable="false">https://blueorbit5.blogspot.com/2020/06/document-reader.html</string>
+    <string name="app_name" translatable="false">AllDocumentReader</string>
+    <string name="english" translatable="false">English</string>
+    <string name="arabic" translatable="false">Arabic</string>
+    <string name="chinies" translatable="false">Chinies</string>
+    <string name="france" translatable="false">France</string>
+    <string name="german" translatable="false">German</string>
+    <string name="indonesian" translatable="false">Indonesian</string>
+    <string name="italian" translatable="false">Italian</string>
+    <string name="polish" translatable="false">Polish</string>
+    <string name="portuguese" translatable="false">Portuguese</string>
+    <string name="russian" translatable="false">Russian</string>
+    <string name="spanish" translatable="false">Spanish</string>
+
+
+
+    <string name="numberPickerDialogeMsg">Choose a specific page number to jump on that.</string>
+    <string name="delete_msg">The files will be delete permanently from device. \nAre you sure you want to delete?</string>
+    <string name="app_searchbar_failed">XDOCS Reader cannot find the data you are searching for</string>
+    <string name="app_searchbar_reachedBegin">XDOCS Reader has reached the beginning of the document</string>
+    <string name="app_searchbar_reachedEnd">XDOCS Reader has reached the end of the document</string>
+    <string name="dialog_name_error">%s already exists.</string>
+    <string name="dialog_delete_file">Are you sure you want to delete the selected item(s)?</string>
+    <string name="dialog_move_file_error">You can not move or copy a folder into itself.</string>
+    <string name="dialog_overwrite_file">Do you want to overwrite it?</string>
 
     <string name="sys_button_ok">OK</string>
     <string name="sys_button_cancel">Cancel</string>
@@ -34,14 +60,10 @@
     <string name="sys_menu_update">Update</string>
     <string name="sys_menu_help">Help</string>
     <string name="sys_menu_about">About</string>
-    <string name="sys_url_wxiwei">https://my.oschina.net/wxiwei</string>
-    <string name="sys_url_internet_search">http://www.baidu.com</string>
     <string name="sys_search_hint">Search for files</string>
     <string name="sys_no_match">No matches.</string>
-    <string name="sys_share_title">Sending mail...</string>
-    <string name="sys_progress_message_loading">Loading, please wait...</string>
-
-    <!--      file list         -->
+    <string name="sys_share_title">Sending mail…</string>
+    <string name="sys_progress_message_loading">Loading, please wait…</string>
     <string name="file_toolsbar_create_folder">Create folder</string>
     <string name="file_toolsbar_rename">Rename</string>
     <string name="file_toolsbar_copy">Copy</string>
@@ -54,8 +76,6 @@
     <string name="file_toolsbar_mark_star">Mark</string>
     <string name="file_toolsbar_unmark_star">UnMark</string>
     <string name="file_message_empty_directory">Empty Folder</string>
-
-    <!--      application         -->
     <string name="app_toolsbar_hyperlink">Goto</string>
     <string name="app_toolsbar_find">Find</string>
     <string name="app_toolsbar_share">Share</string>
@@ -63,7 +83,6 @@
     <string name="app_toolsbar_read">Read</string>
     <string name="app_toolsbar_approve">Approve</string>
     <string name="app_toolsbar_generated_picture">Generated Picture</string>
-
     <string name="app_toolsbar_draw">Draw Mode</string>
     <string name="app_toolsbar_back">Back</string>
     <string name="app_toolsbar_pen">UnDraw</string>
@@ -71,38 +90,22 @@
     <string name="app_toolsbar_eraser">UnErase</string>
     <string name="app_toolsbar_eraser_check">Erase</string>
     <string name="app_toolsbar_color">Pen Settings</string>
-
     <string name="app_searchbar_backward">Find Backward</string>
     <string name="app_searchbar_forward">Find Forward</string>
     <string name="app_searchbar_find">Find</string>
-    <string name="app_searchbar_failed">XDOCS Reader cannot find the data you are searching for</string>
-    <string name="app_searchbar_reachedBegin">XDOCS Reader has reached the beginning of the document</string>
-    <string name="app_searchbar_reachedEnd">XDOCS Reader has reached the end of the document</string>
-
-    <!--      word         -->
     <string name="wp_toolsbar_switch_view">Switch View</string>
     <string name="wp_toolsbar_print_mode">Print Mode</string>
     <string name="wp_toolsbar_select_text">Select Text</string>
-
-    <!--      excel         -->
     <string name="ss_toolsbar_sheet_switch">Sheet Switch</string>
-
-    <!--      ppt         -->
     <string name="pg_toolsbar_note">Note</string>
     <string name="pg_slideshow">SlideShow</string>
     <string name="pg_slideshow_pageup">Page Up</string>
     <string name="pg_slideshow_pagedown">Page Down</string>
-
-    <!--     对话框         -->
     <string name="dialog_encoding_title">Text Encoding</string>
     <string name="dialog_folder_name">Folder Name</string>
     <string name="dialog_create_folder_error">Failed to create folder</string>
     <string name="dialog_file_name">File Name</string>
     <string name="dialog_file_rename_error">Failed to rename file</string>
-    <string name="dialog_name_error">%s already exists.</string>
-    <string name="dialog_delete_file">Are you sure you want to delete the selected item(s)?</string>
-    <string name="dialog_move_file_error">You can not move or copy a folder into itself.</string>
-    <string name="dialog_overwrite_file">Do you want to overwrite it?</string>
     <string name="dialog_error_title">Error</string>
     <string name="dialog_descending">Descending</string>
     <string name="dialog_ascending">Ascending</string>
@@ -116,8 +119,6 @@
     <string name="tab_text_1">HOME</string>
     <string name="tab_text_2">ALL DOCS</string>
     <string name="tab_text_3">FAVOURITES</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="one">One</string>
     <string name="two">Two</string>
@@ -139,11 +140,8 @@
     <string name="xmlFiles">XML Files</string>
     <string name="htmlFiles">HTML Files</string>
     <string name="AddToFvrt">Add to Favourites</string>
-    <string name="delete">Delete</string>
-    <string name="share">Share</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-
     <string name="TermsAndCo">TERMS AND CONDITIONS</string>
     <string name="ThisApp">This Application need this Permission to work Properly</string>
     <string name="StorageIC">Storage</string>
@@ -154,14 +152,11 @@
     <string name="learnmore">Learn more...</string>
     <string name="decline">Decline</string>
     <string name="Accept">Accept</string>
-    <string name="pp_url">https://blueorbit5.blogspot.com/2020/06/document-reader.html</string>
     <string name="skip">Skip</string>
-    <string name="next">Next</string>
     <string name="slide1">Easily View and Elaborate your all kinds od Documents</string>
     <string name="slide2">All-in-One Document Reader</string>
     <string name="start">Got It</string>
     <string name="action_search">search</string>
-    <string name="rate_us">Rate Us</string>
     <string name="exitMsg">Are you sure you want to exit?</string>
     <string name="exit">Exit</string>
     <string name="sys_name">Files List</string>
@@ -171,4 +166,35 @@
     <string name="free_space">Free:</string>
     <string name="todo">TODO</string>
     <string name="headingPolicy">Privacy Policy</string>
+    <string name="pdf_files">PDF Files</string>
+    <string name="html_files">HTML Files</string>
+    <string name="word_files">Word Files</string>
+    <string name="text_files">Text Files</string>
+    <string name="splashAppName">All Document Reader</string>
+    <string name="splashBottomTExt">Best Document Reader App</string>
+    <string name="allDocs">All Files</string>
+    <string name="ppt_files">PPT Files</string>
+    <string name="sheet_files">Sheet Files</string>
+    <string name="rtf_files">RTF Files</string>
+    <string name="toolBartxtMain">All Document Reader</string>
+    <string name="selected"> Selected</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="share">Share</string>
+    <string name="delete">Delete</string>
+    <string name="select_all">Select All</string>
+    <string name="rename_file">Rename File</string>
+    <string name="delete_file">Delete File</string>
+    <string name="share_file">Share File</string>
+    <string name="share_us">Share Us</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="search">search</string>
+    <string name="scroll_vertical">Scroll Vertical</string>
+    <string name="scroll_horizontal">Scroll Horizontal</string>
+    <string name="jump">JUMP</string>
+    <string name="cancel">CANCEL</string>
+    <string name="numberPickerDiaolgeTitle">Choose Page</string>
+
+
+
 </resources>

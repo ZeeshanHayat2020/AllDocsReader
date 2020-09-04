@@ -84,6 +84,60 @@ public class AdapterAcMain extends RecyclerView.Adapter<AdapterAcMain.AdapterVie
         holder.itemName_tv.setText(currentItem.getItemName());
         holder.itemImageView.setImageResource(currentItem.getItemImageId());
 
+        String checkFileFormat=currentItem.getItemName();
+        if (checkFileFormat.equals(context.getString(R.string.allDocs))) {
+            holder.itemIVRoot
+                    .setBackground(setCardGradient(
+                            context.getResources().getColor(R.color.color_cardBg_allDoc_upper),
+                            context.getResources().getColor(R.color.color_cardBg_allDoc_lower)));
+        } else if (checkFileFormat.equals(context.getString(R.string.pdf_files))) {
+            holder.itemIVRoot
+                    .setBackground(setCardGradient(
+                            context.getResources().getColor(R.color.color_cardBg_pdfDoc_upper),
+                            context.getResources().getColor(R.color.color_cardBg_pdfDoc_lower)));
+        } else if (checkFileFormat.equals(context.getString(R.string.word_files))) {
+            holder.itemIVRoot
+                    .setBackground(setCardGradient(
+                            context.getResources().getColor(R.color.color_cardBg_wordDoc_upper),
+                            context.getResources().getColor(R.color.color_cardBg_wordDoc_lower)));
+
+        } else if (checkFileFormat.equals(context.getString(R.string.txtFiles))) {
+            holder.itemIVRoot
+                    .setBackground(setCardGradient(
+                            context.getResources().getColor(R.color.color_cardBg_txtDoc_upper),
+                            context.getResources().getColor(R.color.color_cardBg_txtDoc_lower)));
+
+        } else if (checkFileFormat.equals(context.getString(R.string.ppt_files))) {
+            holder.itemIVRoot
+                    .setBackground(setCardGradient(
+                            context.getResources().getColor(R.color.color_cardBg_pptDoc_upper),
+                            context.getResources().getColor(R.color.color_cardBg_pptDoc_lower)));
+        } else if (checkFileFormat.equals(context.getString(R.string.html_files))) {
+            holder.itemIVRoot
+                    .setBackground(setCardGradient(
+                            context.getResources().getColor(R.color.color_cardBg_htmlDoc_upper),
+                            context.getResources().getColor(R.color.color_cardBg_htmlDoc_lower)));
+
+        } else if (checkFileFormat.equals(context.getString(R.string.xmlFiles))) {
+            holder.itemIVRoot
+                    .setBackground(setCardGradient(
+                            context.getResources().getColor(R.color.color_cardBg_xmlDoc_upper),
+                            context.getResources().getColor(R.color.color_cardBg_xmlDoc_lower)));
+
+        } else if (checkFileFormat.equals(context.getString(R.string.sheet_files))) {
+            holder.itemIVRoot
+                    .setBackground(setCardGradient(
+                            context.getResources().getColor(R.color.color_cardBg_sheetDoc_upper),
+                            context.getResources().getColor(R.color.color_cardBg_sheetDoc_lower)));
+        } else {
+            holder.itemIVRoot
+                    .setBackground(setCardGradient(
+                            context.getResources().getColor(R.color.color_cardBg_allDoc_upper),
+                            context.getResources().getColor(R.color.color_cardBg_allDoc_lower)));
+        }
+
+
+/*
         switch (currentItem.getItemName()) {
             case "All Documents": {
                 holder.itemIVRoot
@@ -143,7 +197,7 @@ public class AdapterAcMain extends RecyclerView.Adapter<AdapterAcMain.AdapterVie
             break;
 
 
-        }
+        }*/
     }
 
     public GradientDrawable setCardGradient(int color1, int color2) {

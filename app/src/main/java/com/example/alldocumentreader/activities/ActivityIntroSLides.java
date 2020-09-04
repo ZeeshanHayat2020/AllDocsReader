@@ -3,12 +3,17 @@ package com.example.alldocumentreader.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,13 +38,23 @@ public class ActivityIntroSLides extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setStatusBarGradient(this);
         setContentView(R.layout.activity_intro_s_lides);
         myPreferences = new MyPreferences(this);
         initViews();
         setUpViewPager();
         addBottomDots(0);
+    }
 
-
+    public static void setStatusBarGradient(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = activity.getWindow();
+            Drawable background = activity.getResources().getDrawable(R.drawable.ic_main_bg);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(activity.getResources().getColor(android.R.color.transparent));
+            window.setNavigationBarColor(activity.getResources().getColor(android.R.color.transparent));
+            window.setBackgroundDrawable(background);
+        }
     }
 
     private void initViews() {
@@ -137,7 +152,7 @@ public class ActivityIntroSLides extends AppCompatActivity {
             if (position == screensList.length - 1) {
                 // last page. make button text to GOT IT
                 btnNext.setText(getString(R.string.start));
-                btnSkip.setVisibility(View.GONE);
+                btnSkip.setVisibility(View.INVISIBLE);
             } else {
                 // still pages are left
                 btnNext.setText(getString(R.string.next));

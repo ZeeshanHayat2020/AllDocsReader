@@ -4,116 +4,117 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <include
         android:id="@+id/acPdfViewer_toolbar"
         layout="@layout/toolbar_custom" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/acPdfViewer_toolbar"
-        >
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbarSize="@dimen/_25sdp"
-        android:scrollbarStyle="insideOverlay"
-        android:scrollbarThumbVertical="@color/colorAccent"
-        android:scrollbars="vertical"
-        />
+        android:layout_below="@+id/acPdfViewer_toolbar">
 
-    <LinearLayout
-        android:id="@+id/pdfView_ac_rootView_buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-
-        <Button
-            android:id="@+id/btnPrev"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:enabled="false"
-            android:text="Prev"
-            android:layout_margin="@dimen/_5sdp"
-            android:textColor="@color/text_color_stat_list"
-            android:clickable="true"
-            android:theme="@style/Theme.Buttons"
-            />
-
-        <Button
-            android:id="@+id/btnNext"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Next"
-            android:layout_margin="@dimen/_5sdp"
-            android:textColor="@color/text_color_stat_list"
-            android:clickable="true"
-            android:theme="@style/Theme.Buttons"
-            />
-    </LinearLayout>
-
-    <com.lukelorusso.verticalseekbar.VerticalSeekBar
-        android:id="@+id/pdfView_ac_seekbarVertical"
-        android:layout_width="@dimen/_20sdp"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:visibility="invisible"
-        app:vsb_bar_background="@android:color/transparent"
-        app:vsb_bar_corner_radius="15dp"
-        app:vsb_bar_progress_gradient_end="@android:color/transparent"
-        app:vsb_bar_progress_gradient_start="@android:color/transparent"
-        app:vsb_bar_width="0dp"
-        app:vsb_click_to_set_progress="false"
-        app:vsb_max_placeholder_position="inside"
-        app:vsb_max_placeholder_src="@android:color/transparent"
-        app:vsb_min_placeholder_position="inside"
-        app:vsb_min_placeholder_src="@android:color/transparent"
-        app:vsb_show_thumb="true"
-        app:vsb_thumb_container_corner_radius="5dp"
-        app:vsb_thumb_container_tint="@color/color_enable"
-        app:vsb_use_thumb_to_set_progress="true"
-        />
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="@dimen/_40sdp"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_above="@+id/pdfView_ac_rootView_buttons"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/_30sdp"
-        app:cardBackgroundColor="@color/color_enable"
-        app:cardCornerRadius="@dimen/_25sdp">
-
-        <ImageButton
-            android:id="@+id/btn_findPage"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_fine_page"
-            android:scaleType="centerInside" />
-    </androidx.cardview.widget.CardView>
+            android:scrollbarSize="@dimen/_25sdp"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbarThumbVertical="@color/colorAccent"
+            android:scrollbars="vertical" />
 
-    <ProgressBar
-        android:id="@+id/loadingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        <LinearLayout
+            android:id="@+id/pdfView_ac_rootView_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-    <TextView
-        android:id="@+id/pdfView_ac_pageCount_Tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_margin="@dimen/_10sdp"
-        android:background="@android:color/black"
-        android:padding="@dimen/_5sdp"
-        android:textColor="@android:color/white"
-        android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btnPrev"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:enabled="false"
+                android:text="@string/previous"
+                android:textColor="@color/text_color_stat_list"
+                android:theme="@style/Theme.Buttons" />
+
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:text="@string/next"
+                android:textColor="@color/text_color_stat_list"
+                android:theme="@style/Theme.Buttons" />
+        </LinearLayout>
+
+        <com.lukelorusso.verticalseekbar.VerticalSeekBar
+            android:id="@+id/pdfView_ac_seekbarVertical"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:visibility="invisible"
+            app:vsb_bar_background="@android:color/transparent"
+            app:vsb_bar_corner_radius="15dp"
+            app:vsb_bar_progress_gradient_end="@android:color/transparent"
+            app:vsb_bar_progress_gradient_start="@android:color/transparent"
+            app:vsb_bar_width="0dp"
+            app:vsb_click_to_set_progress="false"
+            app:vsb_max_placeholder_position="inside"
+            app:vsb_max_placeholder_src="@android:color/transparent"
+            app:vsb_min_placeholder_position="inside"
+            app:vsb_min_placeholder_src="@android:color/transparent"
+            app:vsb_show_thumb="true"
+            app:vsb_thumb_container_corner_radius="5dp"
+            app:vsb_thumb_container_tint="@color/color_enable"
+            app:vsb_use_thumb_to_set_progress="true" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_above="@+id/pdfView_ac_rootView_buttons"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/_30sdp"
+            app:cardBackgroundColor="@color/color_cardBg_pdfDoc_upper"
+            app:cardCornerRadius="@dimen/_25sdp">
+
+            <ImageButton
+                android:id="@+id/btn_findPage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_fine_page" />
+        </androidx.cardview.widget.CardView>
+
+        <ProgressBar
+            android:id="@+id/loadingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/color_cardBg_pdfDoc_upper"
+            android:indeterminateTintMode="src_atop" />
+
+        <TextView
+            android:id="@+id/pdfView_ac_pageCount_Tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@android:color/black"
+            android:padding="@dimen/_5sdp"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
     </RelativeLayout>
 </RelativeLayout>
 

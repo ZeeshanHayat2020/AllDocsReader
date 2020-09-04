@@ -16,9 +16,15 @@ import androidx.core.content.ContextCompat;
 
 import com.example.alldocumentreader.BuildConfig;
 import com.example.alldocumentreader.R;
+import com.example.alldocumentreader.utils.LanguageManager;
 
 public class ActivityBase extends AppCompatActivity {
     public static int REQUEST_PERMISSION = 132;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LanguageManager.setLocale(base));
+    }
 
     public void checkStoragePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
@@ -31,17 +37,15 @@ public class ActivityBase extends AppCompatActivity {
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE
                             , Manifest.permission.WRITE_EXTERNAL_STORAGE
                     },
-                   REQUEST_PERMISSION);
+                    REQUEST_PERMISSION);
             return;
         }
     }
 
-
-
     public boolean hasStoragePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             } else
                 return true;
@@ -79,8 +83,9 @@ public class ActivityBase extends AppCompatActivity {
         } catch (Exception e) {
         }
     }
+
     public void rateUs() {
-        Uri uri = Uri.parse("market://details?id=" +getPackageName());
+        Uri uri = Uri.parse("market://details?id=" + getPackageName());
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
         goToMarket.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY |
                 Intent.FLAG_ACTIVITY_NEW_DOCUMENT |

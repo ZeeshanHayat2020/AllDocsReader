@@ -8,6 +8,8 @@ import android.widget.NumberPicker;
 
 import androidx.fragment.app.DialogFragment;
 
+import com.example.alldocumentreader.R;
+
 public class NumberPickerDialog extends DialogFragment {
     private NumberPicker.OnValueChangeListener valueChangeListener;
 
@@ -29,10 +31,11 @@ public class NumberPickerDialog extends DialogFragment {
         numberPicker.setMaxValue(maxValue);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Choose Page");
-        builder.setMessage("Choose a specific page number to jump on that.");
+        builder.setTitle(R.string.numberPickerDiaolgeTitle);
+        builder.setMessage(R.string.numberPickerDialogeMsg);
 
-        builder.setPositiveButton("JUMP", new DialogInterface.OnClickListener() {
+
+        builder.setPositiveButton(R.string.jump, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 valueChangeListener.onValueChange(numberPicker,
@@ -40,7 +43,7 @@ public class NumberPickerDialog extends DialogFragment {
             }
         });
 
-        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 valueChangeListener.onValueChange(numberPicker,
@@ -48,7 +51,6 @@ public class NumberPickerDialog extends DialogFragment {
             }
         });
 
-        builder.setView(numberPicker);
         return builder.create();
     }
 

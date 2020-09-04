@@ -63,6 +63,7 @@ public class ActivityFilesHolder extends ActivityBase {
     public boolean isContextualMenuOpen = false;
     public boolean isSelectAll = false;
     private ArrayList<ModelFilesHolder> multiSelectedItemList;
+    private String selected;
 
 
     @Override
@@ -143,6 +144,7 @@ public class ActivityFilesHolder extends ActivityBase {
     }
 
     private void setUpToolBar() {
+        selected = getResources().getString(R.string.selected);
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         toolBarTitleTv = (TextView) findViewById(R.id.toolBar_title_tv);
@@ -164,8 +166,51 @@ public class ActivityFilesHolder extends ActivityBase {
     }
 
     public void setGradientToToolBar() {
-        switch (checkFileFormat) {
-            case "All Files":
+        if (checkFileFormat.equals(getString(R.string.allDocs))) {
+            toolbar.setBackground(getGradient(
+                    this.getResources().getColor(R.color.color_cardBg_allDoc_upper),
+                    this.getResources().getColor(R.color.color_cardBg_allDoc_lower)));
+        } else if (checkFileFormat.equals(getString(R.string.pdf_files))) {
+            toolbar.setBackground(getGradient(
+                    this.getResources().getColor(R.color.color_cardBg_pdfDoc_upper),
+                    this.getResources().getColor(R.color.color_cardBg_pdfDoc_lower)));
+
+        } else if (checkFileFormat.equals(getString(R.string.word_files))) {
+            toolbar.setBackground(getGradient(
+                    this.getResources().getColor(R.color.color_cardBg_wordDoc_upper),
+                    this.getResources().getColor(R.color.color_cardBg_wordDoc_lower)));
+
+        } else if (checkFileFormat.equals(getString(R.string.txtFiles))) {
+            toolbar.setBackground(getGradient(
+                    this.getResources().getColor(R.color.color_cardBg_txtDoc_upper),
+                    this.getResources().getColor(R.color.color_cardBg_txtDoc_lower)));
+
+        } else if (checkFileFormat.equals(getString(R.string.ppt_files))) {
+            toolbar.setBackground(getGradient(
+                    this.getResources().getColor(R.color.color_cardBg_pptDoc_upper),
+                    this.getResources().getColor(R.color.color_cardBg_pdfDoc_lower)));
+        } else if (checkFileFormat.equals(getString(R.string.html_files))) {
+            toolbar.setBackground(getGradient(
+                    this.getResources().getColor(R.color.color_cardBg_htmlDoc_upper),
+                    this.getResources().getColor(R.color.color_cardBg_htmlDoc_lower)));
+
+        } else if (checkFileFormat.equals(getString(R.string.xmlFiles))) {
+            toolbar.setBackground(getGradient(
+                    this.getResources().getColor(R.color.color_cardBg_xmlDoc_upper),
+                    this.getResources().getColor(R.color.color_cardBg_xmlDoc_lower)));
+
+        } else if (checkFileFormat.equals(getString(R.string.sheet_files))) {
+            toolbar.setBackground(getGradient(
+                    this.getResources().getColor(R.color.color_cardBg_sheetDoc_upper),
+                    this.getResources().getColor(R.color.color_cardBg_sheetDoc_lower)));
+
+        } else {
+            toolbar.setBackground(getGradient(
+                    this.getResources().getColor(R.color.color_cardBg_pdfDoc_upper),
+                    this.getResources().getColor(R.color.color_cardBg_pdfDoc_lower)));
+        }
+      /*  switch (checkFileFormat) {
+            case getString(R.string.allDocs):
                 toolbar.setBackground(getGradient(
                         this.getResources().getColor(R.color.color_cardBg_allDoc_upper),
                         this.getResources().getColor(R.color.color_cardBg_allDoc_lower)));
@@ -205,7 +250,7 @@ public class ActivityFilesHolder extends ActivityBase {
                         this.getResources().getColor(R.color.color_cardBg_htmlDoc_upper),
                         this.getResources().getColor(R.color.color_cardBg_htmlDoc_lower)));
                 break;
-        }
+        }*/
     }
 
     private GradientDrawable getGradient(int color1, int color2) {
@@ -294,14 +339,14 @@ public class ActivityFilesHolder extends ActivityBase {
                 try {
                     if (((CheckBox) view).isChecked()) {
                         multiSelectedItemList.add(itemsList.get(position));
-                        String text = multiSelectedItemList.size() + " Selected";
+                        String text = multiSelectedItemList.size() + selected;
                         updateToolBarTitle(text);
                         if (multiSelectedItemList.size() == itemsList.size()) {
                             selectAllMenuItem.setChecked(true);
                         }
                     } else {
                         multiSelectedItemList.remove(itemsList.get(position));
-                        String text = multiSelectedItemList.size() + " Selected";
+                        String text = multiSelectedItemList.size() + selected;
                         updateToolBarTitle(text);
                         if (multiSelectedItemList.size() == itemsList.size()) {
                             selectAllMenuItem.setChecked(false);
@@ -405,7 +450,8 @@ public class ActivityFilesHolder extends ActivityBase {
         toolbar.setNavigationIcon(R.drawable.ic_cross);
         selectAllMenuItem = (CheckBox) toolbar.getMenu().findItem(R.id.menu_contextual_btnSelecAll).getActionView();
         selectAllMenuItem.setChecked(false);
-        updateToolBarTitle("0 Selected");
+
+        updateToolBarTitle("0" + selected);
         adapter.notifyDataSetChanged();
         selectAllMenuItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -430,12 +476,12 @@ public class ActivityFilesHolder extends ActivityBase {
             for (int i = 0; i < itemsList.size(); i++) {
                 multiSelectedItemList.add(itemsList.get(i));
             }
-            String text = multiSelectedItemList.size() + " Selected";
+            String text = multiSelectedItemList.size() + selected;
             updateToolBarTitle(text);
         } else {
             multiSelectedItemList.removeAll(itemsList);
             multiSelectedItemList.clear();
-            String text = multiSelectedItemList.size() + " Selected";
+            String text = multiSelectedItemList.size() + selected;
             updateToolBarTitle(text);
         }
         adapter.notifyDataSetChanged();
@@ -529,7 +575,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith(".pdf")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(id, files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
                         }
                     }
                 }
@@ -550,7 +596,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith(".doc") || files[i].getName().endsWith(".docx")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(id, files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
                         }
                     }
                 }
@@ -571,7 +617,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith("xls") || files[i].getName().endsWith("xlsx")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(id, files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
                         }
                     }
                 }
@@ -592,7 +638,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith("ppt") || files[i].getName().endsWith("pptx")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(id, files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
                         }
                     }
                 }
@@ -612,7 +658,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith(".txt")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(id, files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
                         }
                     }
                 }
@@ -633,7 +679,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith(".xml")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(id, files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
                         }
                     }
                 }
@@ -653,7 +699,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith(".html")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(id, files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
                         }
                     }
                 }
@@ -675,7 +721,7 @@ public class ActivityFilesHolder extends ActivityBase {
                             || files[i].getName().endsWith(".docx") || files[i].getName().endsWith(".ppt") || files[i].getName().endsWith(".xlsx") || files[i].getName().endsWith(".xls") ||
                             files[i].getName().endsWith(".ppt") || files[i].getName().endsWith(".pptx") || files[i].getName().endsWith(".txt") || files[i].getName().endsWith(".xml")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(id, files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
                         }
                     }
                 }
