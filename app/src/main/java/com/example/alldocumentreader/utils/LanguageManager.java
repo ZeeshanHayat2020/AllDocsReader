@@ -14,18 +14,15 @@ public class LanguageManager {
 
     public static final String LANGUAGE_KEY_ENGLISH = "en";
     public static final String LANGUAGE_KEY_SPANISH = "es";
-
     public static final String LANGUAGE_KEY_ARABIC = "ar";
-
     public static final String LANGUAGE_KEY_RUSSIA = "ru";
-
     public static final String LANGUAGE_KEY_FRENCH = "fr";
-    public static final String LANGUAGE_KEY_CHINES = "zh";
-    public static final String LANGUAGE_KEY_GERMAN = "fr";
-    public static final String LANGUAGE_KEY_INDONESIAN = "fr";
-    public static final String LANGUAGE_KEY_ITALIAN = "fr";
-    public static final String LANGUAGE_KEY_POLISH = "fr";
-    public static final String LANGUAGE_KEY_PORTUGUESE = "fr";
+    public static final String LANGUAGE_KEY_CHINES = "zh-rCN";
+    public static final String LANGUAGE_KEY_GERMAN = "de";
+    public static final String LANGUAGE_KEY_INDONESIAN = "in";
+    public static final String LANGUAGE_KEY_ITALIAN = "it";
+    public static final String LANGUAGE_KEY_POLISH = "pl";
+    public static final String LANGUAGE_KEY_PORTUGUESE = "pt";
 
     private static final String LANGUAGE_KEY = "language_key";
 

@@ -25,7 +25,6 @@ public class ActivitySplash extends ActivityBase {
 
     private Handler handler;
     private Runnable runnable;
-    private InterstitialAd interstitialAd;
     private int loadAttempts;
     private MyPreferences myPreferences;
 
@@ -35,7 +34,7 @@ public class ActivitySplash extends ActivityBase {
         setStatusBarGradient(this);
         setContentView(R.layout.activity_splash);
         myPreferences = new MyPreferences(this);
-        requestInterstitial();
+        reqNewInterstitial(this);
 
     }
 
@@ -103,19 +102,14 @@ public class ActivitySplash extends ActivityBase {
 
     }
 
-    void requestInterstitial() {
-        interstitialAd = new InterstitialAd(this);
-        interstitialAd.setAdUnitId(this.getResources().getString(R.string.interstitial_Id));
-        AdRequest adRequestInter = new AdRequest.Builder().build();
-        interstitialAd.loadAd(adRequestInter);
-    }
+
 
     void loadInterstitial() {
-        interstitialAd.setAdListener(new AdListener() {
+        mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdLoaded() {
-                if (interstitialAd.isLoaded()) {
-                    interstitialAd.show();
+                if (mInterstitialAd.isLoaded() && !myPreferences.isItemPurchased()) {
+                    mInterstitialAd.show();
                 } else {
                     launchWithDelay();
                     Log.d("TAG", "The interstitial wasn't loaded yet.");
@@ -130,7 +124,7 @@ public class ActivitySplash extends ActivityBase {
                     loadAttempts = 0;
                     launchLanguageActivity();
                 } else {
-                    requestInterstitial();
+                   reqNewInterstitial(ActivitySplash.this);
                     loadInterstitial();
                 }
                 super.onAdFailedToLoad(i);
@@ -139,7 +133,6 @@ public class ActivitySplash extends ActivityBase {
 
             @Override
             public void onAdClosed() {
-
                 launchLanguageActivity();
             }
 

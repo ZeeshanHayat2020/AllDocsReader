@@ -147,6 +147,11 @@ public class AdapterFilesHolder extends RecyclerView.Adapter<AdapterFilesHolder.
                 setCheckBoxTintColor(holder.checkBox, context.getResources().getColor(R.color.color_cardBg_pptDoc_upper));
             }
             break;
+            case "rtf": {
+                holder.imageView.setImageResource(R.drawable.rtf);
+                setCheckBoxTintColor(holder.checkBox, context.getResources().getColor(R.color.color_cardBg_rtfDoc_upper));
+            }
+            break;
             default: {
                 holder.imageView.setImageResource(R.drawable.all);
                 setCheckBoxTintColor(holder.checkBox, context.getResources().getColor(R.color.colorAccent));

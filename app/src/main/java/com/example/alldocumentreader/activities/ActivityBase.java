@@ -14,17 +14,68 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.TransactionDetails;
 import com.example.alldocumentreader.BuildConfig;
 import com.example.alldocumentreader.R;
+import com.example.alldocumentreader.database.MyPreferences;
 import com.example.alldocumentreader.utils.LanguageManager;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 
-public class ActivityBase extends AppCompatActivity {
+public class ActivityBase extends AppCompatActivity implements BillingProcessor.IBillingHandler {
     public static int REQUEST_PERMISSION = 132;
+    public MyPreferences myPreferences;
+    public BillingProcessor bp;
+    public InterstitialAd mInterstitialAd;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        bp = new BillingProcessor(this, getString(R.string.publickkey), this);
+        bp.initialize();
+        myPreferences = new MyPreferences(this);
+
+    }
+    public void reqNewInterstitial(Context context) {
+        mInterstitialAd = new InterstitialAd(context);
+        mInterstitialAd.setAdUnitId(context.getResources().getString(R.string.interstitial_Id));
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+    }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LanguageManager.setLocale(base));
     }
+
+
+    @Override
+    public void onProductPurchased(String productId, TransactionDetails details) {
+        if (bp.isPurchased(getResources().getString(R.string.producti_id))) {
+            myPreferences.setIsItemPurchased(true);
+        }
+    }
+
+    @Override
+    public void onPurchaseHistoryRestored() {
+        if (bp.isPurchased(getResources().getString(R.string.producti_id))) {
+            myPreferences.setIsItemPurchased(true);
+        }
+    }
+
+    @Override
+    public void onBillingError(int errorCode, Throwable error) {
+        if (bp.isPurchased(getResources().getString(R.string.producti_id))) {
+            myPreferences.setIsItemPurchased(false);
+        }
+
+    }
+
+    @Override
+    public void onBillingInitialized() {
+
+    }
+
 
     public void checkStoragePermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M

@@ -13,6 +13,7 @@ public class MyPreferences {
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
     private static final String KEY_PREF_LANGUAGE_SELECTED = "KEY_PREF_LANGUAGE_SELECTED";
     private static final String KEY_PREF_PRIVACY_POLICY_ACCEPTANCE = "KEY_PREF_PRIVACEY_POLICY_ACCEPTANCE";
+    private static final String KEY_PREF_IN_APP_IS_ITEM_PURCHASE = "KEY_PREF_IN_APP_IS_ITEM_PURCHASE";
 
     public MyPreferences(Context context) {
         this._context = context;
@@ -45,6 +46,16 @@ public class MyPreferences {
 
     public boolean isPrivacyPolicyAccepted() {
         return pref.getBoolean(KEY_PREF_PRIVACY_POLICY_ACCEPTANCE, false);
+    }
+
+    public void setIsItemPurchased(boolean isItemPurchased) {
+        editor.putBoolean(KEY_PREF_IN_APP_IS_ITEM_PURCHASE, isItemPurchased);
+        editor.commit();
+    }
+
+    public boolean isItemPurchased() {
+        return pref.getBoolean(KEY_PREF_IN_APP_IS_ITEM_PURCHASE, false);
+
     }
 
 

@@ -44,6 +44,7 @@ import com.example.alldocumentreader.adapters.PdfViewPager2Adapter;
 import com.example.alldocumentreader.constant.Constant;
 import com.example.alldocumentreader.dialogboxes.NumberPickerDialog;
 import com.example.alldocumentreader.fc.util.IOUtils;
+import com.google.android.gms.ads.AdListener;
 import com.lukelorusso.verticalseekbar.VerticalSeekBar;
 
 import java.io.File;
@@ -57,7 +58,7 @@ import java.util.ArrayList;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
-public class ActivityPdfViewer extends AppCompatActivity implements NumberPicker.OnValueChangeListener {
+public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnValueChangeListener {
 
     String TAG = "ActivityPdfRenderView";
     private Toolbar toolbar;
@@ -88,13 +89,12 @@ public class ActivityPdfViewer extends AppCompatActivity implements NumberPicker
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf_viewer);
+        reqNewInterstitial(this);
         intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
-
-
         if (Intent.ACTION_VIEW.equals(action) && type != null) {
-            if ("application/pdf".equals(type)) {
+            if ("application/pdf" .equals(type)) {
                 Uri tempUri = intent.getData();
                 fileUri = String.valueOf(Uri.parse(getFilePathFromExternalAppsURI(ActivityPdfViewer.this, tempUri)));
 
@@ -189,6 +189,7 @@ public class ActivityPdfViewer extends AppCompatActivity implements NumberPicker
         toolBarTitleTv.setText(fileName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -327,10 +328,24 @@ public class ActivityPdfViewer extends AppCompatActivity implements NumberPicker
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_pdfView_item_Vertical: {
-                setViewPagerOrientation(ViewPager2.ORIENTATION_VERTICAL);
-                if (rootViewChangeButton.getVisibility() == View.VISIBLE)
-                    rootViewChangeButton.setVisibility(View.INVISIBLE);
-                verticalSeekBar.setVisibility(View.VISIBLE);
+                if (mInterstitialAd.isLoaded() && !myPreferences.isItemPurchased()) {
+                    mInterstitialAd.show();
+                    mInterstitialAd.setAdListener(new AdListener() {
+                        @Override
+                        public void onAdClosed() {
+                            super.onAdClosed();
+                            setViewPagerOrientation(ViewPager2.ORIENTATION_VERTICAL);
+                            if (rootViewChangeButton.getVisibility() == View.VISIBLE)
+                                rootViewChangeButton.setVisibility(View.INVISIBLE);
+                            verticalSeekBar.setVisibility(View.VISIBLE);
+                        }
+                    });
+                } else {
+                    setViewPagerOrientation(ViewPager2.ORIENTATION_VERTICAL);
+                    if (rootViewChangeButton.getVisibility() == View.VISIBLE)
+                        rootViewChangeButton.setVisibility(View.INVISIBLE);
+                    verticalSeekBar.setVisibility(View.VISIBLE);
+                }
             }
             break;
             case R.id.menu_pdfView_item_Horizontal: {
@@ -374,9 +389,21 @@ public class ActivityPdfViewer extends AppCompatActivity implements NumberPicker
     }
 
     public void showNumberPicker() {
-        NumberPickerDialog newFragment = new NumberPickerDialog(0, renderer.getPageCount() - 1);
+        final NumberPickerDialog newFragment = new NumberPickerDialog(0, renderer.getPageCount() - 1);
         newFragment.setValueChangeListener(this);
-        newFragment.show(getSupportFragmentManager(), "time picker");
+        if (mInterstitialAd.isLoaded() && !myPreferences.isItemPurchased()) {
+            mInterstitialAd.show();
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdClosed() {
+                    super.onAdClosed();
+                    newFragment.show(getSupportFragmentManager(), "time picker");
+                }
+            });
+        } else {
+            newFragment.show(getSupportFragmentManager(), "time picker");
+        }
+
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -386,7 +413,23 @@ public class ActivityPdfViewer extends AppCompatActivity implements NumberPicker
             if (renderer != null && currentPage != null) {
                 switch (view.getId()) {
                     case R.id.btnNext: {
-                        updateViewPager(currentPageIndex + 1);
+                        if (currentPageIndex == 1 || currentPageIndex == 3 || currentPageIndex == 6 || currentPageIndex == 10) {
+                            if (mInterstitialAd.isLoaded() && !myPreferences.isItemPurchased()) {
+                                mInterstitialAd.show();
+                                mInterstitialAd.setAdListener(new AdListener() {
+                                    @Override
+                                    public void onAdClosed() {
+                                        super.onAdClosed();
+                                        updateViewPager(currentPageIndex + 1);
+                                    }
+                                });
+                            } else {
+                                updateViewPager(currentPageIndex + 1);
+                            }
+                        } else {
+                            updateViewPager(currentPageIndex + 1);
+                        }
+
                     }
                     break;
                     case R.id.btnPrev: {

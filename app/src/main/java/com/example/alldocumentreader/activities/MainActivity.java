@@ -35,6 +35,7 @@ import com.example.alldocumentreader.constant.Constant;
 import com.example.alldocumentreader.interfaces.OnRecyclerItemClickLister;
 import com.example.alldocumentreader.models.ModelAcMain;
 import com.example.alldocumentreader.utils.RecyclerViewItemDecoration;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
@@ -73,6 +74,7 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
     private TextView tvStorageFree;
     private ProgressBar progressBarStorage;
     private int reviewCounter = 0;
+    private int adCounter = 0;
 
 
     @Override
@@ -89,12 +91,8 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         setUpRecyclerView();
         setUpInAppUpdate();
         setUpInAppReview();
+        reqNewInterstitial(this);
 
-        Toast.makeText(
-                MainActivity.this,
-                "Toast Working",
-                Toast.LENGTH_LONG
-        ).show();
 
     }
 
@@ -115,12 +113,21 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_acMain_noAdd: {
+                bp.purchase(MainActivity.this, getResources().getString(R.string.producti_id));
+                Log.d(TAG, "onOptionsItemSelected: ItemPurchase");
+            }
+            break;
             case R.id.menu_acMain_rateUs: {
                 rateUs();
             }
             break;
             case R.id.menu_acMain_shareUs: {
                 shareUs();
+            }
+            break;
+            case R.id.menu_acMain_changeLanguage: {
+                startActivity(new Intent(this, ActivityLanguage.class));
             }
             break;
             default: {
@@ -212,7 +219,6 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         setSupportActionBar(toolbar);
         toolBarTitleTv = (TextView) findViewById(R.id.toolBar_title_tv);
         toolBarTitleTv.setText(getResources().getString(R.string.toolBartxtMain));
-        toolBarTitleTv.setGravity(Gravity.CENTER_HORIZONTAL);
         toolbar.setBackgroundColor(getResources().getColor(R.color.color_Red));
     }
 
@@ -227,7 +233,7 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
                 R.drawable.ic_html_docs,
                 R.drawable.ic_xml_docs,
                 R.drawable.ic_sheet_docs,
-                R.drawable.ic_sheet_docs
+                R.drawable.ic_rtf_docs
 
         };
         String[] itemNames = {
@@ -261,11 +267,30 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
     }
 
     public void intentToFilesHolder(String exString) {
-        Intent intent = new Intent(this, ActivityFilesHolder.class);
+        final Intent intent = new Intent(this, ActivityFilesHolder.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.putExtra(Constant.KEY_SELECTED_FILE_FORMAT, exString);
-//        startActivity(intent);
-        startActivityForResult(intent, Constant.REQUEST_CODE_IN_APP_REVIEW);
+
+        if (adCounter > 2) {
+            adCounter=0;
+            if (mInterstitialAd.isLoaded() && !myPreferences.isItemPurchased()) {
+                mInterstitialAd.show();
+                mInterstitialAd.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdClosed() {
+                        super.onAdClosed();
+                        startActivityForResult(intent, Constant.REQUEST_CODE_IN_APP_REVIEW);
+
+                    }
+                });
+            }else {
+                reqNewInterstitial(this);
+                startActivityForResult(intent, Constant.REQUEST_CODE_IN_APP_REVIEW);
+            }
+        } else {
+            startActivityForResult(intent, Constant.REQUEST_CODE_IN_APP_REVIEW);
+        }
+
 
     }
 
@@ -294,8 +319,10 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         float freeSpace1 = DeviceMemory.getInternalFreeSpace();
         DecimalFormat outputFormat = new DecimalFormat("#.##");
 
-        tvStorageFree.setText("Free:" + outputFormat.format(freeSpace1) + " GB");
-        tvStorageTotal.setText("Total:" + outputFormat.format(totalSpace) + " GB");
+        String total = getResources().getString(R.string.total_space);
+        String free = getResources().getString(R.string.free_space);
+        tvStorageFree.setText(free + outputFormat.format(freeSpace1) + " GB");
+        tvStorageTotal.setText(total + outputFormat.format(totalSpace) + " GB");
         progressBarStorage.setMax((int) totalSpace);
         progressBarStorage.setProgress((int) occupiedSpace);
 
@@ -323,9 +350,9 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         }
     }
 
-
     @Override
     public void onItemClicked(int position) {
+        adCounter++;
         switch (position) {
             case 0: {
                 intentToFilesHolder(getString(R.string.allDocs));
@@ -357,6 +384,9 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
             break;
             case 7: {
                 intentToFilesHolder(getString(R.string.sheet_files));
+            }
+            case 8: {
+                intentToFilesHolder(getString(R.string.rtf_files));
             }
             break;
 

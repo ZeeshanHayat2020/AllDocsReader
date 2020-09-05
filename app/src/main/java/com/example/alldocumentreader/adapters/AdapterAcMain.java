@@ -129,7 +129,14 @@ public class AdapterAcMain extends RecyclerView.Adapter<AdapterAcMain.AdapterVie
                     .setBackground(setCardGradient(
                             context.getResources().getColor(R.color.color_cardBg_sheetDoc_upper),
                             context.getResources().getColor(R.color.color_cardBg_sheetDoc_lower)));
-        } else {
+        }
+        else if (checkFileFormat.equals(context.getString(R.string.rtf_files))) {
+            holder.itemIVRoot
+                    .setBackground(setCardGradient(
+                            context.getResources().getColor(R.color.color_cardBg_rtfDoc_upper),
+                            context.getResources().getColor(R.color.color_cardBg_rtfDoc_lower)));
+        }
+        else {
             holder.itemIVRoot
                     .setBackground(setCardGradient(
                             context.getResources().getColor(R.color.color_cardBg_allDoc_upper),

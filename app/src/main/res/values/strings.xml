@@ -6,6 +6,9 @@
     <string name="banner_Id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
     <string name="interstitial_Id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
 
+    <string name="publickkey" translatable="false">com.bilingprocess.billing.key</string>
+    <string name="producti_id" translatable="false">com.android.test.id</string>
+
     <string name="privacy_policy_text" translatable="false"><![CDATA[
 
 <p>This application needs following permissions to work properly.</p><br>
@@ -15,7 +18,7 @@
 </ul>
 <br>
 <p>Application needs these permissions to show document from phone storage.</p><br>
-<a href="https://www.w3schools.com">Click here to visit privacy policy…</a>
+<a href="https://sites.google.com/view/furesticdocumentsreader/home">Click here to visit privacy policy…</a>
 
 ]]></string>
 
@@ -24,83 +27,83 @@
     <string name="pp_url" translatable="false">https://blueorbit5.blogspot.com/2020/06/document-reader.html</string>
     <string name="app_name" translatable="false">AllDocumentReader</string>
     <string name="english" translatable="false">English</string>
-    <string name="arabic" translatable="false">Arabic</string>
-    <string name="chinies" translatable="false">Chinies</string>
-    <string name="france" translatable="false">France</string>
-    <string name="german" translatable="false">German</string>
-    <string name="indonesian" translatable="false">Indonesian</string>
-    <string name="italian" translatable="false">Italian</string>
-    <string name="polish" translatable="false">Polish</string>
-    <string name="portuguese" translatable="false">Portuguese</string>
-    <string name="russian" translatable="false">Russian</string>
-    <string name="spanish" translatable="false">Spanish</string>
+    <string name="arabic" translatable="false">عربى</string>
+    <string name="chinies" translatable="false">中文</string>
+    <string name="france" translatable="false">Française</string>
+    <string name="german" translatable="false">Keim</string>
+    <string name="indonesian" translatable="false">bahasa Indonesia</string>
+    <string name="italian" translatable="false">Italiana</string>
+    <string name="polish" translatable="false">Polskie</string>
+    <string name="portuguese" translatable="false">portuguesa</string>
+    <string name="russian" translatable="false">русский</string>
+    <string name="spanish" translatable="false">española</string>
 
 
 
-    <string name="numberPickerDialogeMsg">Choose a specific page number to jump on that.</string>
-    <string name="delete_msg">The files will be delete permanently from device. \nAre you sure you want to delete?</string>
-    <string name="app_searchbar_failed">XDOCS Reader cannot find the data you are searching for</string>
-    <string name="app_searchbar_reachedBegin">XDOCS Reader has reached the beginning of the document</string>
-    <string name="app_searchbar_reachedEnd">XDOCS Reader has reached the end of the document</string>
-    <string name="dialog_name_error">%s already exists.</string>
-    <string name="dialog_delete_file">Are you sure you want to delete the selected item(s)?</string>
-    <string name="dialog_move_file_error">You can not move or copy a folder into itself.</string>
-    <string name="dialog_overwrite_file">Do you want to overwrite it?</string>
+    <string name="app_searchbar_failed" translatable="false">XDOCS Reader cannot find the data you are searching for</string>
+    <string name="app_searchbar_reachedBegin" translatable="false">XDOCS Reader has reached the beginning of the document</string>
+    <string name="app_searchbar_reachedEnd" translatable="false">XDOCS Reader has reached the end of the document</string>
+    <string name="dialog_name_error" translatable="false">%s already exists.</string>
+    <string name="dialog_delete_file" translatable="false">Are you sure you want to delete the selected item(s)?</string>
+    <string name="dialog_move_file_error" translatable="false">You can not move or copy a folder into itself.</string>
+    <string name="dialog_overwrite_file" translatable="false">Do you want to overwrite it?</string>
 
-    <string name="sys_button_ok">OK</string>
-    <string name="sys_button_cancel">Cancel</string>
-    <string name="sys_button_memory_card">MemoryCard</string>
-    <string name="sys_button_search">Search</string>
-    <string name="sys_button_recently_files">Recently Files</string>
-    <string name="sys_button_mark_files">Marked Files</string>
-    <string name="sys_button_local_storage">Local Storage</string>
-    <string name="sys_menu_settings">Settings</string>
-    <string name="sys_menu_account">Account</string>
-    <string name="sys_menu_register">Register</string>
-    <string name="sys_menu_update">Update</string>
-    <string name="sys_menu_help">Help</string>
-    <string name="sys_menu_about">About</string>
-    <string name="sys_search_hint">Search for files</string>
-    <string name="sys_no_match">No matches.</string>
-    <string name="sys_share_title">Sending mail…</string>
-    <string name="sys_progress_message_loading">Loading, please wait…</string>
-    <string name="file_toolsbar_create_folder">Create folder</string>
-    <string name="file_toolsbar_rename">Rename</string>
-    <string name="file_toolsbar_copy">Copy</string>
-    <string name="file_toolsbar_cut">Cut</string>
-    <string name="file_toolsbar_paste">Paste</string>
-    <string name="file_toolsbar_delete">Delete</string>
-    <string name="file_toolsbar_share">Share</string>
-    <string name="file_toolsbar_sort">Sort</string>
-    <string name="file_toolsbar_print">Printer</string>
-    <string name="file_toolsbar_mark_star">Mark</string>
-    <string name="file_toolsbar_unmark_star">UnMark</string>
-    <string name="file_message_empty_directory">Empty Folder</string>
-    <string name="app_toolsbar_hyperlink">Goto</string>
-    <string name="app_toolsbar_find">Find</string>
-    <string name="app_toolsbar_share">Share</string>
-    <string name="app_toolsbar_internet_search">Internet Search</string>
-    <string name="app_toolsbar_read">Read</string>
-    <string name="app_toolsbar_approve">Approve</string>
-    <string name="app_toolsbar_generated_picture">Generated Picture</string>
-    <string name="app_toolsbar_draw">Draw Mode</string>
-    <string name="app_toolsbar_back">Back</string>
-    <string name="app_toolsbar_pen">UnDraw</string>
-    <string name="app_toolsbar_pen_check">Draw</string>
-    <string name="app_toolsbar_eraser">UnErase</string>
-    <string name="app_toolsbar_eraser_check">Erase</string>
-    <string name="app_toolsbar_color">Pen Settings</string>
-    <string name="app_searchbar_backward">Find Backward</string>
-    <string name="app_searchbar_forward">Find Forward</string>
-    <string name="app_searchbar_find">Find</string>
-    <string name="wp_toolsbar_switch_view">Switch View</string>
-    <string name="wp_toolsbar_print_mode">Print Mode</string>
-    <string name="wp_toolsbar_select_text">Select Text</string>
-    <string name="ss_toolsbar_sheet_switch">Sheet Switch</string>
-    <string name="pg_toolsbar_note">Note</string>
-    <string name="pg_slideshow">SlideShow</string>
-    <string name="pg_slideshow_pageup">Page Up</string>
-    <string name="pg_slideshow_pagedown">Page Down</string>
+    <string name="sys_button_ok" translatable="false">OK</string>
+    <string name="sys_button_cancel" translatable="false">Cancel</string>
+    <string name="sys_button_memory_card" translatable="false">MemoryCard</string>
+    <string name="sys_button_search" translatable="false">Search</string>
+    <string name="sys_button_recently_files" translatable="false">Recently Files</string>
+    <string name="sys_button_mark_files" translatable="false">Marked Files</string>
+    <string name="sys_button_local_storage" translatable="false">Local Storage</string>
+    <string name="sys_menu_settings" translatable="false">Settings</string>
+    <string name="sys_menu_account" translatable="false">Account</string>
+    <string name="sys_menu_register" translatable="false">Register</string>
+    <string name="sys_menu_update" translatable="false">Update</string>
+    <string name="sys_menu_help" translatable="false">Help</string>
+    <string name="sys_menu_about" translatable="false">About</string>
+    <string name="sys_search_hint" translatable="false">Search for files</string>
+    <string name="sys_no_match" translatable="false">No matches.</string>
+    <string name="sys_share_title" translatable="false">Sending mail…</string>
+    <string name="sys_progress_message_loading" translatable="false">Loading, please wait…</string>
+    <string name="file_toolsbar_create_folder" translatable="false">Create folder</string>
+    <string name="file_toolsbar_rename" translatable="false">Rename</string>
+    <string name="file_toolsbar_copy" translatable="false">Copy</string>
+    <string name="file_toolsbar_cut" translatable="false">Cut</string>
+    <string name="file_toolsbar_paste" translatable="false">Paste</string>
+    <string name="file_toolsbar_delete" translatable="false">Delete</string>
+    <string name="file_toolsbar_share" translatable="false">Share</string>
+    <string name="file_toolsbar_sort" translatable="false">Sort</string>
+    <string name="file_toolsbar_print" translatable="false">Printer</string>
+    <string name="file_toolsbar_mark_star" translatable="false">Mark</string>
+    <string name="file_toolsbar_unmark_star" translatable="false">UnMark</string>
+    <string name="file_message_empty_directory" translatable="false">Empty Folder</string>
+    <string name="app_toolsbar_hyperlink" translatable="false">Goto</string>
+    <string name="app_toolsbar_find" translatable="false">Find</string>
+    <string name="app_toolsbar_share" translatable="false">Share</string>
+    <string name="app_toolsbar_internet_search" translatable="false">Internet Search</string>
+    <string name="app_toolsbar_read" translatable="false">Read</string>
+    <string name="app_toolsbar_approve" translatable="false">Approve</string>
+    <string name="app_toolsbar_generated_picture" translatable="false">Generated Picture</string>
+    <string name="app_toolsbar_draw" translatable="false">Draw Mode</string>
+    <string name="app_toolsbar_back" translatable="false">Back</string>
+    <string name="app_toolsbar_pen" translatable="false">UnDraw</string>
+    <string name="app_toolsbar_pen_check" translatable="false">Draw</string>
+    <string name="app_toolsbar_eraser" translatable="false">UnErase</string>
+    <string name="app_toolsbar_eraser_check" translatable="false">Erase</string>
+    <string name="app_toolsbar_color" translatable="false">Pen Settings</string>
+    <string name="app_searchbar_backward" translatable="false">Find Backward</string>
+    <string name="app_searchbar_forward" translatable="false">Find Forward</string>
+    <string name="app_searchbar_find" translatable="false">Find</string>
+    <string name="wp_toolsbar_switch_view" translatable="false">Switch View</string>
+    <string name="wp_toolsbar_print_mode" translatable="false">Print Mode</string>
+    <string name="wp_toolsbar_select_text" translatable="false">Select Text</string>
+    <string name="ss_toolsbar_sheet_switch" translatable="false">Sheet Switch</string>
+    <string name="pg_toolsbar_note" translatable="false">Note</string>
+    <string name="pg_slideshow" translatable="false">SlideShow</string>
+    <string name="pg_slideshow_pageup" translatable="false">Page Up</string>
+    <string name="pg_slideshow_pagedown" translatable="false">Page Down</string>
+
+
     <string name="dialog_encoding_title">Text Encoding</string>
     <string name="dialog_folder_name">Folder Name</string>
     <string name="dialog_create_folder_error">Failed to create folder</string>
@@ -150,32 +153,33 @@
     <string name="readStor">Read Files from Storage</string>
     <string name="formore">For more Information</string>
     <string name="learnmore">Learn more...</string>
-    <string name="decline">Decline</string>
-    <string name="Accept">Accept</string>
-    <string name="skip">Skip</string>
     <string name="slide1">Easily View and Elaborate your all kinds od Documents</string>
     <string name="slide2">All-in-One Document Reader</string>
-    <string name="start">Got It</string>
     <string name="action_search">search</string>
     <string name="exitMsg">Are you sure you want to exit?</string>
     <string name="exit">Exit</string>
     <string name="sys_name">Files List</string>
-    <string name="reading_approved">Reading Approved</string>
+    <string name="numberPickerDialogeMsg">Choose a specific page number to jump on that.</string>
+    <string name="delete_msg">The files will be delete permanently from device. \nAre you sure you want to delete?</string>
+    <string name="decline">Decline</string>
+    <string name="Accept">Accept</string>
+    <string name="skip">Skip</string>
+    <string name="start">Got It</string>
     <string name="internal_storage">Internal Storage</string>
     <string name="total_space">Total:</string>
     <string name="free_space">Free:</string>
     <string name="todo">TODO</string>
     <string name="headingPolicy">Privacy Policy</string>
+    <string name="allDocs">All Files</string>
+    <string name="ppt_files">PPT Files</string>
+    <string name="sheet_files">Sheet Files</string>
+    <string name="rtf_files">RTF Files</string>
     <string name="pdf_files">PDF Files</string>
     <string name="html_files">HTML Files</string>
     <string name="word_files">Word Files</string>
     <string name="text_files">Text Files</string>
     <string name="splashAppName">All Document Reader</string>
     <string name="splashBottomTExt">Best Document Reader App</string>
-    <string name="allDocs">All Files</string>
-    <string name="ppt_files">PPT Files</string>
-    <string name="sheet_files">Sheet Files</string>
-    <string name="rtf_files">RTF Files</string>
     <string name="toolBartxtMain">All Document Reader</string>
     <string name="selected"> Selected</string>
     <string name="previous">Previous</string>
@@ -191,9 +195,10 @@
     <string name="search">search</string>
     <string name="scroll_vertical">Scroll Vertical</string>
     <string name="scroll_horizontal">Scroll Horizontal</string>
-    <string name="jump">JUMP</string>
-    <string name="cancel">CANCEL</string>
+    <string name="jump">Jump</string>
+    <string name="cancel">Cancel</string>
     <string name="numberPickerDiaolgeTitle">Choose Page</string>
+    <string name="chng_language">Language</string>
 
 
 

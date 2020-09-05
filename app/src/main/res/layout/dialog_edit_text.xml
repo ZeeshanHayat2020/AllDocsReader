@@ -9,38 +9,42 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_5sdp"
         android:padding="@dimen/_5sdp"
-        android:text="Rename File " />
+        android:text="@string/rename_file"
+        android:textColor="@color/colorBLack"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/dialog_etFileName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView"
-
-        android:hint="Enter File Name"
+        android:layout_margin="@dimen/_10sdp"
+        android:backgroundTint="@color/colorControlNormal"
+        android:hint="Enter New Name"
         android:inputType="textMultiLine|text"
-        android:layout_margin="@dimen/_5sdp"
-        android:padding="@dimen/_5sdp" />
+        android:padding="@dimen/_10sdp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/dialog_etFileName"
+        android:layout_margin="@dimen/_10sdp"
         android:orientation="horizontal"
-        android:weightSum="2"
-        android:layout_margin="@dimen/_5sdp"
-        >
+        android:weightSum="2">
 
         <Button
             android:id="@+id/dialgBtn_Cancel"
-
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:text="Cancel" />
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+
+            />
 
         <Button
             android:id="@+id/dialogBtn_rename"
@@ -50,7 +54,9 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:text="Rename" />
+            android:text="@string/rename_file"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite" />
 
     </LinearLayout>
 

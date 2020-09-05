@@ -56,6 +56,9 @@
     <color name="color_cardBg_sheetDoc_upper">#FF3989</color>
     <color name="color_cardBg_sheetDoc_lower">#FD48D4</color>
 
+    <color name="color_cardBg_rtfDoc_upper">#FF5C39</color>
+    <color name="color_cardBg_rtfDoc_lower">#FDB048</color>
+
     <!-- dots inactive colors -->
     <color name="dot_dark_screen1">#F9BDBD</color>
     <color name="dot_dark_screen2">#F9BDBD</color>

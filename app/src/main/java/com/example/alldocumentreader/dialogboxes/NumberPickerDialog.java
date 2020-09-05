@@ -50,7 +50,7 @@ public class NumberPickerDialog extends DialogFragment {
                         numberPicker.getValue(), numberPicker.getValue());
             }
         });
-
+        builder.setView(numberPicker);
         return builder.create();
     }
 

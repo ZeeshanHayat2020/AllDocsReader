@@ -42,7 +42,10 @@
                 android:enabled="false"
                 android:text="@string/previous"
                 android:textColor="@color/text_color_stat_list"
-                android:theme="@style/Theme.Buttons" />
+                android:theme="@style/Theme.Buttons"
+                android:textAllCaps="false"
+
+                />
 
             <Button
                 android:id="@+id/btnNext"
@@ -53,7 +56,9 @@
                 android:clickable="true"
                 android:text="@string/next"
                 android:textColor="@color/text_color_stat_list"
-                android:theme="@style/Theme.Buttons" />
+                android:theme="@style/Theme.Buttons"
+                android:textAllCaps="false"
+                />
         </LinearLayout>
 
         <com.lukelorusso.verticalseekbar.VerticalSeekBar

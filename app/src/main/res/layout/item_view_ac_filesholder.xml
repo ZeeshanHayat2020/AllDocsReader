@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_40sdp"
+    android:layout_height="@dimen/_45sdp"
     android:layout_marginLeft="@dimen/_8sdp"
     android:layout_marginRight="@dimen/_8sdp"
     android:layout_marginBottom="@dimen/_8sdp"
@@ -33,7 +33,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/_3sdp"
             android:layout_toEndOf="@id/itemView_acFilesHolder_Iv"
-            android:background="@color/colorBLack" />
+            android:background="@drawable/line" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,14 +52,14 @@
                 android:maxLines="1"
                 android:text="File Name"
                 android:textColor="@color/colorBLack"
-                android:textSize="15sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/itemView_acFilesHolder_FileSizeTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="File Size"
-                android:textSize="12sp" />
+                android:textSize="13sp" />
         </LinearLayout>
 
         <ImageView
