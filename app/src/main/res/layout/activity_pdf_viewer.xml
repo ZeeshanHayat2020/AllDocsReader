@@ -35,30 +35,31 @@
             <Button
                 android:id="@+id/btnPrev"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_28sdp"
                 android:layout_margin="@dimen/_5sdp"
                 android:layout_weight="1"
+                android:background="@drawable/bg_pdf_viewer_btns"
                 android:clickable="true"
                 android:enabled="false"
                 android:text="@string/previous"
+                android:textAllCaps="false"
                 android:textColor="@color/text_color_stat_list"
                 android:theme="@style/Theme.Buttons"
-                android:textAllCaps="false"
 
                 />
 
             <Button
                 android:id="@+id/btnNext"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_28sdp"
                 android:layout_margin="@dimen/_5sdp"
                 android:layout_weight="1"
+                android:background="@drawable/bg_pdf_viewer_btns"
                 android:clickable="true"
                 android:text="@string/next"
-                android:textColor="@color/text_color_stat_list"
-                android:theme="@style/Theme.Buttons"
                 android:textAllCaps="false"
-                />
+                android:textColor="@color/text_color_stat_list"
+                android:theme="@style/Theme.Buttons" />
         </LinearLayout>
 
         <com.lukelorusso.verticalseekbar.VerticalSeekBar
@@ -116,10 +117,15 @@
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
             android:layout_margin="@dimen/_10sdp"
-            android:background="@android:color/black"
-            android:padding="@dimen/_5sdp"
+            android:background="@drawable/bg_pdf_viewer_text_view"
+            android:paddingLeft="@dimen/_5sdp"
+            android:paddingTop="@dimen/_2sdp"
+            android:paddingRight="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_2sdp"
             android:textColor="@android:color/white"
-            android:visibility="gone" />
+            android:visibility="gone"
+
+            />
     </RelativeLayout>
 </RelativeLayout>
 

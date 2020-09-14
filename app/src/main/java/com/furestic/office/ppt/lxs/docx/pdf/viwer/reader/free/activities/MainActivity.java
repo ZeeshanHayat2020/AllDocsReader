@@ -40,6 +40,8 @@ import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.fc.util.IOUtils;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.interfaces.OnRecyclerItemClickLister;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.models.ModelAcMain;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.officereader.AppActivity;
+import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.utils.FileUtils;
+import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.utils.PathUtil;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.utils.RecyclerViewItemDecoration;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -61,6 +63,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -270,6 +273,7 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
                     "text/plain"
             };
             intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intent, Constant.REQUEST_CODE_PICK_FILE);
         }
     };
@@ -326,27 +330,31 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
     }
 
     public void intentToFilesHolder(String exString) {
-        final Intent intent = new Intent(this, ActivityFilesHolder.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra(Constant.KEY_SELECTED_FILE_FORMAT, exString);
-        if (adCounter > 2) {
-            adCounter = 0;
-            if (mInterstitialAd.isLoaded() && !myPreferences.isItemPurchased()) {
-                mInterstitialAd.show();
-                mInterstitialAd.setAdListener(new AdListener() {
-                    @Override
-                    public void onAdClosed() {
-                        super.onAdClosed();
-                        startActivityForResult(intent, Constant.REQUEST_CODE_IN_APP_REVIEW);
+        if (hasStoragePermission()) {
+            final Intent intent = new Intent(this, ActivityFilesHolder.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(Constant.KEY_SELECTED_FILE_FORMAT, exString);
+            if (adCounter > 2) {
+                adCounter = 0;
+                if (mInterstitialAd.isLoaded() && !myPreferences.isItemPurchased()) {
+                    mInterstitialAd.show();
+                    mInterstitialAd.setAdListener(new AdListener() {
+                        @Override
+                        public void onAdClosed() {
+                            super.onAdClosed();
+                            startActivityForResult(intent, Constant.REQUEST_CODE_IN_APP_REVIEW);
 
-                    }
-                });
+                        }
+                    });
+                } else {
+                    reqNewInterstitial(this);
+                    startActivityForResult(intent, Constant.REQUEST_CODE_IN_APP_REVIEW);
+                }
             } else {
-                reqNewInterstitial(this);
                 startActivityForResult(intent, Constant.REQUEST_CODE_IN_APP_REVIEW);
             }
         } else {
-            startActivityForResult(intent, Constant.REQUEST_CODE_IN_APP_REVIEW);
+            checkStoragePermission();
         }
 
 
@@ -481,7 +489,7 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
 
     private void showPermissionDeniedSnackBar(View view) {
         Snackbar snackbar = Snackbar
-                .make(view, "Permission denied, Please allow this app to use device camera or gallery.", Snackbar.LENGTH_LONG)
+                .make(view, "Permission denied, Please allow this app to read external storage.", Snackbar.LENGTH_LONG)
                 .setAction("Allow", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -608,23 +616,29 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
             if (requestCode == Constant.REQUEST_CODE_PICK_FILE) {
                 if (RESULT_OK == resultCode) {
                     Uri uri = data.getData();
-                    String fileUri = String.valueOf(Uri.parse(getFilePathFromExternalAppsURI(MainActivity.this, uri)));
-                    if (getMimeType(MainActivity.this, uri).equals("pdf")) {
-                        final Intent intent = new Intent(MainActivity.this, ActivityPdfViewer.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.putExtra(Constant.KEY_SELECTED_FILE_URI, fileUri);
-                        intent.putExtra(Constant.KEY_SELECTED_FILE_NAME, fileName);
-                        startActivity(intent);
-                    } else {
-                        final Intent intent = new Intent(MainActivity.this, AppActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.putExtra(Constant.KEY_SELECTED_FILE_URI, fileUri);
-                        intent.putExtra(Constant.KEY_SELECTED_FILE_NAME, fileName);
-                        startActivity(intent);
+
+                    String filePath = "";
+                    filePath = FileUtils.getPath(MainActivity.this, uri);
+                    if (!filePath.equals("")) {
+                        File file = new File(filePath);
+                        if (file.getName().endsWith("pdf")) {
+                            final Intent intent = new Intent(MainActivity.this, ActivityPdfViewer.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.putExtra(Constant.KEY_SELECTED_FILE_URI, filePath);
+                            intent.putExtra(Constant.KEY_SELECTED_FILE_NAME, fileName);
+                            startActivity(intent);
+                        } else {
+                            final Intent intent = new Intent(MainActivity.this, AppActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.putExtra(Constant.KEY_SELECTED_FILE_URI, filePath);
+                            intent.putExtra(Constant.KEY_SELECTED_FILE_NAME, fileName);
+                            startActivity(intent);
+                        }
                     }
                     Log.d(TAG, "onActivityResult: FILE URI:" + uri);
+                    Log.d(TAG, "onActivityResult: FILE PATH:" + filePath);
                 } else {
-                    Toast.makeText(this, "Failed to get file.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "No file selected.", Toast.LENGTH_SHORT).show();
                 }
             }
         }

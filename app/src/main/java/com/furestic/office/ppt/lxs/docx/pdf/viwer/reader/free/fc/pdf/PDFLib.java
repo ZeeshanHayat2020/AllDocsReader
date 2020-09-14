@@ -35,7 +35,7 @@ public class PDFLib
      */
     static
     {
-        System.loadLibrary("wxiweiPDF");
+//        System.loadLibrary("wxiweiPDF");
 
     }
     

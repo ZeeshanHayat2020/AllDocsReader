@@ -249,7 +249,13 @@ public class AppActivity extends AppCompatActivity implements IMainFrame {
                 Log.d(TAG, "init: Extension:" + tempFileExtension);
             }
         }
-        openFile();
+        Log.d("AllDocs Reader", "init: filePath" + filePath);
+        try {
+
+            openFile();
+        } catch (Exception e) {
+            Log.e(TAG, "Exception:", e);
+        }
 
 
     }
@@ -320,7 +326,7 @@ public class AppActivity extends AppCompatActivity implements IMainFrame {
             filePath = Uri.decode(filePath);
         }
 
-
+        // 显示打开文件名称
         int index = filePath.lastIndexOf(File.separator);
         if (index > 0) {
             setTitle(filePath.substring(index + 1));
@@ -564,6 +570,7 @@ public class AppActivity extends AppCompatActivity implements IMainFrame {
 
         appFrame.addView(toolsbar);
     }
+
     public GradientDrawable setGradientBackground(int color1, int color2) {
         int[] colors = {Integer.parseInt(String.valueOf(color1)),
                 Integer.parseInt(String.valueOf(color2))

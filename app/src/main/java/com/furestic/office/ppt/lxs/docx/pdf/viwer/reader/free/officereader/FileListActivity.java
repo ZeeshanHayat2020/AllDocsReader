@@ -1,6 +1,6 @@
 /*
  * 文件名称:          OfficeRead.java
- *  
+ *
  * 编译器:            android2.2
  * 时间:              上午10:14:13
  */
@@ -25,6 +25,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.furestic.alldocument.office.ppt.lxs.docx.pdf.viwer.reader.free.R;
+import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.constant.Constant;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.constant.DialogConstant;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.constant.EventConstant;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.constant.MainConstant;
@@ -65,12 +66,11 @@ import java.util.Vector;
  * <p>
  * 负责人:          梁金晶
  * <p>
- * 负责小组:         
+ * 负责小组:
  * <p>
  * <p>
  */
-public class FileListActivity extends AppCompatActivity implements ISearchResult
-{
+public class FileListActivity extends AppCompatActivity implements ISearchResult {
     // explore
     public static final byte LIST_TYPE_EXPLORE = 0;
     // recently
@@ -79,142 +79,112 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
     public static final byte LIST_TYPE_MARKED = LIST_TYPE_RECENTLY + 1;
     // search 
     public static final byte LIST_TYPE_SEARCH = LIST_TYPE_MARKED + 1;
+
     /**
-     * 
      *
      */
-    public void onCreate(Bundle icicle)
-    {
+    public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         toast = Toast.makeText(getApplicationContext(), "", 0);
         selectFileItem = new ArrayList<FileItem>();
         directoryEntries = new ArrayList<FileItem>();
         control = new FileListControl(this);
-        
+
         sdcardPath = control.getSysKit().getSDPath();
-        if (sdcardPath == null)
-        {
+        if (sdcardPath == null) {
             sdcardPath = new File("/mnt/sdcard");
         }
         mHeight = getResources().getDisplayMetrics().heightPixels;
         fileFrame = new FileFrame(getApplicationContext());
-        
-        fileFrame.post(new Runnable()
-        {
-            public void run()
-            {
+
+        fileFrame.post(new Runnable() {
+            public void run() {
                 initListener();
                 init();
             }
         });
-        setTheme(control.getSysKit().isVertical(this) ? 
-            R.style.title_background_vertical : R.style.title_background_horizontal);
+        setTheme(control.getSysKit().isVertical(this) ?
+                R.style.title_background_vertical : R.style.title_background_horizontal);
         setContentView(fileFrame);
         dialogAction = new FileDialogAction(control);
         fileSortType = new FileSortType();
         dbService = new DBService(getApplicationContext());
     }
-    
+
     /**
-     * 
+     *
      */
-    public void onBackPressed()
-    {
-        if (search != null)
-        {
+    public void onBackPressed() {
+        if (search != null) {
             search.stopSearch();
         }
-        if (listType == LIST_TYPE_SEARCH)
-        {
-            if (currentDirectory == null)
-            {
+        if (listType == LIST_TYPE_SEARCH) {
+            if (currentDirectory == null) {
                 super.onBackPressed();
-            }
-            else
-            {
+            } else {
                 createFileList(currentDirectory);
             }
-        }
-        else if (listType == LIST_TYPE_RECENTLY
-            || listType == LIST_TYPE_MARKED)
-        {
+        } else if (listType == LIST_TYPE_RECENTLY
+                || listType == LIST_TYPE_MARKED) {
             super.onBackPressed();
-        }
-        else
-        {
-            if (currentDirectory != null && !currentDirectory.equals(sdcardPath))
-            {                    
+        } else {
+            if (currentDirectory != null && !currentDirectory.equals(sdcardPath)) {
                 browseTo(currentDirectory.getParentFile());
-            }
-            else
-            {
+            } else {
                 super.onBackPressed();
             }
         }
     }
 
     /**
-     * 
      *
      */
-    public void onConfigurationChanged(Configuration newConfig)
-    {
+    public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mHeight = getResources().getDisplayMetrics().heightPixels;
         mHeight -= getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
         listView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, mHeight - listView.getTop()));
     }
-    
+
     /**
-     * 
      *
      */
-    protected void onDestroy()
-    {
+    protected void onDestroy() {
         super.onDestroy();
         dispose();
     }
-    
+
     /**
      * List 单击事件
-     * 
      */
-    private void initListener()
-    {
-        onItemClickListener = new AdapterView.OnItemClickListener()
-        {
+    private void initListener() {
+        onItemClickListener = new AdapterView.OnItemClickListener() {
             /**
              *
              */
-            public void onItemClick(AdapterView< ? > parent, View view, int position, long id)
-            {
-                if (onLongPress)
-                {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (onLongPress) {
                     onLongPress = false;
                     toast.cancel();
                     return;
                 }
                 currentPos = position;
-                browseTo(directoryEntries.get(position).getFile()); 
+                browseTo(directoryEntries.get(position).getFile());
             }
         };
-        
-        onItemLongClickListener = new AdapterView.OnItemLongClickListener()
-        {
+
+        onItemLongClickListener = new AdapterView.OnItemLongClickListener() {
             /**
-             * 
+             *
              *(non-Javadoc)
              * @see AdapterView.OnItemLongClickListener#onItemLongClick(AdapterView, View, int, long)
              *
              */
-            public boolean onItemLongClick(AdapterView< ? > parent, View view, int position, long id)
-            {
-                if (listType != LIST_TYPE_EXPLORE)
-                {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                if (listType != LIST_TYPE_EXPLORE) {
                     FileItem item = directoryEntries.get(position);
-                    if (item != null)
-                    {
+                    if (item != null) {
                         onLongPress = true;
                         toast.setText(item.getFile().getAbsolutePath().substring(1));
                         toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, listView.getTop());
@@ -230,8 +200,7 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
     /**
      *
      */
-    private void init()
-    {
+    private void init() {
         mHeight -= getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
         fileAdapter = new FileItemAdapter(getApplicationContext(), control);
         emptyView = new TextView(getApplicationContext());
@@ -257,13 +226,11 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
     /**
      *
      */
-    private void createFileList(File file)
-    {
+    private void createFileList(File file) {
         Intent intent = getIntent();
         String type = intent.getStringExtra(MainConstant.INTENT_FILED_FILE_LIST_TYPE);
         // marked
-        if (MainConstant.INTENT_FILED_MARK_FILES.equals(type))
-        {
+        if (MainConstant.INTENT_FILED_MARK_FILES.equals(type)) {
             listType = LIST_TYPE_MARKED;
             currentDirectory = sdcardPath;
             // get files from database
@@ -273,8 +240,7 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
             updateToolsbarStatus();
         }
         // recently
-        else if(MainConstant.INTENT_FILED_RECENT_FILES.equals(type))
-        {
+        else if (MainConstant.INTENT_FILED_RECENT_FILES.equals(type)) {
             listType = LIST_TYPE_RECENTLY;
             currentDirectory = sdcardPath;
             // get files from database
@@ -283,22 +249,19 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
             // sort by opened time
             int nCount = fileList.size();
             File[] files = new File[nCount];
-            for (int i = nCount - 1; i >= 0; i--)
-            {
-                files[nCount -1 - i] = fileList.get(i);
+            for (int i = nCount - 1; i >= 0; i--) {
+                files[nCount - 1 - i] = fileList.get(i);
             }
             listFiles(files);
             updateToolsbarStatus();
         }
         // search files
-        else if (Intent.ACTION_SEARCH.equals(intent.getAction()))
-        {
+        else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             listType = LIST_TYPE_SEARCH;
             createSearchFileList(intent);
         }
         // explore
-        else
-        {
+        else {
             listType = LIST_TYPE_EXPLORE;
             browseTo(file);
         }
@@ -306,16 +269,14 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
 
     /**
      * search file from current directory
+     *
      * @param query
      */
-    public void createSearchFileList(Intent intent)
-    {
+    public void createSearchFileList(Intent intent) {
         String key = intent.getStringExtra(SearchManager.QUERY).trim();
-        if (key.length() > 0)
-        {
+        if (key.length() > 0) {
             listType = LIST_TYPE_SEARCH;
-            if (search == null)
-            {
+            if (search == null) {
                 search = new Search(control, this);
             }
             search.doSearch(currentDirectory == null ? sdcardPath : currentDirectory, key, Search.SEARCH_BY_NAME);
@@ -336,19 +297,15 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
 
     /**
      *
-     *
      */
-    public void onResult(final File file)
-    {
-        fileFrame.post(new Runnable()
-        {
+    public void onResult(final File file) {
+        fileFrame.post(new Runnable() {
             /**
              *
              */
-            public void run()
-            {
+            public void run() {
                 directoryEntries.add(new FileItem(file,
-                    fileAdapter.getFileIconType(file.getName()), 0));
+                        fileAdapter.getFileIconType(file.getName()), 0));
                 fileAdapter.notifyDataSetChanged();
 
                 updateToolsbarStatus();
@@ -360,33 +317,24 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
     /**
      * call with search finish
      */
-    public void searchFinish()
-    {
-        if (fileFrame == null)
-        {
+    public void searchFinish() {
+        if (fileFrame == null) {
             return;
         }
-        fileFrame.post(new Runnable()
-        {
+        fileFrame.post(new Runnable() {
             /**
              *
              */
-            public void run()
-            {
+            public void run() {
                 setProgressBarIndeterminateVisibility(false);
                 // 一个都没有搜索到
-                if (directoryEntries.size() == 0)
-                {
-                    if (emptyView.getParent() == null)
-                    {
+                if (directoryEntries.size() == 0) {
+                    if (emptyView.getParent() == null) {
                         fileFrame.addView(emptyView);
                     }
-                    if (listType == LIST_TYPE_SEARCH)
-                    {
+                    if (listType == LIST_TYPE_SEARCH) {
                         emptyView.setText(R.string.sys_no_match);
-                    }
-                    else
-                    {
+                    } else {
                         emptyView.setText(R.string.file_message_empty_directory);
                     }
                     listView.setEmptyView(emptyView);
@@ -399,20 +347,15 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
 
     /**
      *
-     *
      */
-    public void actionEvent(int actionID, Object obj)
-    {
-        if (search != null)
-        {
+    public void actionEvent(int actionID, Object obj) {
+        if (search != null) {
             search.stopSearch();
         }
-        switch (actionID)
-        {
+        switch (actionID) {
             case EventConstant.SYS_SHOW_TOOLTIP:        // show tools tip
-                if (obj != null && obj instanceof String)
-                {
-                    toast.setText((String)obj);
+                if (obj != null && obj instanceof String) {
+                    toast.setText((String) obj);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
                 }
@@ -426,8 +369,8 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
                 Vector<Object> vector = new Vector<Object>();
                 vector.add(currentDirectory.getAbsolutePath());
                 new NewFolderDialog(control, this, dialogAction, vector,
-                    DialogConstant.CREATEFOLDER_DIALOG_ID,
-                    R.string.file_toolsbar_create_folder).show();
+                        DialogConstant.CREATEFOLDER_DIALOG_ID,
+                        R.string.file_toolsbar_create_folder).show();
                 break;
 
             case EventConstant.FILE_RENAME_ID:          // 重命名
@@ -447,19 +390,16 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
                 break;
 
             case EventConstant.FILE_PASTE_ID:           // 粘贴
-                if (currentDirectory.canWrite())
-                {
+                if (currentDirectory.canWrite()) {
                     filePaste();
                     bCopy = false;
                     bCut = false;
                     updateToolsbarStatus();
-                }
-                else
-                {
+                } else {
                     CharSequence message = getResources().getText(R.string.dialog_move_file_error);
                     new MessageDialog(control, this, dialogAction, null,
-                        DialogConstant.MESSAGE_DIALOG_ID,
-                        R.string.dialog_error_title, message.toString()).show();
+                            DialogConstant.MESSAGE_DIALOG_ID,
+                            R.string.dialog_error_title, message.toString()).show();
                 }
                 break;
 
@@ -480,8 +420,8 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
                 vectorSort.add(getSortType());
                 vectorSort.add(getAscending());
                 new SortDialog(control, this, dialogAction, vectorSort,
-                    DialogConstant.FILESORT_DIALOG_ID,
-                    R.string.file_toolsbar_sort, R.array.file_sort_items).show();
+                        DialogConstant.FILESORT_DIALOG_ID,
+                        R.string.file_toolsbar_sort, R.array.file_sort_items).show();
                 break;
 
             case EventConstant.FILE_MARK_STAR_ID:       // 标星
@@ -492,8 +432,7 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
                 break;
 
             case EventConstant.FILE_REFRESH_ID:         // 刷新
-                if (obj != null && (Boolean)obj)
-                {
+                if (obj != null && (Boolean) obj) {
                     clearSelectFileItem();
                 }
                 browseTo(currentDirectory);
@@ -501,7 +440,7 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
 
             case EventConstant.SYS_HELP_ID:             // 帮助
                 Intent intent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse(getResources().getString(R.string.sys_url_wxiwei)));
+                        Uri.parse(getResources().getString(R.string.sys_url_wxiwei)));
                 startActivity(intent);
                 break;
 
@@ -510,13 +449,11 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
                 break;
 
             case EventConstant.FILE_SORT_TYPE_ID:
-                if (obj != null)
-                {
+                if (obj != null) {
                     @SuppressWarnings("unchecked")
-                    Vector<Object> model = (Vector<Object>)obj;
-                    if (model != null)
-                    {
-                        setSortType((Integer)model.get(0), (Integer)model.get(1));
+                    Vector<Object> model = (Vector<Object>) obj;
+                    if (model != null) {
+                        setSortType((Integer) model.get(0), (Integer) model.get(1));
                         Collections.sort(directoryEntries, FileSort.instance());
                         fileAdapter.setListItems(directoryEntries);
                         listView.setAdapter(fileAdapter);
@@ -527,8 +464,8 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
             case EventConstant.FILE_CREATE_FOLDER_FAILED_ID:
                 CharSequence text = getResources().getText(R.string.file_toolsbar_create_folder);
                 new MessageDialog(control, this, dialogAction, null,
-                    DialogConstant.MESSAGE_DIALOG_ID,
-                    R.string.dialog_create_folder_error, text.toString()).show();
+                        DialogConstant.MESSAGE_DIALOG_ID,
+                        R.string.dialog_create_folder_error, text.toString()).show();
                 break;
 
             default:
@@ -541,10 +478,8 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
      *
      * @param aDirectory
      */
-    private void browseTo(File aDirectory)
-    {
-        if (aDirectory.isDirectory())
-        {
+    private void browseTo(File aDirectory) {
+        if (aDirectory.isDirectory()) {
             currentDirectory = aDirectory;
             listFiles(aDirectory.listFiles());
 
@@ -552,14 +487,11 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
             // update toolsbar
             updateToolsbarStatus();
 
-        }
-        else
-        {
-            if (FileKit.instance().isSupport(aDirectory.getName()))
-            {
+        } else {
+            if (FileKit.instance().isSupport(aDirectory.getName())) {
                 Intent intent = new Intent();
                 intent.setClass(this, AppActivity.class);
-                intent.putExtra(MainConstant.INTENT_FILED_FILE_PATH, aDirectory.getAbsolutePath());
+                intent.putExtra(Constant.KEY_SELECTED_FILE_URI, aDirectory.getAbsolutePath());
                 startActivityForResult(intent, RESULT_FIRST_USER);
             }
         }
@@ -567,65 +499,50 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
 
     /**
      * 获取文件列表
+     *
      * @param files
      */
-    private void listFiles(File[] files)
-    {
+    private void listFiles(File[] files) {
         directoryEntries.clear();
         selectFileItem.clear();
-        if (files != null)
-        {
+        if (files != null) {
             // current directory is "/mnt"
-            if (listType == LIST_TYPE_EXPLORE && isCurrentDirectory4mnt())
-            {
-                for (File currentFile : files)
-                {
-                    if (currentFile.isDirectory())
-                    {
+            if (listType == LIST_TYPE_EXPLORE && isCurrentDirectory4mnt()) {
+                for (File currentFile : files) {
+                    if (currentFile.isDirectory()) {
                         String fileName = currentFile.getName();
                         if (fileName.startsWith("sdcard")
-                            || fileName.startsWith("extern_sd")
-                            || fileName.startsWith("usbhost"))
-                        {
-                            FileItem item  = new FileItem(currentFile, FileItemAdapter.ICON_TYPE_FOLDER, 0);
+                                || fileName.startsWith("extern_sd")
+                                || fileName.startsWith("usbhost")) {
+                            FileItem item = new FileItem(currentFile, FileItemAdapter.ICON_TYPE_FOLDER, 0);
                             item.setShowCheckView(false);
                             directoryEntries.add(item);
                         }
                     }
                 }
-            }
-            else
-            {
+            } else {
                 // 获取标星文档
                 List<File> fileList = null;
-                if (listType != LIST_TYPE_MARKED)
-                {
+                if (listType != LIST_TYPE_MARKED) {
                     fileList = new ArrayList<File>();
                     dbService.get(MainConstant.TABLE_STAR, fileList);
                 }
 
-                for (File currentFile : files)
-                {
+                for (File currentFile : files) {
                     String fileName = currentFile.getName();
                     //
-                    if (fileName.startsWith("."))
-                    {
+                    if (fileName.startsWith(".")) {
                         continue;
-                    }
-                    else if (currentFile.isDirectory())
-                    {
+                    } else if (currentFile.isDirectory()) {
                         int iconType = FileItemAdapter.ICON_TYPE_FOLDER;
                         directoryEntries.add(new FileItem(currentFile, iconType, 0));
-                    }
-                    else
-                    {
+                    } else {
                         int iconType = fileAdapter.getFileIconType(fileName);
-                        if (iconType < 0)
-                        {
+                        if (iconType < 0) {
                             continue;
                         }
                         int marked = listType == LIST_TYPE_MARKED ||
-                            FileKit.instance().isFileMarked(currentFile.getAbsolutePath(), fileList) ? 1 : 0;
+                                FileKit.instance().isFileMarked(currentFile.getAbsolutePath(), fileList) ? 1 : 0;
 
                         directoryEntries.add(new FileItem(currentFile, iconType, marked));
                     }
@@ -633,16 +550,12 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
             }
         }
         // 非空文件夹
-        if (directoryEntries.size() > 0)
-        {
+        if (directoryEntries.size() > 0) {
             Collections.sort(directoryEntries, FileSort.instance());
             fileAdapter.setListItems(directoryEntries);
             listView.setAdapter(fileAdapter);
-        }
-        else
-        {
-            if (emptyView.getParent() == null)
-            {
+        } else {
+            if (emptyView.getParent() == null) {
                 fileFrame.addView(emptyView);
             }
             emptyView.setText(R.string.file_message_empty_directory);
@@ -654,13 +567,10 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
     /**
      * 从AppActivity 返回
      */
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RESULT_FIRST_USER)
-        {
-            if (resultCode == RESULT_OK)
-            {
+        if (requestCode == RESULT_FIRST_USER) {
+            if (resultCode == RESULT_OK) {
                 updateMarkStatus(data.getBooleanExtra(MainConstant.INTENT_FILED_MARK_STATUS, false) ? 1 : 0);
             }
         }
@@ -668,22 +578,18 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
 
     /**
      * 从AppActivity 返回时更新标星状态发生改变的文档
+     *
      * @param marked
      */
-    public void updateMarkStatus(int marked)
-    {
+    public void updateMarkStatus(int marked) {
         FileItem fileItem = directoryEntries.get(currentPos);
-        if (fileItem != null)
-        {
+        if (fileItem != null) {
             // 标星文档
-            if (listType == LIST_TYPE_MARKED && marked != 1)
-            {
+            if (listType == LIST_TYPE_MARKED && marked != 1) {
                 directoryEntries.remove(currentPos);
                 fileAdapter.notifyDataSetChanged();
                 updateToolsbarStatus();
-            }
-            else
-            {
+            } else {
                 fileItem.setFileStar(marked);
                 fileAdapter.notifyDataSetChanged();
             }
@@ -693,8 +599,7 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
     /**
      * 增加选择fileItem
      */
-    public void addSelectFileItem(FileItem fileItem)
-    {
+    public void addSelectFileItem(FileItem fileItem) {
         selectFileItem.add(fileItem);
         updateToolsbarStatus();
     }
@@ -702,8 +607,7 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
     /**
      * 删除选择的fileItem
      */
-    public void removeSelectFileItem(FileItem fileItem)
-    {
+    public void removeSelectFileItem(FileItem fileItem) {
         selectFileItem.remove(fileItem);
         updateToolsbarStatus();
     }
@@ -711,14 +615,11 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
     /**
      * 清空选择的fileItem
      */
-    public void clearSelectFileItem()
-    {
-        for (int i = 0; i < listView.getChildCount(); i++)
-        {
+    public void clearSelectFileItem() {
+        for (int i = 0; i < listView.getChildCount(); i++) {
             View v = listView.getChildAt(i);
-            if (v instanceof FileItemView)
-            {
-                ((FileItemView)v).setSelected(false);
+            if (v instanceof FileItemView) {
+                ((FileItemView) v).setSelected(false);
             }
         }
         selectFileItem.clear();
@@ -726,17 +627,15 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
     }
 
     /* ======= 以下为工具条相关操作 ========== */
+
     /**
      * 更新工具条的状态
      */
-    private void updateToolsbarStatus()
-    {
-        for (int i = 0; i < fileFrame.getChildCount(); i++)
-        {
+    private void updateToolsbarStatus() {
+        for (int i = 0; i < fileFrame.getChildCount(); i++) {
             View v = fileFrame.getChildAt(i);
-            if (v instanceof AToolsbar)
-            {
-                ((AToolsbar)v).updateStatus();
+            if (v instanceof AToolsbar) {
+                ((AToolsbar) v).updateStatus();
             }
         }
     }
@@ -744,80 +643,63 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
     /**
      * rename
      */
-    public void fileRename()
-    {
+    public void fileRename() {
         Vector<Object> renameVector = new Vector<Object>();
         renameVector.add(selectFileItem.get(0).getFile());
         new FileRenameDialog(control, this, dialogAction, renameVector,
-            DialogConstant.RENAMEFILE_DIALOG_ID,
-            R.string.file_toolsbar_rename).show();
+                DialogConstant.RENAMEFILE_DIALOG_ID,
+                R.string.file_toolsbar_rename).show();
     }
 
     /**
      * copy
      */
-    public void fileCopy()
-    {
+    public void fileCopy() {
         StringBuffer fileNames = new StringBuffer();
-        for (int i = 0; i < selectFileItem.size(); i++)
-        {
+        for (int i = 0; i < selectFileItem.size(); i++) {
             fileNames.append(selectFileItem.get(i).getFile().getAbsolutePath());
             fileNames.append(";");
         }
-        ClipboardManager clip = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipboardManager clip = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         clip.setText(fileNames);
     }
 
     /**
      * check paste file
      */
-    public void filePaste()
-    {
-        ClipboardManager clip = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+    public void filePaste() {
+        ClipboardManager clip = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         CharSequence fileNames = clip.getText();
         String[] fileNameList = fileNames.toString().split(";");
         boolean paste = true;
-        for (int i = 0; i < fileNameList.length; i++)
-        {
+        for (int i = 0; i < fileNameList.length; i++) {
             File tempFile = new File(fileNameList[i]);
-            if (tempFile.exists())
-            {
+            if (tempFile.exists()) {
                 if ((currentDirectory.getAbsolutePath() + File.separator).contains(
-                    (tempFile.getAbsolutePath() + File.separator)))
-                {
+                        (tempFile.getAbsolutePath() + File.separator))) {
                     paste = false;
                     break;
                 }
             }
         }
-        if (paste)
-        {
+        if (paste) {
             //Vector<Object> vector = new Vector<Object>();
-            for (int i = 0; i < fileNameList.length; i++)
-            {
+            for (int i = 0; i < fileNameList.length; i++) {
                 File tempFile = new File(fileNameList[i]);
-                if (tempFile.exists())
-                {
+                if (tempFile.exists()) {
                     File file;
                     String filePath = currentDirectory.getAbsolutePath();
-                    if (filePath.endsWith(File.separator))
-                    {
+                    if (filePath.endsWith(File.separator)) {
                         file = new File(filePath + tempFile.getName());
-                    }
-                    else
-                    {
+                    } else {
                         file = new File(filePath + File.separator + tempFile.getName());
                     }
-                    if (!file.exists())
-                    {
+                    if (!file.exists()) {
                         FileKit.instance().pasteFile(tempFile, file);
-                        if (bCut)
-                        {
+                        if (bCut) {
                             FileKit.instance().deleteFile(tempFile);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         Vector<Object> vector = new Vector<Object>();
                         vector.clear();
                         vector.add(bCut);
@@ -825,43 +707,38 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
                         vector.add(file);
                         CharSequence text = getResources().getText(R.string.dialog_name_error);
                         String message = text.toString().replace("%s", tempFile.getName())
-                            .concat(getResources().getText(R.string.dialog_overwrite_file).toString());
+                                .concat(getResources().getText(R.string.dialog_overwrite_file).toString());
                         new QuestionDialog(control, this, dialogAction, vector,
-                            DialogConstant.OVERWRITEFILE_DIALOG_ID,
-                            R.string.dialog_error_title, message).show();
+                                DialogConstant.OVERWRITEFILE_DIALOG_ID,
+                                R.string.dialog_error_title, message).show();
                     }
                 }
             }
             browseTo(currentDirectory);
-        }
-        else
-        {
+        } else {
             CharSequence message = getResources().getText(R.string.dialog_move_file_error);
             new MessageDialog(control, this, dialogAction, null,
-                DialogConstant.MESSAGE_DIALOG_ID,
-                R.string.dialog_error_title, message.toString()).show();
+                    DialogConstant.MESSAGE_DIALOG_ID,
+                    R.string.dialog_error_title, message.toString()).show();
         }
     }
 
     /**
      * delete file
      */
-    public void fileDelete()
-    {
+    public void fileDelete() {
         Vector<Object> vector = new Vector<Object>();
-        for (int i = 0; i < selectFileItem.size(); i++)
-        {
+        for (int i = 0; i < selectFileItem.size(); i++) {
             vector.add(selectFileItem.get(i).getFile());
         }
         CharSequence message = getResources().getText(R.string.dialog_delete_file);
         new QuestionDialog(control, this, dialogAction, vector,
-            DialogConstant.DELETEFILE_DIALOG_ID,
-            R.string.file_toolsbar_delete, message.toString()).show();
+                DialogConstant.DELETEFILE_DIALOG_ID,
+                R.string.file_toolsbar_delete, message.toString()).show();
     }
 
     /**
      * search intent
-     *
      */
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -873,11 +750,9 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
     /**
      * 发送邮件
      */
-    public void fileShare()
-    {
+    public void fileShare() {
         ArrayList<Uri> list = new ArrayList<Uri>();
-        for (int i = 0; i < selectFileItem.size(); i++)
-        {
+        for (int i = 0; i < selectFileItem.size(); i++) {
             list.add(Uri.fromFile(selectFileItem.get(i).getFile()));
         }
         Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
@@ -885,191 +760,161 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
         intent.setType("application/octet-stream");
         startActivity(Intent.createChooser(intent, getResources().getText(R.string.sys_share_title)));
     }
-    
+
     /**
      * 设置默认排序类型
      */
-    public void initSortType()
-    {
+    public void initSortType() {
         int type = FileSort.FILESORT_TYPE_DIR;
         String fileListType = getIntent().getStringExtra(MainConstant.INTENT_FILED_FILE_LIST_TYPE);
         // 最近打开的文档
-        if(MainConstant.INTENT_FILED_RECENT_FILES.equals(fileListType))
-        {
-            type = FileSort.FILESORT_TYPE_NULL;;
+        if (MainConstant.INTENT_FILED_RECENT_FILES.equals(fileListType)) {
+            type = FileSort.FILESORT_TYPE_NULL;
+            ;
         }
         FileSort.instance().setType(type, FileSort.FILESORT_ASCENDING);
     }
-    
+
     /**
-     * 
      * 获得排序类型
      */
-    public int getSortType()
-    {
+    public int getSortType() {
         // 标星
-        if (listType == LIST_TYPE_MARKED)
-        {
+        if (listType == LIST_TYPE_MARKED) {
             return fileSortType.getStarType();
         }
         // 最近打开的文档
-        else if(listType == LIST_TYPE_RECENTLY)
-        {
+        else if (listType == LIST_TYPE_RECENTLY) {
             return fileSortType.getRecentType();
         }
         // sdcard文档
-        else
-        {
+        else {
             return fileSortType.getSdcardType();
         }
     }
 
     /**
-     * 
      * 获得升降序
      */
-    public int getAscending()
-    {
+    public int getAscending() {
         // 标星
-        if (listType == LIST_TYPE_MARKED)
-        {
+        if (listType == LIST_TYPE_MARKED) {
             return fileSortType.getStarAscending();
         }
         // 最近打开的文档
-        else if(listType == LIST_TYPE_RECENTLY)
-        {
+        else if (listType == LIST_TYPE_RECENTLY) {
             return fileSortType.getRecentAscending();
         }
         // sdcard文档
-        else
-        {
+        else {
             return fileSortType.getSdcardAscending();
         }
     }
- 
+
     /**
      * set file sort type
+     *
      * @param typeName
      * @param childName
      */
-    public void setSortType(int type, int ascending)
-    {
+    public void setSortType(int type, int ascending) {
         // 标星
-        if (listType == LIST_TYPE_MARKED)
-        {
+        if (listType == LIST_TYPE_MARKED) {
             fileSortType.setStarType(type, ascending);
         }
         // 最近打开的文档
-        else if(listType == LIST_TYPE_RECENTLY)
-        {
+        else if (listType == LIST_TYPE_RECENTLY) {
             fileSortType.setRecentType(type, ascending);
         }
         // sdcard文档
-        else
-        {
+        else {
             fileSortType.setSdcardType(type, ascending);
         }
         FileSort.instance().setType(type, ascending);
     }
-  
+
     /**
      * file mark star
      */
-    public void fileMarkStar()
-    {        
+    public void fileMarkStar() {
         FileItem fileItem = selectFileItem.get(0);
-        if (fileItem.getFileStar() == 1)
-        {
+        if (fileItem.getFileStar() == 1) {
             fileItem.setFileStar(0);
             dbService.deleteItem(MainConstant.TABLE_STAR, fileItem.getFile().getAbsolutePath());
-        }
-        else
-        {
+        } else {
             fileItem.setFileStar(1);
             dbService.insertStarFiles(MainConstant.TABLE_STAR, fileItem.getFile().getAbsolutePath());
         }
         fileAdapter.notifyDataSetChanged();
     }
-    
+
     /**
-     * 
-     */
-    public boolean isCut()
-    {
-        return bCut;
-    }
-    /**
-     * 
-     */
-    public boolean isCopy()
-    {
-        return bCopy;
-    }
-    
-    /**
-     * 
-     */
-    public byte getListType()
-    {
-        return listType;
-    }
-    
-    /**
-     * 
-     */
-    public List<FileItem> getSelectFileItem()
-    {
-        return selectFileItem;
-    }
-    
-    /**
-     * 
-     */
-    public boolean isCurrentDirectory4mnt()
-    {
-        return listType == LIST_TYPE_EXPLORE 
-            && currentDirectory != null 
-            && currentDirectory.getAbsolutePath().equals("/mnt");
-    }
-    
-    /**
-     * 
-     */
-    public int getCurrentDirectoryFileSize()
-    {
-        return directoryEntries.size();
-    }
-    
-    /**
-     * 
      *
      */
-    public void dispose()
-    {
+    public boolean isCut() {
+        return bCut;
+    }
+
+    /**
+     *
+     */
+    public boolean isCopy() {
+        return bCopy;
+    }
+
+    /**
+     *
+     */
+    public byte getListType() {
+        return listType;
+    }
+
+    /**
+     *
+     */
+    public List<FileItem> getSelectFileItem() {
+        return selectFileItem;
+    }
+
+    /**
+     *
+     */
+    public boolean isCurrentDirectory4mnt() {
+        return listType == LIST_TYPE_EXPLORE
+                && currentDirectory != null
+                && currentDirectory.getAbsolutePath().equals("/mnt");
+    }
+
+    /**
+     *
+     */
+    public int getCurrentDirectoryFileSize() {
+        return directoryEntries.size();
+    }
+
+    /**
+     *
+     */
+    public void dispose() {
         currentDirectory = null;
         sdcardPath = null;
-        if (directoryEntries != null)
-        {
+        if (directoryEntries != null) {
             directoryEntries.clear();
             directoryEntries = null;
         }
-        if (selectFileItem != null)
-        {
+        if (selectFileItem != null) {
             selectFileItem.clear();
             selectFileItem = null;
         }
-        if (fileAdapter != null)
-        {
+        if (fileAdapter != null) {
             fileAdapter.dispose();
-            fileAdapter = null;   
+            fileAdapter = null;
         }
         int count = listView.getChildCount();
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             View v = listView.getChildAt(i);
-            if (v instanceof FileItemView)
-            {
-                ((FileItemView)v).dispose();
+            if (v instanceof FileItemView) {
+                ((FileItemView) v).dispose();
             }
         }
         listView = null;
@@ -1077,44 +922,37 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
         onItemClickListener = null;
         onItemLongClickListener = null;
         emptyView = null;
-        
+
         count = fileFrame.getChildCount();
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             View v = fileFrame.getChildAt(i);
-            if (v instanceof AToolsbar)
-            {
-                ((AToolsbar)v).dispose();
+            if (v instanceof AToolsbar) {
+                ((AToolsbar) v).dispose();
             }
         }
         fileFrame = null;
-        if (dialogAction != null)
-        {
+        if (dialogAction != null) {
             dialogAction.dispose();
             dialogAction = null;
         }
-        if (fileSortType != null)
-        {
+        if (fileSortType != null) {
             fileSortType.dispos();
             fileSortType = null;
         }
-        if (dbService != null)
-        {
+        if (dbService != null) {
             dbService.dispose();
             dbService = null;
         }
-        if (search != null)
-        {
+        if (search != null) {
             search.dispose();
             search = null;
         }
-        if (control != null)
-        {
+        if (control != null) {
             control.dispose();
             control = null;
         }
     }
-    
+
     // list byte
     private byte listType;
     //
@@ -1158,5 +996,5 @@ public class FileListActivity extends AppCompatActivity implements ISearchResult
     //
     private DBService dbService;
     //
-    private Search search;    
+    private Search search;
 }

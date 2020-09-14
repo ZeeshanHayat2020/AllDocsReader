@@ -100,7 +100,7 @@ public class PictureConverterMgr
     		 Bitmap sBitmap = null;
              if(type == Picture.WMF)
              {
-                 int ret = PDFLib.getPDFLib().wmf2Jpg(sourPath, destPath, picWidth, picHeight);    		     
+//                 int ret = PDFLib.getPDFLib().wmf2Jpg(sourPath, destPath, picWidth, picHeight);
                  sBitmap = BitmapFactory.decodeFile(destPath);
              }
              else if(type == Picture.EMF)

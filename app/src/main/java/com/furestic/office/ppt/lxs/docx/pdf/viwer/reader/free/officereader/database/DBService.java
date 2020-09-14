@@ -54,11 +54,11 @@ public class DBService
             if (db != null)
             {
                 db.execSQL("CREATE TABLE IF NOT EXISTS " + MainConstant.TABLE_RECENT + 
-                    " ('name' VARCHAR(30))");
+                    " ('name' VARCHAR(50))");
                 db.execSQL("CREATE TABLE IF NOT EXISTS " + MainConstant.TABLE_STAR + 
-                    " ('name' VARCHAR(30))");
+                    " ('name' VARCHAR(50))");
                 db.execSQL("CREATE TABLE IF NOT EXISTS " + MainConstant.TABLE_SETTING + 
-                    " ('count' VARCHAR(30))");
+                    " ('count' VARCHAR(50))");
             }
         }
     }

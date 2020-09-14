@@ -60,18 +60,18 @@ public class DocumentFactory implements Serializable
         String documentFactoryClassName;
         try
         {
-            documentFactoryClassName = System.getProperty("com.example.documentreader.fc.dom4j.factory",
-                "com.example.documentreader.fc.dom4j.DocumentFactory");
+            documentFactoryClassName = System.getProperty("com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.fc.dom4j.factory",
+                "com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.fc.dom4j.DocumentFactory");
         }
         catch(Exception e)
         {
-            documentFactoryClassName = "com.example.documentreader.fc.dom4j.DocumentFactory";
+            documentFactoryClassName = "com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.fc.dom4j.DocumentFactory";
         }
 
         try
         {
             String singletonClass = System.getProperty(
-                "com.example.documentreader.fc.dom4j.DocumentFactory.singleton.strategy", "com.example.documentreader.fc.dom4j.util.SimpleSingleton");
+                "com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.fc.dom4j.DocumentFactory.singleton.strategy", "com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.fc.dom4j.fc.dom4j.util.SimpleSingleton");
             Class clazz = Class.forName(singletonClass);
             result = (SingletonStrategy)clazz.newInstance();
         }

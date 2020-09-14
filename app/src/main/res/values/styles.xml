@@ -11,8 +11,8 @@
 
     <style name="AppTheme.TitleBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/color_cardBg_allDoc_upper</item>
+        <item name="colorPrimaryDark">@color/color_cardBg_allDoc_upper</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 

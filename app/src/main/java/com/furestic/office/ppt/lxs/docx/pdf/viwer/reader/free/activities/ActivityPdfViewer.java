@@ -35,6 +35,7 @@ import com.furestic.alldocument.office.ppt.lxs.docx.pdf.viwer.reader.free.R;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.adapters.PdfViewPager2Adapter;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.constant.Constant;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.dialogboxes.NumberPickerDialog;
+import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.fc.pdf.PDFReader;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.fc.util.IOUtils;
 import com.google.android.gms.ads.AdListener;
 import com.lukelorusso.verticalseekbar.VerticalSeekBar;
@@ -49,6 +50,7 @@ import java.util.ArrayList;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
+
 
 public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnValueChangeListener {
 
@@ -85,6 +87,7 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
         intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
+        if (intent!=null){
         if (Intent.ACTION_VIEW.equals(action) && type != null) {
             if ("application/pdf" .equals(type)) {
                 Uri tempUri = intent.getData();
@@ -94,14 +97,17 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
                 Log.d(TAG, "onCreate: MIME TYPE:" + getMimeType(this, tempUri));
             }
         } else {
-            if (intent != null) {
+
                 fileUri = intent.getStringExtra(Constant.KEY_SELECTED_FILE_URI);
                 fileName = intent.getStringExtra(Constant.KEY_SELECTED_FILE_NAME);
-            }
+
         }
-        initViews();
-        setUpToolBar();
-        new LoadFiles().execute();
+
+            initViews();
+            setUpToolBar();
+            new LoadFiles().execute();
+        }
+
     }
 
     @Override
@@ -274,7 +280,7 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
         viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         viewPager.setCurrentItem(0);
         prevBtn.setEnabled(currentPageIndex > 0);
-        nextBtn.setEnabled(currentPageIndex + 1 < totalPages);
+        nextBtn.setEnabled(currentPageIndex  < totalPages);
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -292,7 +298,7 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
             public void onPageScrollStateChanged(int state) {
                 currentPageIndex = viewPager.getCurrentItem();
                 prevBtn.setEnabled(currentPageIndex > 0);
-                nextBtn.setEnabled(currentPageIndex + 1 < totalPages);
+                nextBtn.setEnabled(currentPageIndex < totalPages);
                 updateScrollerValue(currentPageIndex);
                 isSwipe = true;
                 super.onPageScrollStateChanged(state);
@@ -364,7 +370,7 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
     private void updateViewPager(int currentPageIndex) {
         viewPager.setCurrentItem(currentPageIndex);
         prevBtn.setEnabled(currentPageIndex > 0);
-        nextBtn.setEnabled(currentPageIndex + 1 < totalPages);
+        nextBtn.setEnabled(currentPageIndex  < totalPages);
         updatePageCountTV(currentPageIndex);
     }
 

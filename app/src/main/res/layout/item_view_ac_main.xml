@@ -3,19 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/_100sdp"
     android:layout_height="@dimen/_105sdp"
+    android:layout_marginBottom="@dimen/_2sdp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="@dimen/_10sdp"
-    android:layout_marginBottom="@dimen/_2sdp"
-    >
+    app:cardCornerRadius="@dimen/_10sdp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/itemView_acMain_cardView"
         android:layout_width="@dimen/_80sdp"
         android:layout_height="@dimen/_80sdp"
-        android:layout_centerInParent="true"
         android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
         android:elevation="@dimen/_4sdp"
         app:cardBackgroundColor="@color/colorPrimaryDark"
         app:cardCornerRadius="@dimen/_25sdp">
@@ -43,6 +42,7 @@
         android:layout_below="@+id/itemView_acMain_cardView"
         android:layout_centerInParent="true"
         android:layout_marginTop="@dimen/_2sdp"
+        android:maxLines="1"
         android:text="All Document"
         android:textColor="@color/colorBLack"
         android:textSize="15sp" />

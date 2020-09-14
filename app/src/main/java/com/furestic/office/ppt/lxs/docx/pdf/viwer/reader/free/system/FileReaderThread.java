@@ -40,8 +40,7 @@ public class FileReaderThread extends Thread
 {
    
     /**
-     * 
-     * @param activity
+     *
      * @param handler
      * @param filePath
      * @param encoding

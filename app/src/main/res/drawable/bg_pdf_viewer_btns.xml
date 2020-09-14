@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/bg_buttons" />
+            <corners android:radius="@dimen/_15sdp" />
+            <size
+                android:height="@dimen/_30sdp"
+                android:width="@dimen/_150sdp"
+                />
+        </shape>
+
+    </item>
+</selector>

@@ -38,7 +38,7 @@ public class VectorgraphConverterThread extends Thread
     
     public void run() 
     {
-    	converterMgr.convertWMF_EMF(type, sourPath, destPath, picWidth, picHeight, false);
+//    	converterMgr.convertWMF_EMF(type, sourPath, destPath, picWidth, picHeight, false);
     }   
     
     

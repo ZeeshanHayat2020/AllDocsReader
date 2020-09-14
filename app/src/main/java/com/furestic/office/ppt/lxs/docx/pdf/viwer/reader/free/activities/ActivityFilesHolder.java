@@ -851,7 +851,8 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith(".pdf") || files[i].getName().endsWith(".doc")
                             || files[i].getName().endsWith(".docx") || files[i].getName().endsWith(".ppt") || files[i].getName().endsWith(".xlsx") || files[i].getName().endsWith(".xls") ||
-                            files[i].getName().endsWith(".ppt") || files[i].getName().endsWith(".pptx") || files[i].getName().endsWith(".txt") || files[i].getName().endsWith(".xml")) {
+                            files[i].getName().endsWith(".html") || files[i].getName().endsWith(".pptx") || files[i].getName().endsWith(".txt") || files[i].getName().endsWith(".xml")
+                            || files[i].getName().endsWith(".rtf")) {
                         if (!itemsList.contains(files[i])) {
                             itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
                         }

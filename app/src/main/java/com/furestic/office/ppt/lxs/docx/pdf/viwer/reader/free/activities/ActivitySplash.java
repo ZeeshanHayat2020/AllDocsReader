@@ -38,7 +38,7 @@ public class ActivitySplash extends ActivityBase {
             Drawable background = activity.getResources().getDrawable(R.drawable.ic_main_bg);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(activity.getResources().getColor(android.R.color.transparent));
-            window.setNavigationBarColor(activity.getResources().getColor(android.R.color.transparent));
+            window.setNavigationBarColor(activity.getResources().getColor(R.color.colorSplashNav));
             window.setBackgroundDrawable(background);
         }
     }
