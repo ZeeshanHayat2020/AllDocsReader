@@ -1,4 +1,4 @@
-package com.example.alldocumentreader;
+package com.furestic.alldocument.office.ppt.lxs.docx.pdf.viwer.reader.free;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.alldocumentreader", appContext.getPackageName());
+        assertEquals("com.furestic.alldocument.office.ppt.lxs.docx.pdf.viwer.reader.free", appContext.getPackageName());
     }
 }

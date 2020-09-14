@@ -15,6 +15,7 @@
         android:icon="@drawable/ic_search"
         android:title="@string/search"
         app:showAsAction="always"
-        app:actionViewClass="android.widget.SearchView" />
+        app:actionViewClass="android.widget.SearchView"
+        />
 
 </menu>

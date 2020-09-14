@@ -1,4 +1,4 @@
-package com.example.alldocumentreader;
+package com.furestic.alldocument.office.ppt.lxs.docx.pdf.viwer.reader.free;
 
 import org.junit.Test;
 

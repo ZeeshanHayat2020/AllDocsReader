@@ -5,7 +5,7 @@ android {
     buildToolsVersion "30.0.1"
 
     defaultConfig {
-        applicationId "com.example.alldocumentreader"
+        applicationId "com.furestic.alldocument.office.ppt.lxs.docx.pdf.viwer.reader.free"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -14,9 +14,23 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
+    bundle {
+        density {
+            // Different APKs are generated for devices with different screen densities; true by default.
+            enableSplit false
+        }
+        language {
+            // This is disabled so that the App Bundle does NOT split the APK for each language.
+            // We're gonna use the same APK for all languages.
+            enableSplit false
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -46,5 +60,4 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:19.3.0'
 
     implementation 'com.anjlab.android.iab.v3:library:1.0.44'
-
 }

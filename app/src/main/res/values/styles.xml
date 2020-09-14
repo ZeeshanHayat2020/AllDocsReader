@@ -8,6 +8,7 @@
         <item name="android:statusBarColor">@color/colorBLack</item>
     </style>
 
+
     <style name="AppTheme.TitleBar" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -50,4 +51,6 @@
             @style/title_background_drawable_horizontal
         </item>
     </style>
+
+
 </resources>

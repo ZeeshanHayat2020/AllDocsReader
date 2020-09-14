@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_main_bg"
-    tools:context=".activities.ActivityLanguage">
+    tools:context="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityLanguage">
 
     <include
         android:id="@+id/acLanguage_toolbar"

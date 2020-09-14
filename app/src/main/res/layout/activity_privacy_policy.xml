@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_main_bg"
-    tools:context=".activities.ActivityPrivacyPolicy">
+    tools:context="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityPrivacyPolicy">
     <include
         android:id="@+id/acPrivacyPolicy_toolbar"
         layout="@layout/toolbar_custom" />
@@ -46,10 +46,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/privacy_policy_heading"
-                android:layout_margin="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:text="@string/headingPolicy"
                 android:textColor="@color/colorBLack"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                />
+            <TextView
+                android:id="@+id/acPrivacyPolicy_linkView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/acPrivacyPolicy_textView"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:textSize="16sp"
+                android:autoLink="web"
+                android:linksClickable="true"
+                />
+
 
         </RelativeLayout>
 

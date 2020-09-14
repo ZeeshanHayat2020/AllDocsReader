@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_main_bg"
-    tools:context=".activities.MainActivity">
+    tools:context="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.MainActivity">
 
     <include
         android:id="@+id/acMain_toolbar"
@@ -69,6 +69,7 @@
                     app:cardCornerRadius="@dimen/_15sdp">
 
                     <RelativeLayout
+                        android:id="@+id/acMain_filePicker"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 

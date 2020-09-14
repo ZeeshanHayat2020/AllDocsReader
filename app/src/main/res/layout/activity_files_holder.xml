@@ -5,16 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_main_bg"
-    tools:context=".activities.ActivityFilesHolder">
+    tools:context="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityFilesHolder">
 
     <include
         android:id="@+id/acFilesHolder_toolbar"
         layout="@layout/toolbar_custom" />
-
+    <FrameLayout
+        android:id="@+id/acFilesHolder_bannerContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/acFilesHolder_toolbar"
+        android:layout_marginTop="@dimen/_2sdp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/acFilesHolder_toolbar"
+        android:layout_below="@+id/acFilesHolder_bannerContainer"
         android:layout_centerInParent="true"
         android:layout_marginLeft="@dimen/_4sdp"
         android:layout_marginTop="@dimen/_10sdp"

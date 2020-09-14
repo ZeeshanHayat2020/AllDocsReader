@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/_2sdp"
     android:paddingRight="@dimen/_2sdp"
     >
-    <com.example.alldocumentreader.customviews.TouchImageView
+    <com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.customviews.TouchImageView
         android:id="@+id/item_view_viewpager_iv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,35 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.alldocumentreader">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.furestic.alldocument.office.ppt.lxs.docx.pdf.viwer.reader.free">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_sp_mid"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".activities.ActivityPrivacyPolicy">
+        android:theme="@style/AppTheme"
+        tools:ignore="UnusedAttribute"
+        >
+        <activity android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityPrivacyPolicy">
 
         </activity>
-        <activity android:name=".activities.ActivityLanguage" />
-        <activity android:name=".activities.ActivitySplash">
+        <activity android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityLanguage" />
+        <activity android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivitySplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ActivityIntroSLides">
+        <activity android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityIntroSLides">
 
         </activity>
-        <activity android:name=".activities.ActivityPdfViewer">
+        <activity android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityPdfViewer">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -42,10 +45,11 @@
                 <data android:mimeType="application/pdf" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ActivityFilesHolder" />
-        <activity android:name=".activities.MainActivity" />
         <activity
-            android:name=".officereader.SysActivity"
+            android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityFilesHolder"/>
+        <activity android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.MainActivity" />
+        <activity
+            android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.officereader.SysActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.TitleBar">
             <intent-filter>
@@ -62,7 +66,7 @@
                 android:value=".FileListActivity" />
         </activity>
         <activity
-            android:name=".officereader.FileListActivity"
+            android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.officereader.FileListActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/sys_name"
             android:launchMode="singleTop"
@@ -89,7 +93,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".officereader.AppActivity"
+            android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.officereader.AppActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/sys_name"
             android:theme="@style/AppTheme.TitleBar">
@@ -118,7 +122,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".officereader.SettingActivity"
+            android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.officereader.SettingActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/sys_name"
             android:theme="@style/AppTheme.TitleBar">
