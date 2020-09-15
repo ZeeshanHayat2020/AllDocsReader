@@ -61,7 +61,6 @@ public class ActivityFilesHolder extends ActivityBase {
 
     private Intent intent;
     private String checkFileFormat;
-
     public boolean isContextualMenuOpen = false;
     public boolean isSelectAll = false;
     private ArrayList<ModelFilesHolder> multiSelectedItemList;
@@ -716,7 +715,6 @@ public class ActivityFilesHolder extends ActivityBase {
 
     private void sheetFiles(File parentFile) {
 
-        int id = R.drawable.ic_svg_file_type_pdf;
         File[] files = parentFile.listFiles();
 
         if (files != null) {
@@ -735,7 +733,6 @@ public class ActivityFilesHolder extends ActivityBase {
         }
 
     }
-
 
     private void pptFiles(File parentFile) {
         int id = R.drawable.ic_svg_file_type_pdf;
@@ -1005,7 +1002,6 @@ public class ActivityFilesHolder extends ActivityBase {
 
 
     }
-
 
     @Override
     public void onRequestPermissionsResult(final int requestCode,

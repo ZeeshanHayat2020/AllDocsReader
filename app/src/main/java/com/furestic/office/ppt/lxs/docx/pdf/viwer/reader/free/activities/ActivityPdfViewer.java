@@ -2,11 +2,13 @@ package com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -46,6 +48,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import kotlin.Unit;
@@ -79,35 +83,63 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
     private String fileUri;
     private String fileName;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf_viewer);
         reqNewInterstitial(this);
+        initViews();
         intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
-        if (intent!=null){
-        if (Intent.ACTION_VIEW.equals(action) && type != null) {
-            if ("application/pdf" .equals(type)) {
-                Uri tempUri = intent.getData();
-                fileUri = String.valueOf(Uri.parse(getFilePathFromExternalAppsURI(ActivityPdfViewer.this, tempUri)));
+        if (intent != null) {
+            if (Intent.ACTION_VIEW.equals(action) && type != null) {
+                if ("application/pdf".equals(type)) {
+                    Uri tempUri = intent.getData();
+                    fileUri = String.valueOf(Uri.parse(getFilePathFromExternalAppsURI(ActivityPdfViewer.this, tempUri)));
 
-                Log.d(TAG, "onCreate: URI FILE:" + fileUri);
-                Log.d(TAG, "onCreate: MIME TYPE:" + getMimeType(this, tempUri));
-            }
-        } else {
+                    Log.d(TAG, "onCreate: URI FILE:" + fileUri);
+                    Log.d(TAG, "onCreate: MIME TYPE:" + getMimeType(this, tempUri));
+                }
+            } else {
 
                 fileUri = intent.getStringExtra(Constant.KEY_SELECTED_FILE_URI);
                 fileName = intent.getStringExtra(Constant.KEY_SELECTED_FILE_NAME);
 
-        }
-
-            initViews();
+            }
             setUpToolBar();
-            new LoadFiles().execute();
+            if (!isProtected(fileUri)) {
+                new LoadFiles().execute();
+            } else {
+                dialogError("Protected", "File is password protected. App cannot open this file.");
+                Log.d(TAG, "onCreate: File is protected:");
+            }
+        } else {
+            dialogError("Error", "Failed to load file.");
         }
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean isProtected(String path) {
+        Boolean isEncrypted = Boolean.FALSE;
+        try {
+            byte[] byteArray = Files.readAllBytes(Paths.get(path));
+            //Convert the binary bytes to String. Caution, it can result in loss of data. But for our purposes, we are simply interested in the String portion of the binary pdf data. So we should be fine.
+            String pdfContent = new String(byteArray);
+            int lastTrailerIndex = pdfContent.lastIndexOf("trailer");
+            if (lastTrailerIndex >= 0 && lastTrailerIndex < pdfContent.length()) {
+                String newString = pdfContent.substring(lastTrailerIndex, pdfContent.length());
+                int firstEOFIndex = newString.indexOf("%%EOF");
+                String trailer = newString.substring(0, firstEOFIndex);
+                if (trailer.contains("/Encrypt"))
+                    isEncrypted = Boolean.TRUE;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            //Do nothing
+        }
+        return isEncrypted;
     }
 
     @Override
@@ -280,7 +312,7 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
         viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         viewPager.setCurrentItem(0);
         prevBtn.setEnabled(currentPageIndex > 0);
-        nextBtn.setEnabled(currentPageIndex  < totalPages);
+        nextBtn.setEnabled(currentPageIndex < totalPages);
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -317,8 +349,9 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
             Bitmap bitmap = Bitmap.createBitmap(currentPage.getWidth(), currentPage.getHeight(), Bitmap.Config.ARGB_8888);
             currentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
             pdfImagesList.add(bitmap);
-            Log.d(TAG, "renderPage: Page Num" + i);
+//            Log.d(TAG, "renderPage: Page Num" + i);
         }
+
     }
 
     private void setUpVerticalSeekBar(int maxValue) {
@@ -370,7 +403,7 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
     private void updateViewPager(int currentPageIndex) {
         viewPager.setCurrentItem(currentPageIndex);
         prevBtn.setEnabled(currentPageIndex > 0);
-        nextBtn.setEnabled(currentPageIndex  < totalPages);
+        nextBtn.setEnabled(currentPageIndex < totalPages);
         updatePageCountTV(currentPageIndex);
     }
 
@@ -447,6 +480,19 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
         }
     };
 
+    private void dialogError(String title, String message) {
+        new AlertDialog.Builder(ActivityPdfViewer.this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(R.string.sys_button_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .show();
+    }
+
     @Override
     public void onValueChange(NumberPicker numberPicker, int i, int i1) {
 
@@ -469,6 +515,7 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
         @Override
         protected Void doInBackground(Void... voids) {
             initRenderer();
+            getBitmapsFromRenderer();
             return null;
         }
 
@@ -476,8 +523,7 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            getBitmapsFromRenderer();
-            loadingBar.setVisibility(View.INVISIBLE);
+          loadingBar.setVisibility(View.INVISIBLE);
             if (pdfImagesList != null) {
                 tv_pageCount.setVisibility(View.VISIBLE);
                 initViewPager();
@@ -495,14 +541,17 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
             if (currentPage != null) {
                 currentPage.close();
             }
+            if (parcelFileDescriptor != null) {
+                try {
 
-            try {
-                parcelFileDescriptor.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+                    parcelFileDescriptor.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-
-            renderer.close();
+            if (renderer != null) {
+                renderer.close();
+            }
         }
     }
 }

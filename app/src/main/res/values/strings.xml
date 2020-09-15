@@ -3,15 +3,15 @@
 <!--    Bundle :com.furestic.alldocument.office.ppt.lxs.docx.pdf.viwer.reader.free-->
 
     <!--Real Ads-->
- <!--   <string name="app_Id" translatable="false">ca-app-pub-4609608157471602~4861213390</string>
+    <string name="app_Id" translatable="false">ca-app-pub-4609608157471602~4861213390</string>
     <string name="banner_Id" translatable="false">ca-app-pub-4609608157471602/6209760565</string>
     <string name="interstitial_Id" translatable="false">ca-app-pub-4609608157471602/2199391034</string>
-    <string name="nativeAd_Id" translatable="false">ca-app-pub-4609608157471602/4896678898</string>-->
+    <string name="nativeAd_Id" translatable="false">ca-app-pub-4609608157471602/4896678898</string>
 
     <!--Test Adds-->
-    <string name="app_Id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+  <!--  <string name="app_Id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
     <string name="banner_Id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="interstitial_Id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="interstitial_Id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>-->
 
     <string name="publickkey" translatable="false">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi0zjYfVvh/oh2CXi1l8vvP4XgMt5+6/DJmTM5dU9CIOU15jVQQonwL35QO8D0lYUENu983gteBM8isPAcNvc3A7vkJALVU5JyC0QHlmTiqPFtFU3GYOKSZ4JbvkdLawvnY6uti4Bs5Y+jDkJhesgWnaB8PUMv4ukOQWabNM2GSfM6wlppA90Xy+735O7xW9IoRTbfNevMfLW+anRIPGQlRlX3yaioUK8rpegVZF05TVOEW574Vn22pHJdS9ursy1MfM7QemJd/phZ5A6Ih4ugveMOP90FfygK9HljjjeVdCj7UVHhCVpnsvaRCvBeVdJrwqvsH3WM0gJWb9R3gp7DwIDAQAB</string>
     <string name="producti_id" translatable="false">:com.furestic.alldocument.noAd.item.purchased</string>
@@ -206,6 +206,8 @@
     <string name="cancel">Cancel</string>
     <string name="numberPickerDiaolgeTitle">Choose Page</string>
     <string name="chng_language">Language</string>
+    <string name="pass_protected" translatable="false">Protected</string>
+    <string name="protected_msg" translatable="false">File is password protected. App cannot open this file.</string>
 
 
 </resources>

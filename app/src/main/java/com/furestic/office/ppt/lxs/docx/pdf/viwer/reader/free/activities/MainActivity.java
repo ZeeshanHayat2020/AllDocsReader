@@ -451,6 +451,7 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
             case 7: {
                 intentToFilesHolder(getString(R.string.sheet_files));
             }
+            break;
             case 8: {
                 intentToFilesHolder(getString(R.string.rtf_files));
             }
