@@ -9,7 +9,7 @@
     <string name="nativeAd_Id" translatable="false">ca-app-pub-4609608157471602/4896678898</string>
 
     <!--Test Adds-->
-  <!--  <string name="app_Id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <!--<string name="app_Id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
     <string name="banner_Id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
     <string name="interstitial_Id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>-->
 

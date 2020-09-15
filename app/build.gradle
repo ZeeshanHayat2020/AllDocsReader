@@ -18,7 +18,7 @@ android {
     bundle {
         density {
             // Different APKs are generated for devices with different screen densities; true by default.
-            enableSplit false
+            enableSplit true
         }
         language {
             // This is disabled so that the App Bundle does NOT split the APK for each language.

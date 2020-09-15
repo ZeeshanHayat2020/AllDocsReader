@@ -82,6 +82,7 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
     private Intent intent;
     private String fileUri;
     private String fileName;
+    private boolean isSecurityIssue = false;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -109,12 +110,18 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
 
             }
             setUpToolBar();
-            if (!isProtected(fileUri)) {
-                new LoadFiles().execute();
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                if (!isProtected(fileUri)) {
+                    new LoadFiles().execute();
+                } else {
+                    dialogError("Protected", "File is password protected. App cannot open this file.");
+                    Log.d(TAG, "onCreate: File is protected:");
+                }
             } else {
-                dialogError("Protected", "File is password protected. App cannot open this file.");
-                Log.d(TAG, "onCreate: File is protected:");
+                new LoadFiles().execute();
             }
+
+
         } else {
             dialogError("Error", "Failed to load file.");
         }
@@ -124,7 +131,10 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
     private boolean isProtected(String path) {
         Boolean isEncrypted = Boolean.FALSE;
         try {
-            byte[] byteArray = Files.readAllBytes(Paths.get(path));
+            byte[] byteArray = new byte[0];
+
+            byteArray = Files.readAllBytes(Paths.get(path));
+
             //Convert the binary bytes to String. Caution, it can result in loss of data. But for our purposes, we are simply interested in the String portion of the binary pdf data. So we should be fine.
             String pdfContent = new String(byteArray);
             int lastTrailerIndex = pdfContent.lastIndexOf("trailer");
@@ -300,6 +310,18 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
             Log.d(TAG, "initRenderer: Error File Not Found");
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (SecurityException se) {
+            Log.d(TAG, "initRenderer: Error Security.", se);
+            if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        isSecurityIssue = true;
+                        dialogError("Protected", "File is password protected. App cannot open this file.");
+                    }
+                });
+            }
+
         }
 
     }
@@ -341,15 +363,19 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
 
     private void getBitmapsFromRenderer() {
         pdfImagesList = new ArrayList<>();
-        for (int i = 0; i < renderer.getPageCount(); i++) {
-            if (currentPage != null) {
-                currentPage.close();
-            }
-            currentPage = renderer.openPage(i);
-            Bitmap bitmap = Bitmap.createBitmap(currentPage.getWidth(), currentPage.getHeight(), Bitmap.Config.ARGB_8888);
-            currentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
-            pdfImagesList.add(bitmap);
+        if (renderer != null) {
+            for (int i = 0; i < renderer.getPageCount(); i++) {
+                if (currentPage != null) {
+                    currentPage.close();
+                }
+                currentPage = renderer.openPage(i);
+                Bitmap bitmap = Bitmap.createBitmap(currentPage.getWidth(), currentPage.getHeight(), Bitmap.Config.ARGB_8888);
+                currentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+                pdfImagesList.add(bitmap);
 //            Log.d(TAG, "renderPage: Page Num" + i);
+            }
+        } else {
+            dialogError("Error", "Failed to load file.");
         }
 
     }
@@ -484,6 +510,7 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
         new AlertDialog.Builder(ActivityPdfViewer.this)
                 .setTitle(title)
                 .setMessage(message)
+                .setCancelable(false)
                 .setPositiveButton(R.string.sys_button_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -523,12 +550,14 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-          loadingBar.setVisibility(View.INVISIBLE);
-            if (pdfImagesList != null) {
-                tv_pageCount.setVisibility(View.VISIBLE);
-                initViewPager();
-                updatePageCountTV(0);
-                setUpVerticalSeekBar(totalPages);
+            if (!isSecurityIssue) {
+                loadingBar.setVisibility(View.INVISIBLE);
+                if (pdfImagesList != null) {
+                    tv_pageCount.setVisibility(View.VISIBLE);
+                    initViewPager();
+                    updatePageCountTV(0);
+                    setUpVerticalSeekBar(totalPages);
+                }
             }
 
         }
