@@ -83,6 +83,7 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
     private String fileUri;
     private String fileName;
     private boolean isSecurityIssue = false;
+    private LoadFiles loadFilesTask;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -112,13 +113,13 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
             setUpToolBar();
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 if (!isProtected(fileUri)) {
-                    new LoadFiles().execute();
+                    loadFilesTask.execute();
                 } else {
                     dialogError("Protected", "File is password protected. App cannot open this file.");
                     Log.d(TAG, "onCreate: File is protected:");
                 }
             } else {
-                new LoadFiles().execute();
+                loadFilesTask.execute();
             }
 
 
@@ -255,6 +256,7 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
     }
 
     private void initViews() {
+        loadFilesTask = new LoadFiles();
         toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.acPdfViewer_toolbar);
         loadingBar = (ProgressBar) findViewById(R.id.loadingBar);
         rootViewChangeButton = (LinearLayout) findViewById(R.id.pdfView_ac_rootView_buttons);
@@ -365,17 +367,24 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
         pdfImagesList = new ArrayList<>();
         if (renderer != null) {
             for (int i = 0; i < renderer.getPageCount(); i++) {
-                if (currentPage != null) {
-                    currentPage.close();
-                }
-                currentPage = renderer.openPage(i);
-                Bitmap bitmap = Bitmap.createBitmap(currentPage.getWidth(), currentPage.getHeight(), Bitmap.Config.ARGB_8888);
-                currentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
-                pdfImagesList.add(bitmap);
+                if (!loadFilesTask.isCancelled()) {
+                    if (currentPage != null) {
+                        currentPage.close();
+                    }
+                    currentPage = renderer.openPage(i);
+                    Bitmap bitmap = Bitmap.createBitmap(currentPage.getWidth(), currentPage.getHeight(), Bitmap.Config.ARGB_8888);
+                    currentPage.render(bitmap, null, null, PdfRenderer.Page.RENDER_MODE_FOR_DISPLAY);
+                    pdfImagesList.add(bitmap);
 //            Log.d(TAG, "renderPage: Page Num" + i);
+                }
             }
         } else {
-            dialogError("Error", "Failed to load file.");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    dialogError("Error", "Failed to load file.");
+                }
+            });
         }
 
     }
@@ -470,23 +479,7 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
             if (renderer != null && currentPage != null) {
                 switch (view.getId()) {
                     case R.id.btnNext: {
-                        if (currentPageIndex == 1 || currentPageIndex == 3 || currentPageIndex == 6 || currentPageIndex == 10) {
-                            if (mInterstitialAd.isLoaded() && !myPreferences.isItemPurchased()) {
-                                mInterstitialAd.show();
-                                mInterstitialAd.setAdListener(new AdListener() {
-                                    @Override
-                                    public void onAdClosed() {
-                                        super.onAdClosed();
-                                        updateViewPager(currentPageIndex + 1);
-                                    }
-                                });
-                            } else {
-                                updateViewPager(currentPageIndex + 1);
-                            }
-                        } else {
-                            updateViewPager(currentPageIndex + 1);
-                        }
-
+                        updateViewPager(currentPageIndex + 1);
                     }
                     break;
                     case R.id.btnPrev: {
@@ -536,13 +529,15 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
         protected void onPreExecute() {
             super.onPreExecute();
             loadingBar.setVisibility(View.VISIBLE);
+            initRenderer();
         }
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         protected Void doInBackground(Void... voids) {
-            initRenderer();
-            getBitmapsFromRenderer();
+            if (!loadFilesTask.isCancelled()) {
+                getBitmapsFromRenderer();
+            }
             return null;
         }
 
@@ -566,7 +561,9 @@ public class ActivityPdfViewer extends ActivityBase implements NumberPicker.OnVa
     @Override
     protected void onPause() {
         super.onPause();
+        loadFilesTask.cancel(true);
         if (isFinishing()) {
+
             if (currentPage != null) {
                 currentPage.close();
             }

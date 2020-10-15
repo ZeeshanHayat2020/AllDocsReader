@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:allowBackup="true"
@@ -19,14 +20,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute">
-        <activity android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityPrivacyPolicy"
-            android:hardwareAccelerated="true"
-            >
+        <activity
+            android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityPrivacyPolicy"
+            android:hardwareAccelerated="true">
 
         </activity>
-        <activity android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityLanguage"
-            android:hardwareAccelerated="true"/>
-        <activity android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivitySplash"
+        <activity
+            android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityLanguage"
+            android:hardwareAccelerated="true" />
+        <activity
+            android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivitySplash"
             android:hardwareAccelerated="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,13 +37,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityIntroSLides"
+        <activity
+            android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityIntroSLides"
             android:hardwareAccelerated="true">
 
         </activity>
-        <activity android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityPdfViewer"
-            android:hardwareAccelerated="true"
-            >
+        <activity
+            android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityPdfViewer"
+            android:hardwareAccelerated="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

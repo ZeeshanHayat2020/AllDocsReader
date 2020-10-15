@@ -43,7 +43,6 @@ public class ActivityBase extends AppCompatActivity implements BillingProcessor.
         bp = new BillingProcessor(this, getString(R.string.publickkey), this);
         bp.initialize();
         myPreferences = new MyPreferences(this);
-
     }
 
     public void reqNewInterstitial(Context context) {

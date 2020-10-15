@@ -1,17 +1,16 @@
 <resources>
 
-<!--    Bundle :com.furestic.alldocument.office.ppt.lxs.docx.pdf.viwer.reader.free-->
+    Bundle :com.furestic.alldocument.office.ppt.lxs.docx.pdf.viwer.reader.free
 
-    <!--Real Ads-->
-    <string name="app_Id" translatable="false">ca-app-pub-4609608157471602~4861213390</string>
-    <string name="banner_Id" translatable="false">ca-app-pub-4609608157471602/6209760565</string>
-    <string name="interstitial_Id" translatable="false">ca-app-pub-4609608157471602/2199391034</string>
-    <string name="nativeAd_Id" translatable="false">ca-app-pub-4609608157471602/4896678898</string>
-
+    Real Ads
+    <!--   <string name="app_Id" translatable="false">ca-app-pub-4609608157471602~4861213390</string>
+       <string name="banner_Id" translatable="false">ca-app-pub-4609608157471602/6209760565</string>
+       <string name="interstitial_Id" translatable="false">ca-app-pub-4609608157471602/2199391034</string>
+       <string name="nativeAd_Id" translatable="false">ca-app-pub-4609608157471602/4896678898</string>-->
     <!--Test Adds-->
-    <!--<string name="app_Id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="app_Id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
     <string name="banner_Id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="interstitial_Id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>-->
+    <string name="interstitial_Id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
 
     <string name="publickkey" translatable="false">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi0zjYfVvh/oh2CXi1l8vvP4XgMt5+6/DJmTM5dU9CIOU15jVQQonwL35QO8D0lYUENu983gteBM8isPAcNvc3A7vkJALVU5JyC0QHlmTiqPFtFU3GYOKSZ4JbvkdLawvnY6uti4Bs5Y+jDkJhesgWnaB8PUMv4ukOQWabNM2GSfM6wlppA90Xy+735O7xW9IoRTbfNevMfLW+anRIPGQlRlX3yaioUK8rpegVZF05TVOEW574Vn22pHJdS9ursy1MfM7QemJd/phZ5A6Ih4ugveMOP90FfygK9HljjjeVdCj7UVHhCVpnsvaRCvBeVdJrwqvsH3WM0gJWb9R3gp7DwIDAQAB</string>
     <string name="producti_id" translatable="false">:com.furestic.alldocument.noAd.item.purchased</string>
@@ -45,6 +44,25 @@
     <string name="portuguese" translatable="false">portuguesa</string>
     <string name="russian" translatable="false">русский</string>
     <string name="spanish" translatable="false">española</string>
+
+    <string name="action_previous" translatable="false">Previous page</string>
+    <string name="action_next" translatable="false">Next page</string>
+    <string name="action_open" translatable="false">Open document</string>
+    <string name="action_first" translatable="false">First page</string>
+    <string name="action_last" translatable="false">Last page</string>
+    <string name="action_zoom_out" translatable="false">Zoom out</string>
+    <string name="action_zoom_in" translatable="false">Zoom in</string>
+    <string name="action_rotate_clockwise" translatable="false">Rotate clockwise</string>
+    <string name="action_rotate_counterclockwise" translatable="false">Rotate counterclockwise</string>
+    <string name="action_jump_to_page" translatable="false">Jump to page</string>
+    <string name="action_view_document_properties" translatable="false">Properties</string>
+
+    <string name="document_properties_invalid_date" translatable="false">Invalid date</string>
+    <string name="document_properties_retrieval_failed" translatable="false">Failed to obtain document metadata</string>
+
+    <string name="invalid_mime_type" translatable="false">Cannot open file with invalid MIME type</string>
+    <string name="legacy_file_uri" translatable="false">Cannot open legacy file paths from insecure apps</string>
+    <string name="io_error" translatable="false">Received I/O error trying to open content</string>
 
 
     <string name="app_searchbar_failed" translatable="false">XDOCS Reader cannot find the data you are searching for</string>
@@ -134,7 +152,7 @@
     <string name="two">Two</string>
     <string name="three">Three</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="categories">Catagories:</string>
+    <string name="categories">Categories:</string>
     <string name="word">Word</string>
     <string name="Sheets">Sheets</string>
     <string name="text">Text</string>
@@ -159,7 +177,7 @@
     <string name="accessFile">Access files from Storage</string>
     <string name="readStor">Read Files from Storage</string>
     <string name="formore">For more Information</string>
-    <string name="learnmore">Learn more...</string>
+    <string name="learnmore">Learn more…</string>
     <string name="slide1">Easily View and Elaborate your all kinds od Documents</string>
     <string name="slide2">All-in-One Document Reader</string>
     <string name="action_search">search</string>

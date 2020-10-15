@@ -80,8 +80,8 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
     private GridLayoutManager layoutManager;
     private AppUpdateManager appUpdateManager;
 
-    ReviewManager reviewManager;
-    ReviewInfo reviewInfo = null;
+    /* ReviewManager reviewManager;
+     ReviewInfo reviewInfo = null;*/
     Handler handler;
 
     private TextView tvStorageTotal;
@@ -105,7 +105,7 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         displayingStorageOfDevice();
         setUpRecyclerView();
         setUpInAppUpdate();
-        setUpInAppReview();
+//        setUpInAppReview();
         reqNewInterstitial(this);
 
 
@@ -166,24 +166,24 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         return false;
     }
 
-    private void setUpInAppReview() {
-        reviewManager = new FakeReviewManager(MainActivity.this);
-        Task<ReviewInfo> request = reviewManager.requestReviewFlow();
-        request.addOnCompleteListener(new OnCompleteListener<ReviewInfo>() {
-            @Override
-            public void onComplete(@NonNull Task<ReviewInfo> task) {
-                if (task.isSuccessful()) {
-                    // We can get the ReviewInfo object
-                    reviewInfo = task.getResult();
-                } else {
-                    // There was some problem, continue regardless of the result.
-                    reviewInfo = null;
-                }
-            }
-        });
+    /*  private void setUpInAppReview() {
+          reviewManager = new FakeReviewManager(MainActivity.this);
+          Task<ReviewInfo> request = reviewManager.requestReviewFlow();
+          request.addOnCompleteListener(new OnCompleteListener<ReviewInfo>() {
+              @Override
+              public void onComplete(@NonNull Task<ReviewInfo> task) {
+                  if (task.isSuccessful()) {
+                      // We can get the ReviewInfo object
+                      reviewInfo = task.getResult();
+                  } else {
+                      // There was some problem, continue regardless of the result.
+                      reviewInfo = null;
+                  }
+              }
+          });
 
-    }
-
+      }
+  */
     private void setUpInAppUpdate() {
         appUpdateManager = (AppUpdateManager) AppUpdateManagerFactory.create(this);
         // Returns an intent object that you use to check for an update.
@@ -243,7 +243,6 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         progressBarStorage = (ProgressBar) findViewById(R.id.acMain_storage_progressBar);
         acMainFilePicker = (RelativeLayout) findViewById(R.id.acMain_filePicker);
         acMainFilePicker.setOnClickListener(onClickListener);
-        handler = new Handler(getMainLooper());
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -575,10 +574,12 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Constant.REQUEST_CODE_FOR_IN_APP_UPDATE) {
-            if (resultCode != RESULT_OK) {
+            if (resultCode == RESULT_CANCELED) {
+                this.finish();
+            } else if (resultCode == RESULT_OK) {
                 View parentLayout = findViewById(android.R.id.content);
                 Snackbar snackbar = Snackbar
-                        .make(parentLayout, "Installation Failed!", Snackbar.LENGTH_LONG);
+                        .make(parentLayout, "Application updated successfully.", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
         } else if (requestCode == Constant.REQUEST_CODE_IN_APP_REVIEW) {
@@ -614,33 +615,33 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
                 }*/
             }
         } else if (requestCode == Constant.REQUEST_CODE_PICK_FILE) {
-            if (requestCode == Constant.REQUEST_CODE_PICK_FILE) {
-                if (RESULT_OK == resultCode) {
-                    Uri uri = data.getData();
+            if (RESULT_OK == resultCode) {
+                Uri uri = data.getData();
 
-                    String filePath = "";
-                    filePath = FileUtils.getPath(MainActivity.this, uri);
-                    if (!filePath.equals("")) {
-                        File file = new File(filePath);
-                        if (file.getName().endsWith("pdf")) {
-                            final Intent intent = new Intent(MainActivity.this, ActivityPdfViewer.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            intent.putExtra(Constant.KEY_SELECTED_FILE_URI, filePath);
-                            intent.putExtra(Constant.KEY_SELECTED_FILE_NAME, fileName);
-                            startActivity(intent);
-                        } else {
-                            final Intent intent = new Intent(MainActivity.this, AppActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            intent.putExtra(Constant.KEY_SELECTED_FILE_URI, filePath);
-                            intent.putExtra(Constant.KEY_SELECTED_FILE_NAME, fileName);
-                            startActivity(intent);
-                        }
+                String filePath = "";
+                filePath = FileUtils.getPath(MainActivity.this, uri);
+                if (!filePath.equals("")) {
+                    File file = new File(filePath);
+                    fileName = file.getName();
+                    if (file.getName().endsWith("pdf")) {
+                        final Intent intent = new Intent(MainActivity.this, ActivityPdfViewer.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra(Constant.KEY_SELECTED_FILE_URI, filePath);
+                        intent.putExtra(Constant.KEY_SELECTED_FILE_NAME, fileName);
+                        startActivity(intent);
+                    } else {
+                        final Intent intent = new Intent(MainActivity.this, AppActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra(Constant.KEY_SELECTED_FILE_URI, filePath);
+                        intent.putExtra(Constant.KEY_SELECTED_FILE_NAME, fileName);
+                        startActivity(intent);
                     }
-                    Log.d(TAG, "onActivityResult: FILE URI:" + uri);
-                    Log.d(TAG, "onActivityResult: FILE PATH:" + filePath);
-                } else {
-                    Toast.makeText(this, "No file selected.", Toast.LENGTH_SHORT).show();
                 }
+                Log.d(TAG, "onActivityResult: FILE URI:" + uri);
+                Log.d(TAG, "onActivityResult: FILE PATH:" + filePath);
+            } else {
+                Toast.makeText(this, "No file selected.", Toast.LENGTH_SHORT).show();
+
             }
         }
     }

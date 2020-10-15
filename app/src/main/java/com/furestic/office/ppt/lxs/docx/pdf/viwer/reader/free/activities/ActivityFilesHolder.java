@@ -310,7 +310,6 @@ public class ActivityFilesHolder extends ActivityBase {
 
             @Override
             public void onItemRenameClicked(int position) {
-
                 dialogRename(position);
             }
 
