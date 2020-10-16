@@ -8,6 +8,7 @@
     android:elevation="2dp"
     android:foregroundGravity="center"
     android:gravity="center"
+    android:paddingRight="@dimen/_5sdp"
     android:textAlignment="center"
     android:theme="@style/Theme.CustomToolbar">
 
@@ -24,8 +25,7 @@
             android:layout_marginRight="@dimen/_2sdp"
             android:buttonTint="@android:color/white"
             android:maxLines="1"
-            android:textColor="@color/colorWhite"
-            />
+            android:textColor="@color/colorWhite" />
 
     </RelativeLayout>
 </androidx.appcompat.widget.Toolbar>

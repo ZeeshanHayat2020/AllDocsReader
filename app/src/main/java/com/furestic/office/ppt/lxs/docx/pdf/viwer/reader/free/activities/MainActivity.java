@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -36,6 +38,7 @@ import android.widget.Toast;
 import com.furestic.alldocument.office.ppt.lxs.docx.pdf.viwer.reader.free.R;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.adapters.AdapterAcMain;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.constant.Constant;
+import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.dialogboxes.Custom_Dialog_Class;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.fc.util.IOUtils;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.interfaces.OnRecyclerItemClickLister;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.models.ModelAcMain;
@@ -89,7 +92,7 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
     private TextView tvStorageFree;
     private ProgressBar progressBarStorage;
     private int reviewCounter = 0;
-    private int adCounter = 0;
+    private int adCounter = 4;
     private String fileName;
 
 
@@ -117,6 +120,11 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         if (haveNetworkConnected(MainActivity.this)) {
             checkForUpdate();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        openExitDialog();
     }
 
     @Override
@@ -542,6 +550,12 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void openExitDialog() {
+        // Build an AlertDialog
+        Custom_Dialog_Class cdd = new Custom_Dialog_Class(MainActivity.this);
+        cdd.show();
     }
 
     @Override

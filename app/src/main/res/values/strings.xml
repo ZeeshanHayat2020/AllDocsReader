@@ -28,6 +28,7 @@
     <string name="privacy_policy_linkText" translatable="false"><![CDATA[
 <a href="">Click here to visit privacy policy…</a>
 ]]></string>
+    <string name="how_was_your_experience_with_us" translatable="false">How Was Your Experience With Us ?</string>
 
     <string name="sys_url_wxiwei" translatable="false">https://my.oschina.net/wxiwei</string>
     <string name="sys_url_internet_search" translatable="false">http://www.baidu.com</string>

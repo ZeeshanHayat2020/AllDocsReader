@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterFilesHolder extends RecyclerView.Adapter<AdapterFilesHolder.AdapterViewHolder> implements Filterable {
+
     private Context context;
     private ActivityFilesHolder activityFilesHolder;
     private ArrayList<ModelFilesHolder> itemsList;
@@ -153,7 +154,7 @@ public class AdapterFilesHolder extends RecyclerView.Adapter<AdapterFilesHolder.
         }
 
         if (activityFilesHolder.isContextualMenuOpen) {
-            if (activityFilesHolder.isSelectAll) {
+            if (currentItem.isSelected()) {
                 holder.checkBox.setChecked(true);
             } else {
                 holder.checkBox.setChecked(false);
@@ -196,6 +197,9 @@ public class AdapterFilesHolder extends RecyclerView.Adapter<AdapterFilesHolder.
                 if (onRecyclerItemClickLister != null) {
                     if (position != RecyclerView.NO_POSITION) {
                         onRecyclerItemClickLister.onItemLongClicked(position);
+                        if (activityFilesHolder.isContextualMenuOpen) {
+                            holder.checkBox.performClick();
+                        }
                     }
                 }
                 return false;

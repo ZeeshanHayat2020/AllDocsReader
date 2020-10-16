@@ -1,8 +1,10 @@
 package com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,9 +14,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -55,6 +61,7 @@ public class ActivityFilesHolder extends ActivityBase {
 
     private ProgressBar loadingBar;
     private RecyclerView recyclerView;
+    private TextView noFileTV;
     private AdapterFilesHolder adapter;
     private ArrayList<ModelFilesHolder> itemsList;
     private LinearLayoutManager layoutManager;
@@ -63,10 +70,10 @@ public class ActivityFilesHolder extends ActivityBase {
     private Intent intent;
     private String checkFileFormat;
     public boolean isContextualMenuOpen = false;
-    public boolean isSelectAll = false;
     private ArrayList<ModelFilesHolder> multiSelectedItemList;
     private String selected;
     private int adCounter = 0;
+    public Drawable scrollBars;
 
 
     @Override
@@ -89,7 +96,6 @@ public class ActivityFilesHolder extends ActivityBase {
         getDocumentFiles();
         reqNewInterstitial(this);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -119,8 +125,10 @@ public class ActivityFilesHolder extends ActivityBase {
             }
         };
         searchView.setOnCloseListener(closeListener);
-        return true;
+        Log.d(TAG, "onCreateOptionsMenu: Called");
+        return super.onCreateOptionsMenu(menu);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -135,7 +143,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 if (!multiSelectedItemList.isEmpty()) {
                     deleteMultipleDialoge();
                 } else {
-                    Toast.makeText(this, "Please select any item first", Toast.LENGTH_SHORT).show();
+                    showToast("Please select any file first.");
                 }
 
                 return true;
@@ -164,7 +172,7 @@ public class ActivityFilesHolder extends ActivityBase {
     }
 
     private void setUpToolBar() {
-        selected = getResources().getString(R.string.selected);
+        selected = " " + getResources().getString(R.string.selected);
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         toolBarTitleTv = (TextView) findViewById(R.id.toolBar_title_tv);
@@ -191,58 +199,67 @@ public class ActivityFilesHolder extends ActivityBase {
             toolbar.setBackground(getGradient(
                     this.getResources().getColor(R.color.color_cardBg_allDoc_upper),
                     this.getResources().getColor(R.color.color_cardBg_allDoc_lower)));
+            noFileTV.setTextColor(this.getResources().getColor(R.color.color_cardBg_allDoc_upper));
         } else if (checkFileFormat.equals(getString(R.string.pdf_files))) {
             loadingBar.getIndeterminateDrawable().setColorFilter(this.getResources().getColor(R.color.color_cardBg_pdfDoc_upper), PorterDuff.Mode.MULTIPLY);
             toolbar.setBackground(getGradient(
                     this.getResources().getColor(R.color.color_cardBg_pdfDoc_upper),
                     this.getResources().getColor(R.color.color_cardBg_pdfDoc_lower)));
+            noFileTV.setTextColor(this.getResources().getColor(R.color.color_cardBg_pdfDoc_upper));
 
         } else if (checkFileFormat.equals(getString(R.string.word_files))) {
             loadingBar.getIndeterminateDrawable().setColorFilter(this.getResources().getColor(R.color.color_cardBg_wordDoc_upper), PorterDuff.Mode.MULTIPLY);
             toolbar.setBackground(getGradient(
                     this.getResources().getColor(R.color.color_cardBg_wordDoc_upper),
                     this.getResources().getColor(R.color.color_cardBg_wordDoc_lower)));
-
+            noFileTV.setTextColor(this.getResources().getColor(R.color.color_cardBg_wordDoc_upper));
         } else if (checkFileFormat.equals(getString(R.string.txtFiles))) {
             loadingBar.getIndeterminateDrawable().setColorFilter(this.getResources().getColor(R.color.color_cardBg_txtDoc_upper), PorterDuff.Mode.MULTIPLY);
             toolbar.setBackground(getGradient(
                     this.getResources().getColor(R.color.color_cardBg_txtDoc_upper),
                     this.getResources().getColor(R.color.color_cardBg_txtDoc_lower)));
+            noFileTV.setTextColor(this.getResources().getColor(R.color.color_cardBg_txtDoc_upper));
 
         } else if (checkFileFormat.equals(getString(R.string.ppt_files))) {
             loadingBar.getIndeterminateDrawable().setColorFilter(this.getResources().getColor(R.color.color_cardBg_pptDoc_upper), PorterDuff.Mode.MULTIPLY);
             toolbar.setBackground(getGradient(
                     this.getResources().getColor(R.color.color_cardBg_pptDoc_upper),
                     this.getResources().getColor(R.color.color_cardBg_pdfDoc_lower)));
+            noFileTV.setTextColor(this.getResources().getColor(R.color.color_cardBg_pptDoc_upper));
         } else if (checkFileFormat.equals(getString(R.string.html_files))) {
             loadingBar.getIndeterminateDrawable().setColorFilter(this.getResources().getColor(R.color.color_cardBg_htmlDoc_upper), PorterDuff.Mode.MULTIPLY);
             toolbar.setBackground(getGradient(
                     this.getResources().getColor(R.color.color_cardBg_htmlDoc_upper),
                     this.getResources().getColor(R.color.color_cardBg_htmlDoc_lower)));
+            noFileTV.setTextColor(this.getResources().getColor(R.color.color_cardBg_htmlDoc_upper));
 
         } else if (checkFileFormat.equals(getString(R.string.xmlFiles))) {
             loadingBar.getIndeterminateDrawable().setColorFilter(this.getResources().getColor(R.color.color_cardBg_xmlDoc_upper), PorterDuff.Mode.MULTIPLY);
             toolbar.setBackground(getGradient(
                     this.getResources().getColor(R.color.color_cardBg_xmlDoc_upper),
                     this.getResources().getColor(R.color.color_cardBg_xmlDoc_lower)));
+            noFileTV.setTextColor(this.getResources().getColor(R.color.color_cardBg_xmlDoc_upper));
 
         } else if (checkFileFormat.equals(getString(R.string.sheet_files))) {
             loadingBar.getIndeterminateDrawable().setColorFilter(this.getResources().getColor(R.color.color_cardBg_sheetDoc_upper), PorterDuff.Mode.MULTIPLY);
             toolbar.setBackground(getGradient(
                     this.getResources().getColor(R.color.color_cardBg_sheetDoc_upper),
                     this.getResources().getColor(R.color.color_cardBg_sheetDoc_lower)));
+            noFileTV.setTextColor(this.getResources().getColor(R.color.color_cardBg_sheetDoc_upper));
 
         } else if (checkFileFormat.equals(getString(R.string.rtf_files))) {
             loadingBar.getIndeterminateDrawable().setColorFilter(this.getResources().getColor(R.color.color_cardBg_rtfDoc_upper), PorterDuff.Mode.MULTIPLY);
             toolbar.setBackground(getGradient(
                     this.getResources().getColor(R.color.color_cardBg_rtfDoc_upper),
                     this.getResources().getColor(R.color.color_cardBg_rtfDoc_lower)));
+            noFileTV.setTextColor(this.getResources().getColor(R.color.color_cardBg_rtfDoc_upper));
 
         } else {
             loadingBar.getIndeterminateDrawable().setColorFilter(this.getResources().getColor(R.color.color_cardBg_allDoc_upper), PorterDuff.Mode.MULTIPLY);
             toolbar.setBackground(getGradient(
                     this.getResources().getColor(R.color.color_cardBg_allDoc_upper),
                     this.getResources().getColor(R.color.color_cardBg_allDoc_lower)));
+            noFileTV.setTextColor(this.getResources().getColor(R.color.color_cardBg_allDoc_upper));
         }
     }
 
@@ -261,6 +278,7 @@ public class ActivityFilesHolder extends ActivityBase {
         toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.acFilesHolder_toolbar);
         loadingBar = (ProgressBar) findViewById(R.id.acFilesHolder_loadingBar);
         loadingBar.setVisibility(View.INVISIBLE);
+        noFileTV = findViewById(R.id.acFilesHolder_noFileTv);
 
     }
 
@@ -271,12 +289,22 @@ public class ActivityFilesHolder extends ActivityBase {
         layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            scrollBars = recyclerView.getHorizontalScrollbarThumbDrawable();
+        }
+
+
     }
 
     private void buildRecyclerView() {
         if (itemsList != null) {
             adapter = new AdapterFilesHolder(ActivityFilesHolder.this, ActivityFilesHolder.this,
                     itemsList);
+            if (itemsList.isEmpty()) {
+                noFileTV.setVisibility(View.VISIBLE);
+            } else {
+                noFileTV.setVisibility(View.GONE);
+            }
         }
 
         adapter.notifyDataSetChanged();
@@ -321,28 +349,7 @@ public class ActivityFilesHolder extends ActivityBase {
 
             @Override
             public void onItemCheckBoxClicked(View view, int position) {
-                try {
-                    if (((CheckBox) view).isChecked()) {
-                        multiSelectedItemList.add(itemsList.get(position));
-                        String text = multiSelectedItemList.size() + selected;
-                        updateToolBarTitle(text);
-                        if (multiSelectedItemList.size() == itemsList.size()) {
-                            selectAllMenuItem.setChecked(true);
-                        }
-                    } else {
-                        multiSelectedItemList.remove(itemsList.get(position));
-                        String text = multiSelectedItemList.size() + selected;
-                        updateToolBarTitle(text);
-                        if (multiSelectedItemList.size() == itemsList.size()) {
-                            selectAllMenuItem.setChecked(false);
-                        }
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.d(TAG, "onItemCheckBoxClicked: " + e);
-                }
-
+                doSingleSelection(view, position);
             }
         });
     }
@@ -397,7 +404,6 @@ public class ActivityFilesHolder extends ActivityBase {
             }
         }
     }
-
 
     private GradientDrawable bgRenameDialogBtn(int color1) {
         int height = (int) getResources().getDimension(R.dimen._25sdp);
@@ -500,9 +506,10 @@ public class ActivityFilesHolder extends ActivityBase {
         dialogBuilder.show();
     }
 
-
     private void renameFile(final String filePath, final String oldFileName, final String newFileName) {
         new AsyncTask<Void, Void, Void>() {
+            private String completeNewFileName = "";
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -510,7 +517,7 @@ public class ActivityFilesHolder extends ActivityBase {
 
             @Override
             protected Void doInBackground(Void... voids) {
-                String completeNewFileName = "";
+
                 if (oldFileName.endsWith(".pdf")) {
                     completeNewFileName = newFileName + ".pdf";
                 } else if (oldFileName.endsWith(".doc")) {
@@ -544,66 +551,153 @@ public class ActivityFilesHolder extends ActivityBase {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
+                showToast("File renamed successfully with '" + completeNewFileName + "'");
                 getDocumentFiles();
             }
         }.execute();
     }
 
+    /*  private void openContextualMenu() {
+          multiSelectedItemList = new ArrayList<>();
+          isContextualMenuOpen = true;
+          isSelectAll = false;
+          toolbar.getMenu().clear();
+          toolbar.inflateMenu(R.menu.menu_ac_filesholder_contextual);
+          toolbar.setNavigationIcon(R.drawable.ic_cross);
+          selectAllMenuItem = (CheckBox) toolbar.getMenu().findItem(R.id.menu_contextual_btnSelecAll).getActionView();
+          selectAllMenuItem.setChecked(false);
+
+          updateToolBarTitle("0" + selected);
+          adapter.notifyDataSetChanged();
+          selectAllMenuItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+              @Override
+              public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                  if (isChecked) {
+                      selectAllItems(true);
+                      isSelectAll = true;
+                  } else {
+                      selectAllItems(false);
+                      isSelectAll = false;
+                  }
+              }
+          });
+      }
+
+      private void selectAllItems(boolean isSelectAll) {
+          if (isSelectAll) {
+              if (!multiSelectedItemList.isEmpty()) {
+                  multiSelectedItemList.removeAll(itemsList);
+                  multiSelectedItemList.clear();
+              }
+              for (int i = 0; i < itemsList.size(); i++) {
+                  multiSelectedItemList.add(itemsList.get(i));
+              }
+              String text = multiSelectedItemList.size() + selected;
+              updateToolBarTitle(text);
+          } else {
+              multiSelectedItemList.removeAll(itemsList);
+              multiSelectedItemList.clear();
+              String text = multiSelectedItemList.size() + selected;
+              updateToolBarTitle(text);
+          }
+          adapter.notifyDataSetChanged();
+      }
+
+      private void closeContextualMenu() {
+          multiSelectedItemList.removeAll(itemsList);
+          multiSelectedItemList.clear();
+          isContextualMenuOpen = false;
+          isSelectAll = false;
+          toolbar.getMenu().clear();
+          toolbar.inflateMenu(R.menu.menu_ac_filesholder_parent_view);
+          toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+          updateToolBarTitle(checkFileFormat);
+          adapter.notifyDataSetChanged();
+      }*/
     private void openContextualMenu() {
         multiSelectedItemList = new ArrayList<>();
         isContextualMenuOpen = true;
-        isSelectAll = false;
         toolbar.getMenu().clear();
         toolbar.inflateMenu(R.menu.menu_ac_filesholder_contextual);
         toolbar.setNavigationIcon(R.drawable.ic_cross);
         selectAllMenuItem = (CheckBox) toolbar.getMenu().findItem(R.id.menu_contextual_btnSelecAll).getActionView();
         selectAllMenuItem.setChecked(false);
-
-        updateToolBarTitle("0" + selected);
+        String text = selected + " " + multiSelectedItemList.size() + "/" + itemsList.size();
+        updateToolBarTitle(text);
         adapter.notifyDataSetChanged();
-        selectAllMenuItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        selectAllMenuItem.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    selectAllItems(true);
-                    isSelectAll = true;
+            public void onClick(View view) {
+                if (((CheckBox) view).isChecked()) {
+                    doSelectAll(true);
                 } else {
-                    selectAllItems(false);
-                    isSelectAll = false;
+                    doSelectAll(false);
                 }
             }
         });
     }
 
-    private void selectAllItems(boolean isSelectAll) {
+    private void doSingleSelection(View view, int position) {
+        try {
+            if (((CheckBox) view).isChecked()) {
+                itemsList.get(position).setSelected(true);
+                multiSelectedItemList.add(itemsList.get(position));
+                if (multiSelectedItemList.size() == itemsList.size()) {
+                    selectAllMenuItem.setChecked(true);
+                } else {
+                    selectAllMenuItem.setChecked(false);
+                }
+            } else {
+                itemsList.get(position).setSelected(false);
+                multiSelectedItemList.remove(itemsList.get(position));
+                if (multiSelectedItemList.size() != itemsList.size()) {
+                    selectAllMenuItem.setChecked(false);
+                }
+            }
+            String text = selected + " " + multiSelectedItemList.size() + "/" + itemsList.size();
+            updateToolBarTitle(text);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "onItemCheckBoxClicked: " + e);
+        }
+
+    }
+
+    private void doSelectAll(boolean isSelectAll) {
         if (isSelectAll) {
             if (!multiSelectedItemList.isEmpty()) {
                 multiSelectedItemList.removeAll(itemsList);
                 multiSelectedItemList.clear();
             }
             for (int i = 0; i < itemsList.size(); i++) {
+                itemsList.get(i).setSelected(true);
                 multiSelectedItemList.add(itemsList.get(i));
             }
-            String text = multiSelectedItemList.size() + selected;
-            updateToolBarTitle(text);
+
         } else {
+            for (int i = 0; i < itemsList.size(); i++) {
+                itemsList.get(i).setSelected(false);
+            }
             multiSelectedItemList.removeAll(itemsList);
             multiSelectedItemList.clear();
-            String text = multiSelectedItemList.size() + selected;
-            updateToolBarTitle(text);
         }
         adapter.notifyDataSetChanged();
+        String text = selected + " " + multiSelectedItemList.size() + "/" + itemsList.size();
+        updateToolBarTitle(text);
     }
 
     private void closeContextualMenu() {
         multiSelectedItemList.removeAll(itemsList);
         multiSelectedItemList.clear();
         isContextualMenuOpen = false;
-        isSelectAll = false;
         toolbar.getMenu().clear();
-        toolbar.inflateMenu(R.menu.menu_ac_filesholder_parent_view);
+        toolbar.inflateMenu(R.menu.menu_activity_main);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         updateToolBarTitle(checkFileFormat);
+        for (int i = 0; i < itemsList.size(); i++) {
+            itemsList.get(i).setSelected(false);
+        }
+        onCreateOptionsMenu(toolbar.getMenu());
         adapter.notifyDataSetChanged();
     }
 
@@ -683,7 +777,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith(".pdf")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath(), false));
                         }
                     }
                 }
@@ -704,7 +798,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith(".doc") || files[i].getName().endsWith(".docx")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath(), false));
                         }
                     }
                 }
@@ -724,7 +818,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith("xls") || files[i].getName().endsWith("xlsx")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath(), false));
                         }
                     }
                 }
@@ -745,7 +839,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith("ppt") || files[i].getName().endsWith("pptx")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath(), false));
                         }
                     }
                 }
@@ -765,7 +859,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith(".txt")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath(), false));
                         }
                     }
                 }
@@ -786,7 +880,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith(".xml")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath(), false));
                         }
                     }
                 }
@@ -806,7 +900,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith(".html")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath(), false));
                         }
                     }
                 }
@@ -827,7 +921,7 @@ public class ActivityFilesHolder extends ActivityBase {
                 } else {
                     if (files[i].getName().endsWith("rtf")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath(), false));
                         }
                     }
                 }
@@ -837,7 +931,6 @@ public class ActivityFilesHolder extends ActivityBase {
     }
 
     private void allDocsFiles(File parentFile) {
-        int id = R.drawable.ic_svg_file_type_pdf;
         File[] files = parentFile.listFiles();
 
         if (files != null) {
@@ -850,7 +943,7 @@ public class ActivityFilesHolder extends ActivityBase {
                             files[i].getName().endsWith(".html") || files[i].getName().endsWith(".pptx") || files[i].getName().endsWith(".txt") || files[i].getName().endsWith(".xml")
                             || files[i].getName().endsWith(".rtf")) {
                         if (!itemsList.contains(files[i])) {
-                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath()));
+                            itemsList.add(new ModelFilesHolder(files[i].getName(), files[i].getAbsolutePath(), false));
                         }
                     }
                 }
@@ -874,12 +967,15 @@ public class ActivityFilesHolder extends ActivityBase {
                                     LocalFile.delete();
                                     itemsList.remove(position);
                                     adapter.notifyItemRemoved(position);
+                                    showToast("File deleted successfully.");
+
                                 }
                             });
                         } else {
                             LocalFile.delete();
                             itemsList.remove(position);
                             adapter.notifyItemRemoved(position);
+                            showToast("File deleted successfully.");
                         }
 
                     }
@@ -916,65 +1012,11 @@ public class ActivityFilesHolder extends ActivityBase {
                                 @Override
                                 public void onAdClosed() {
                                     super.onAdClosed();
-                                    new AsyncTask<Void, Void, Void>() {
-
-                                        @Override
-                                        protected void onPreExecute() {
-                                            super.onPreExecute();
-                                            loadingBar.setVisibility(View.VISIBLE);
-                                        }
-
-                                        @Override
-                                        protected Void doInBackground(Void... voids) {
-
-                                            for (int i = 0; i < multiSelectedItemList.size(); i++) {
-                                                File file = new File(multiSelectedItemList.get(i).getFileUri());
-                                                if (file.exists()) {
-                                                    file.delete();
-                                                }
-                                                itemsList.remove(multiSelectedItemList.get(i));
-                                            }
-                                            return null;
-                                        }
-
-                                        @Override
-                                        protected void onPostExecute(Void aVoid) {
-                                            super.onPostExecute(aVoid);
-                                            adapter.notifyDataSetChanged();
-                                            loadingBar.setVisibility(View.GONE);
-                                        }
-                                    }.execute();
+                                    doDeleteMultiFiles();
                                 }
                             });
                         } else {
-                            new AsyncTask<Void, Void, Void>() {
-
-                                @Override
-                                protected void onPreExecute() {
-                                    super.onPreExecute();
-                                    loadingBar.setVisibility(View.VISIBLE);
-                                }
-
-                                @Override
-                                protected Void doInBackground(Void... voids) {
-
-                                    for (int i = 0; i < multiSelectedItemList.size(); i++) {
-                                        File file = new File(multiSelectedItemList.get(i).getFileUri());
-                                        if (file.exists()) {
-                                            file.delete();
-                                        }
-                                        itemsList.remove(multiSelectedItemList.get(i));
-                                    }
-                                    return null;
-                                }
-
-                                @Override
-                                protected void onPostExecute(Void aVoid) {
-                                    super.onPostExecute(aVoid);
-                                    adapter.notifyDataSetChanged();
-                                    loadingBar.setVisibility(View.GONE);
-                                }
-                            }.execute();
+                            doDeleteMultiFiles();
                         }
 
 
@@ -982,6 +1024,44 @@ public class ActivityFilesHolder extends ActivityBase {
                 })
                 .setNegativeButton(R.string.no, null)
                 .show();
+    }
+
+    private void doDeleteMultiFiles() {
+        new AsyncTask<Void, Void, Void>() {
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loadingBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                for (int i = 0; i < multiSelectedItemList.size(); i++) {
+                    File file = new File(multiSelectedItemList.get(i).getFileUri());
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                    itemsList.remove(multiSelectedItemList.get(i));
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                buildRecyclerView();
+                if (multiSelectedItemList.size() == 1) {
+                    showToast(multiSelectedItemList.size() + " File deleted successfully.");
+                } else {
+                    showToast(multiSelectedItemList.size() + " Files deleted successfully.");
+                }
+                closeContextualMenu();
+
+                loadingBar.setVisibility(View.GONE);
+            }
+        }.execute();
     }
 
     private void shareMultipleFile() {
@@ -999,7 +1079,27 @@ public class ActivityFilesHolder extends ActivityBase {
         intentShareFile.putExtra(Intent.EXTRA_TEXT, "Sharing Files...");
         startActivity(Intent.createChooser(intentShareFile, "Share File"));
 
+    }
 
+    void showToast(String message) {
+        Toast.makeText(ActivityFilesHolder.this, message, Toast.LENGTH_SHORT).show();
+
+    }
+
+    public void changeRecyclerViewScrollColor(Context mContext, int colorToSet) {
+        if (scrollBars instanceof ShapeDrawable) {
+            // cast to 'ShapeDrawable'
+            ShapeDrawable shapeDrawable = (ShapeDrawable) scrollBars;
+            shapeDrawable.getPaint().setColor(ContextCompat.getColor(mContext, colorToSet));
+        } else if (scrollBars instanceof GradientDrawable) {
+            // cast to 'GradientDrawable'
+            GradientDrawable gradientDrawable = (GradientDrawable) scrollBars;
+            gradientDrawable.setColor(ContextCompat.getColor(mContext, colorToSet));
+        } else if (scrollBars instanceof ColorDrawable) {
+            // alpha value may need to be set again after this call
+            ColorDrawable colorDrawable = (ColorDrawable) scrollBars;
+            colorDrawable.setColor(ContextCompat.getColor(mContext, colorToSet));
+        }
     }
 
     @Override

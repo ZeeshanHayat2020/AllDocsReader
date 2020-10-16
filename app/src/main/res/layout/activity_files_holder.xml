@@ -20,15 +20,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/acFilesHolder_bannerContainer"
         android:layout_centerInParent="true"
-        android:layout_marginLeft="@dimen/_4sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_4sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/_4sdp"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingRight="@dimen/_4sdp"
+        android:paddingBottom="@dimen/_10sdp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/acFilesHolder_RecyclerView"
@@ -37,9 +37,25 @@
             android:layout_gravity="center_horizontal"
             android:layoutAnimation="@anim/layout_anim_down_to_up"
             android:overScrollMode="never"
+            android:scrollbarSize="18dp"
+            android:scrollbars="none"
             app:fastScrollEnabled="true"
+            app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
+            app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
+            app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
+            app:fastScrollVerticalTrackDrawable="@drawable/line_drawable"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/acFilesHolder_noFileTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="No Files Found."
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/acFilesHolder_loadingBar"
