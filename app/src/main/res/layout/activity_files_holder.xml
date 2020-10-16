@@ -10,12 +10,14 @@
     <include
         android:id="@+id/acFilesHolder_toolbar"
         layout="@layout/toolbar_custom" />
+
     <FrameLayout
         android:id="@+id/acFilesHolder_bannerContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/acFilesHolder_toolbar"
         android:layout_marginTop="@dimen/_2sdp" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,7 +37,7 @@
             android:layout_gravity="center_horizontal"
             android:layoutAnimation="@anim/layout_anim_down_to_up"
             android:overScrollMode="never"
-            android:scrollbars="none"
+            app:fastScrollEnabled="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </LinearLayout>
 
