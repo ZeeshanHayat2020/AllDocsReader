@@ -41,6 +41,7 @@ import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.constant.Constant;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.interfaces.OnRecyclerItemClickLister;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.models.ModelFilesHolder;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.officereader.AppActivity;
+import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.pdfViewerModule.PdfViewer;
 import com.google.android.gms.ads.AdListener;
 
 import java.io.File;
@@ -349,7 +350,7 @@ public class ActivityFilesHolder extends ActivityBase {
     private void intentOnItemClick(int position) {
         adCounter++;
         if (itemsList.get(position).getFileName().endsWith(".pdf")) {
-            final Intent intent = new Intent(ActivityFilesHolder.this, ActivityPdfViewer.class);
+            final Intent intent = new Intent(ActivityFilesHolder.this, PdfViewer.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(Constant.KEY_SELECTED_FILE_URI, itemsList.get(position).getFileUri());
             intent.putExtra(Constant.KEY_SELECTED_FILE_NAME, itemsList.get(position).getFileName());
@@ -626,7 +627,6 @@ public class ActivityFilesHolder extends ActivityBase {
                     allDocsFiles(parentFile);
                 } else if (checkFileFormat.equals(getString(R.string.pdf_files))) {
                     pdfFiles(parentFile);
-
                 } else if (checkFileFormat.equals(getString(R.string.word_files))) {
                     wordFiles(parentFile);
 

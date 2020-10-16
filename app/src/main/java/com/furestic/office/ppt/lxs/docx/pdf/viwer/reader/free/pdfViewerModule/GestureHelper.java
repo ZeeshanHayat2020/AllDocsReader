@@ -64,6 +64,7 @@ class GestureHelper {
                     public void onScaleEnd(ScaleGestureDetector detector) {
                         listener.onZoomEnd();
                     }
+
                 });
 
         gestureView.setOnTouchListener(new View.OnTouchListener() {

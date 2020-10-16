@@ -43,8 +43,9 @@
 
         </activity>
         <activity
-            android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityPdfViewer"
-            android:hardwareAccelerated="true">
+            android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.pdfViewerModule.PdfViewer"
+            android:hardwareAccelerated="false"
+            android:theme="@style/AppTheme.TitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -57,6 +58,7 @@
                 <data android:mimeType="application/pdf" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityFilesHolder"
             android:hardwareAccelerated="true" />
@@ -163,9 +165,16 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/app_Id" />
+        <meta-data
+            android:name="android.webkit.WebView.MetricsOptOut"
+            android:value="true" />
+        <meta-data
+            android:name="android.webkit.WebView.EnableSafeBrowsing"
+            android:value="false" />
     </application>
 
 </manifest>

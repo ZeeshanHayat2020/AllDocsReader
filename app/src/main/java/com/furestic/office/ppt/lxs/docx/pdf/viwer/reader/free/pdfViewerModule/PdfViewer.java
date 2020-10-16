@@ -2,41 +2,64 @@ package com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.pdfViewerModule;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.MimeTypeMap;
 import android.webkit.ValueCallback;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.Loader;
 
 import com.furestic.alldocument.office.ppt.lxs.docx.pdf.viwer.reader.free.R;
+import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.activities.ActivityPdfViewer;
+import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.constant.Constant;
+import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.fc.util.IOUtils;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.pdfViewerModule.fragment.DocumentPropertiesFragment;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.pdfViewerModule.fragment.JumpToPageFragment;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.pdfViewerModule.loader.DocumentPropertiesLoader;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 
@@ -102,6 +125,15 @@ public class PdfViewer extends AppCompatActivity implements LoaderManager.Loader
     private Toast mToast;
     private Snackbar snackbar;
 
+
+    private LinearLayout rootViewChangeButton;
+    private ProgressBar loadingBar;
+    private Button prevBtn;
+    private Button nextBtn;
+    private Intent intent;
+    private String fileUri;
+    private String fileName;
+
     private class Channel {
         @JavascriptInterface
         public int getWindowInsetTop() {
@@ -126,7 +158,7 @@ public class PdfViewer extends AppCompatActivity implements LoaderManager.Loader
         @JavascriptInterface
         public void setNumPages(int numPages) {
             mNumPages = numPages;
-//            runOnUiThread(PdfViewer.this::invalidateOptionsMenu);
+            runOnUiThread(PdfViewer.this::invalidateOptionsMenu);
         }
 
         @JavascriptInterface
@@ -158,8 +190,9 @@ public class PdfViewer extends AppCompatActivity implements LoaderManager.Loader
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_pdf_viewer_module);
-
+        initMyViews();
         mWebView = findViewById(R.id.webview);
+        getSupportActionBar().setTitle("PDF Files");
 
         mWebView.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
             @Override
@@ -250,14 +283,6 @@ public class PdfViewer extends AppCompatActivity implements LoaderManager.Loader
                             mWebView.evaluateJavascript("isTextSelected()", new ValueCallback<String>() {
                                 @Override
                                 public void onReceiveValue(String selection) {
-                                    if (!Boolean.valueOf(selection)) {
-                                        if ((getWindow().getDecorView().getSystemUiVisibility() &
-                                                View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                                            hideSystemUi();
-                                        } else {
-                                            showSystemUi();
-                                        }
-                                    }
                                 }
                             });
                             return true;
@@ -293,32 +318,179 @@ public class PdfViewer extends AppCompatActivity implements LoaderManager.Loader
         LoaderManager.getInstance(this);
 
         snackbar = Snackbar.make(mWebView, "", Snackbar.LENGTH_LONG);
+        intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+        if (intent != null) {
+            if (Intent.ACTION_VIEW.equals(action) && type != null) {
+                if ("application/pdf".equals(type)) {
+                    Uri tempUri = intent.getData();
+                    mPage = 1;
+                    fileUri = String.valueOf(Uri.parse(getFilePathFromExternalAppsURI(PdfViewer.this, tempUri)));
+                    mUri = Uri.fromFile(new File(fileUri));
+//                    mUri = Uri.parse(getFilePathFromExternalAppsURI(PdfViewer.this, tempUri));
+                    Log.d(TAG, "onCreate: URI FILE:" + mUri);
+                    Log.d(TAG, "onCreate: MIME TYPE:" + getMimeType(this, tempUri));
+                }
+            } else {
 
-        final Intent intent = getIntent();
-        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
-            if (!"application/pdf".equals(intent.getType())) {
-                snackbar.setText(R.string.invalid_mime_type).show();
-                return;
+                fileUri = intent.getStringExtra(Constant.KEY_SELECTED_FILE_URI);
+                fileName = intent.getStringExtra(Constant.KEY_SELECTED_FILE_NAME);
+                mUri = Uri.fromFile(new File(fileUri));
+                mPage = 1;
+
             }
-            mUri = intent.getData();
-            mPage = 1;
-        }
-
-        if (savedInstanceState != null) {
-            mUri = savedInstanceState.getParcelable(STATE_URI);
-            mPage = savedInstanceState.getInt(STATE_PAGE);
-            mZoomRatio = savedInstanceState.getFloat(STATE_ZOOM_RATIO);
-            mDocumentOrientationDegrees = savedInstanceState.getInt(STATE_DOCUMENT_ORIENTATION_DEGREES);
-        }
-
-        if (mUri != null) {
-            if ("file".equals(mUri.getScheme())) {
-                snackbar.setText(R.string.legacy_file_uri).show();
-                return;
+            if (savedInstanceState != null) {
+                mUri = savedInstanceState.getParcelable(STATE_URI);
+                mPage = savedInstanceState.getInt(STATE_PAGE);
+                mZoomRatio = savedInstanceState.getFloat(STATE_ZOOM_RATIO);
+                mDocumentOrientationDegrees = savedInstanceState.getInt(STATE_DOCUMENT_ORIENTATION_DEGREES);
             }
 
-            loadPdf();
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                if (!isProtected(fileUri)) {
+                    loadPdf();
+                } else {
+                    dialogError("Protected", "File is password protected. App cannot open this file.");
+                    Log.d(TAG, "onCreate: File is protected:");
+                }
+            } else {
+                loadPdf();
+            }
+
+        } else {
+            dialogError("Error", "Failed to load file.");
         }
+
+
+    }
+
+    private void initMyViews() {
+        loadingBar = findViewById(R.id.moduleAcPdfView_loadingBar);
+        rootViewChangeButton = findViewById(R.id.moduleAcPdfView_rootView_buttons);
+        prevBtn = findViewById(R.id.moduleAcPdfView_btnPrev);
+        nextBtn = findViewById(R.id.moduleAcPdfView_btnNext);
+        nextBtn.setOnClickListener(onClickListener);
+        prevBtn.setOnClickListener(onClickListener);
+        showLoadingBar();
+    }
+
+    void showLoadingBar() {
+        loadingBar.setVisibility(View.VISIBLE);
+    }
+
+    void hideLoadingBar() {
+        loadingBar.setVisibility(View.INVISIBLE);
+    }
+
+    View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.moduleAcPdfView_btnNext: {
+                    onJumpToPageInDocument(mPage + 1);
+                }
+                break;
+                case R.id.moduleAcPdfView_btnPrev: {
+                    onJumpToPageInDocument(mPage - 1);
+                }
+                break;
+            }
+        }
+    };
+
+    public String getFilePathFromExternalAppsURI(Context context, Uri contentUri) {
+        fileName = getFileName(contentUri);
+        if (!TextUtils.isEmpty(fileName)) {
+            File copyFile = new File(getFilesDir(), fileName + ".pdf");
+            copy(context, contentUri, copyFile);
+            return copyFile.getAbsolutePath();
+        }
+        return null;
+    }
+
+    public static String getFileName(Uri uri) {
+        if (uri == null) return null;
+        String fileName = null;
+        String path = uri.getPath();
+        int cut = path.lastIndexOf('/');
+        if (cut != -1) {
+            fileName = path.substring(cut + 1);
+        }
+        return fileName;
+    }
+
+    public static String getMimeType(Context context, Uri uri) {
+        String extension;
+
+        //Check uri format to avoid null
+        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+            //If scheme is a content
+            final MimeTypeMap mime = MimeTypeMap.getSingleton();
+            extension = mime.getExtensionFromMimeType(context.getContentResolver().getType(uri));
+        } else {
+            //If scheme is a File
+            //This will replace white spaces with %20 and also other special characters. This will avoid returning null values on file name with spaces and special characters.
+            extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
+
+        }
+
+        return extension;
+    }
+
+    public static void copy(Context context, Uri srcUri, File dstFile) {
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(srcUri);
+            if (inputStream == null) return;
+            OutputStream outputStream = new FileOutputStream(dstFile);
+            IOUtils.copy2(inputStream, outputStream);
+            inputStream.close();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private boolean isProtected(String path) {
+        Boolean isEncrypted = Boolean.FALSE;
+        try {
+            byte[] byteArray = new byte[0];
+
+            byteArray = Files.readAllBytes(Paths.get(path));
+
+            //Convert the binary bytes to String. Caution, it can result in loss of data. But for our purposes, we are simply interested in the String portion of the binary pdf data. So we should be fine.
+            String pdfContent = new String(byteArray);
+            int lastTrailerIndex = pdfContent.lastIndexOf("trailer");
+            if (lastTrailerIndex >= 0 && lastTrailerIndex < pdfContent.length()) {
+                String newString = pdfContent.substring(lastTrailerIndex, pdfContent.length());
+                int firstEOFIndex = newString.indexOf("%%EOF");
+                String trailer = newString.substring(0, firstEOFIndex);
+                if (trailer.contains("/Encrypt"))
+                    isEncrypted = Boolean.TRUE;
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            //Do nothing
+        }
+        return isEncrypted;
+    }
+
+    private void dialogError(String title, String message) {
+        new AlertDialog.Builder(PdfViewer.this)
+                .setTitle(title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton(R.string.sys_button_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .show();
     }
 
     @Override
@@ -343,13 +515,21 @@ public class PdfViewer extends AppCompatActivity implements LoaderManager.Loader
                 mInputStream.close();
             }
             mInputStream = getContentResolver().openInputStream(mUri);
+            getSupportActionBar().setTitle(fileName);
+            zoomOut(0.25f, true);
         } catch (IOException e) {
             snackbar.setText(R.string.io_error).show();
             return;
         }
 
-        showSystemUi();
         mWebView.loadUrl("https://localhost/viewer.html");
+        new Handler(getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideLoadingBar();
+            }
+        }, 1000);
+
     }
 
     private void renderPage(final int zoom) {
@@ -406,25 +586,10 @@ public class PdfViewer extends AppCompatActivity implements LoaderManager.Loader
             mPage = selected_page;
             renderPage(0);
             showPageNumber();
+            prevBtn.setEnabled(selected_page > 1);
+            nextBtn.setEnabled(selected_page < mNumPages);
             invalidateOptionsMenu();
         }
-    }
-
-    private void showSystemUi() {
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-    }
-
-    private void hideSystemUi() {
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
-                        View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
-                        View.SYSTEM_UI_FLAG_FULLSCREEN |
-                        View.SYSTEM_UI_FLAG_IMMERSIVE);
     }
 
     @Override
@@ -457,7 +622,7 @@ public class PdfViewer extends AppCompatActivity implements LoaderManager.Loader
         }
         mTextView.setText(String.format("%s/%s", mPage, mNumPages));
         mToast = new Toast(getApplicationContext());
-        mToast.setGravity(Gravity.BOTTOM | Gravity.END, PADDING, PADDING);
+        mToast.setGravity(Gravity.BOTTOM, 0, 160);
         mToast.setDuration(Toast.LENGTH_SHORT);
         mToast.setView(mTextView);
         mToast.show();
@@ -473,8 +638,7 @@ public class PdfViewer extends AppCompatActivity implements LoaderManager.Loader
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        final int ids[] = {R.id.action_zoom_in, R.id.action_zoom_out, R.id.action_jump_to_page,
-                R.id.action_next, R.id.action_previous, R.id.action_first, R.id.action_last,
+        final int ids[] = {R.id.action_zoom_in, R.id.action_zoom_out, R.id.action_jump_to_page, R.id.action_first, R.id.action_last,
                 R.id.action_rotate_clockwise, R.id.action_rotate_counterclockwise,
                 R.id.action_view_document_properties};
         if (mDocumentState < STATE_LOADED) {
@@ -496,8 +660,6 @@ public class PdfViewer extends AppCompatActivity implements LoaderManager.Loader
 
         enableDisableMenuItem(menu.findItem(R.id.action_zoom_in), mZoomRatio != MAX_ZOOM_RATIO);
         enableDisableMenuItem(menu.findItem(R.id.action_zoom_out), mZoomRatio != MIN_ZOOM_RATIO);
-        enableDisableMenuItem(menu.findItem(R.id.action_next), mPage < mNumPages);
-        enableDisableMenuItem(menu.findItem(R.id.action_previous), mPage > 1);
 
         return true;
     }
@@ -505,13 +667,7 @@ public class PdfViewer extends AppCompatActivity implements LoaderManager.Loader
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_previous:
-                onJumpToPageInDocument(mPage - 1);
-                return true;
 
-            case R.id.action_next:
-                onJumpToPageInDocument(mPage + 1);
-                return true;
 
             case R.id.action_first:
                 onJumpToPageInDocument(1);
@@ -520,10 +676,6 @@ public class PdfViewer extends AppCompatActivity implements LoaderManager.Loader
             case R.id.action_last:
                 onJumpToPageInDocument(mNumPages);
                 return true;
-
-            case R.id.action_open:
-                openDocument();
-                return super.onOptionsItemSelected(item);
 
             case R.id.action_zoom_out:
                 zoomOut(0.25f, true);

@@ -22,8 +22,8 @@
     <color name="colorProgressStatus">#085f63</color>
 
 
-    <color name="color_enable">#FC4A4A</color>
-    <color name="color_disable">#FF9696</color>
+    <color name="color_enable">#2CBFEB</color>
+    <color name="color_disable">#83E2FF</color>
     <color name="colorControlNormal">#686868</color>
     <color name="colorBackground">#FFFFFF</color>
     <color name="color_Text">#FFFFFF</color>

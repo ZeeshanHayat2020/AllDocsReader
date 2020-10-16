@@ -28,7 +28,7 @@
         <item name="android:maxHeight">20dip</item>
     </style>
 
-    <style name="Theme.Buttons" parent="AppTheme">
+    <style name="Theme.Buttons" parent="AppTheme.TitleBar">
         <item name="background">@color/bg_buttons</item>
         <item name="android:backgroundTint">@color/bg_buttons</item>
     </style>

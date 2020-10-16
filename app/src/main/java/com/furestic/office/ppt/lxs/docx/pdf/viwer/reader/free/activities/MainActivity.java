@@ -40,6 +40,7 @@ import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.fc.util.IOUtils;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.interfaces.OnRecyclerItemClickLister;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.models.ModelAcMain;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.officereader.AppActivity;
+import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.pdfViewerModule.PdfViewer;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.utils.FileUtils;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.utils.PathUtil;
 import com.furestic.office.ppt.lxs.docx.pdf.viwer.reader.free.utils.RecyclerViewItemDecoration;
@@ -166,24 +167,6 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         return false;
     }
 
-    /*  private void setUpInAppReview() {
-          reviewManager = new FakeReviewManager(MainActivity.this);
-          Task<ReviewInfo> request = reviewManager.requestReviewFlow();
-          request.addOnCompleteListener(new OnCompleteListener<ReviewInfo>() {
-              @Override
-              public void onComplete(@NonNull Task<ReviewInfo> task) {
-                  if (task.isSuccessful()) {
-                      // We can get the ReviewInfo object
-                      reviewInfo = task.getResult();
-                  } else {
-                      // There was some problem, continue regardless of the result.
-                      reviewInfo = null;
-                  }
-              }
-          });
-
-      }
-  */
     private void setUpInAppUpdate() {
         appUpdateManager = (AppUpdateManager) AppUpdateManagerFactory.create(this);
         // Returns an intent object that you use to check for an update.
@@ -253,13 +236,6 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
             chooseFile = Intent.createChooser(chooseFile, "Choose a file");
             startActivityForResult(chooseFile, Constant.REQUEST_CODE_PICK_FILE);*/
 
-         /* <data android:mimeType="application/msword" />
-                <data android:mimeType="application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
-                <data android:mimeType="application/vnd.ms-powerpoint" />
-                <data android:mimeType="application/vnd.openxmlformats-officedocument.presentationml.presentation" />
-                <data android:mimeType="application/vnd.ms-excel" />
-                <data android:mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
-                <data android:mimeType="text/plain" />*/
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType("*/*");
@@ -283,7 +259,6 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
         toolBarTitleTv.setText(getResources().getString(R.string.toolBartxtMain));
         toolbar.setBackgroundColor(getResources().getColor(R.color.color_Red));
     }
-
 
     private void loadRecyclerViewItems() {
         int[] imgIds = {
@@ -333,7 +308,7 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
             final Intent intent = new Intent(this, ActivityFilesHolder.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent.putExtra(Constant.KEY_SELECTED_FILE_FORMAT, exString);
-            if (adCounter > 2) {
+            if (adCounter > 1) {
                 adCounter = 0;
                 if (mInterstitialAd.isLoaded() && !myPreferences.isItemPurchased()) {
                     mInterstitialAd.show();
@@ -582,49 +557,16 @@ public class MainActivity extends ActivityBase implements OnRecyclerItemClickLis
                         .make(parentLayout, "Application updated successfully.", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
-        } else if (requestCode == Constant.REQUEST_CODE_IN_APP_REVIEW) {
-            if (resultCode == RESULT_OK) {
-                /*reviewCounter++;
-                if (reviewCounter > 4) {
-                    reviewCounter = 0;
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            Task<Void> flow = reviewManager.launchReviewFlow(MainActivity.this, reviewInfo);
-                            flow.addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Log.d(TAG, "onComplete: Thanks for the feedback!");
-                                }
-                            });
-                            flow.addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void result) {
-                                    Log.d(TAG, "onSuccess:  Reviewed successfully");
-                                }
-                            });
-                            flow.addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(Exception e) {
-                                    Log.d(TAG, "onFailed:  Reviewed Failed!");
-                                }
-                            });
-                        }
-                    }, 3000);
-                }*/
-            }
         } else if (requestCode == Constant.REQUEST_CODE_PICK_FILE) {
             if (RESULT_OK == resultCode) {
                 Uri uri = data.getData();
-
                 String filePath = "";
                 filePath = FileUtils.getPath(MainActivity.this, uri);
                 if (!filePath.equals("")) {
                     File file = new File(filePath);
                     fileName = file.getName();
                     if (file.getName().endsWith("pdf")) {
-                        final Intent intent = new Intent(MainActivity.this, ActivityPdfViewer.class);
+                        final Intent intent = new Intent(MainActivity.this, PdfViewer.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.putExtra(Constant.KEY_SELECTED_FILE_URI, filePath);
                         intent.putExtra(Constant.KEY_SELECTED_FILE_NAME, fileName);
